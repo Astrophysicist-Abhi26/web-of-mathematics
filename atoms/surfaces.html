@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Surfaces — Torus · Möbius · Klein</title>
+<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0b0e15;--text:#e9e6dc;--dim:#8f95a3;--gold:#d9a441;--line:rgba(255,255,255,0.09);}
+*{box-sizing:border-box;}
+html,body{margin:0;height:100%;color:var(--text);
+  background:radial-gradient(900px 700px at 50% 20%, #16203a 0%, #0b0e15 60%, #06080d 100%);
+  font-family:'Inter',system-ui,sans-serif;overflow:hidden;}
+#app{position:fixed;inset:0;display:flex;flex-direction:column;}
+header{padding:12px 16px 10px;border-bottom:1px solid var(--line);}
+h1{font-family:'Spectral',serif;font-size:18px;font-weight:600;margin:0;}
+h1 em{font-style:italic;color:var(--dim);font-weight:400;}
+.chips{display:flex;gap:6px;margin-top:9px;}
+.chip{flex:1;text-align:center;font-family:'IBM Plex Mono',monospace;font-size:11px;
+  padding:7px 4px;border-radius:999px;border:1px solid var(--line);color:var(--dim);
+  background:rgba(255,255,255,0.04);cursor:pointer;transition:all .2s;}
+.chip.on{border-color:var(--gold);color:var(--gold);background:rgba(217,164,65,0.12);
+  box-shadow:0 0 16px rgba(217,164,65,0.25);}
+main{flex:1;position:relative;min-height:0;}
+canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;}
+footer{border-top:1px solid var(--line);padding:12px 16px 16px;
+  background:rgba(11,14,21,0.7);backdrop-filter:blur(10px);}
+.cap{font-size:13px;line-height:1.5;}
+.facts{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--dim);margin-top:7px;line-height:1.7;}
+.facts b{color:#9fd6a8;font-weight:500;}
+.hint{font-size:10px;color:var(--dim);font-family:'IBM Plex Mono',monospace;margin-top:8px;}
+</style>
+</head>
+<body>
+<div id="app">
+  <header>
+    <h1>Closed &amp; twisted surfaces <em>— glass models, orientability in motion</em></h1>
+    <div class="chips" id="chips"></div>
+  </header>
+  <main><canvas id="cv"></canvas></main>
+  <footer>
+    <div class="cap" id="cap"></div>
+    <div class="facts" id="facts"></div>
+    <div class="hint">drag to rotate · pinch nothing — it breathes on its own</div>
+  </footer>
+</div>
+<script>
+"use strict";
+/* Shaded translucent-quad renderer — the "glass model" look.
+   Quads are depth-sorted (painter's algorithm) and lit two-sided. */
+const cv=document.getElementById('cv'),ctx=cv.getContext('2d');
+let W=0,H=0,DPR=1;
+function resize(){DPR=Math.min(2,window.devicePixelRatio||1);
+  W=cv.clientWidth;H=cv.clientHeight;cv.width=W*DPR;cv.height=H*DPR;
+  ctx.setTransform(DPR,0,0,DPR,0,0);}
+window.addEventListener('resize',resize);
+
+/* ---------- parametrizations ---------- */
+function torus(u,v){const R=1.35,r=0.55;
+  return [(R+r*Math.cos(v))*Math.cos(u),(R+r*Math.cos(v))*Math.sin(u),r*Math.sin(v)];}
+function mobius(u,v){const w=(v-0.5)*1.1;
+  return [(1.55+w*Math.cos(u/2))*Math.cos(u),(1.55+w*Math.cos(u/2))*Math.sin(u),w*Math.sin(u/2)];}
+/* THE classic glass Klein bottle (bulb + handle), standard piecewise parametrization */
+function klein(u,v){
+  const cu=Math.cos(u),su=Math.sin(u),cv_=Math.cos(v),sv=Math.sin(v);
+  const r=4*(1-cu/2);
+  let x,y;
+  if(u<Math.PI){
+    x=6*cu*(1+su)+r*cu*cv_;
+    y=16*su+r*su*cv_;
+  }else{
+    x=6*cu*(1+su)+r*Math.cos(v+Math.PI);
+    y=16*su;
+  }
+  const z=r*sv;
+  return [x,y,z];
+}
+
+const SURFACES=[
+ {name:"Torus",f:torus,uMax:2*Math.PI,vMax:2*Math.PI,nu:44,nv:22,wrapU:true,wrapV:true,
+  tint:[217,164,65],
+  cap:"A square with opposite edges glued straight. Orientable: an ant carrying a clock face can walk anywhere and the clock never flips.",
+  facts:"genus <b>1</b> · Euler characteristic <b>χ = 0</b> · orientable <b>yes</b> · lives in ℝ³ <b>embedded — no self-intersection</b>"},
+ {name:"Möbius band",f:mobius,uMax:2*Math.PI,vMax:1,nu:52,nv:10,wrapU:true,wrapV:false,
+  tint:[91,156,224],
+  cap:"A strip glued with one half-twist. Non-orientable with boundary: walk once around and left has become right — the clock returns mirrored.",
+  facts:"boundary <b>one circle</b> · χ = <b>0</b> · orientable <b>no</b> · one-sided <b>yes — try painting just one side</b>"},
+ {name:"Klein bottle",f:klein,uMax:2*Math.PI,vMax:2*Math.PI,nu:64,nv:26,wrapU:false,wrapV:true,
+  tint:[87,200,180],
+  cap:"The classic glass bottle: the neck dives through the wall and opens into the base, gluing the tube to itself with a flip. Closed and non-orientable — the apparent self-intersection is forced only because we are watching a 4-dimensional object from inside ℝ³.",
+  facts:"2 cross-caps · χ = <b>0</b> · orientable <b>no</b> · inside vs outside <b>do not exist</b> · embeds in ℝ³ <b>no — immersion only</b> · in ℝ⁴ <b>embeds cleanly</b>"}
+];
+let cur=0,quads=[],center=[0,0,0],rad=1;
+
+function build(){
+  const S=SURFACES[cur];
+  // sample grid
+  const P=[];
+  const NU=S.nu+(S.wrapU?0:1), NV=S.nv+(S.wrapV?0:1);
+  for(let i=0;i<NU;i++){const u=(i/(S.wrapU?S.nu:S.nu))*S.uMax;
+    for(let j=0;j<NV;j++){const v=(j/(S.wrapV?S.nv:S.nv))*S.vMax;
+      P.push(S.f(Math.min(u,S.uMax-1e-6),v));}}
+  // normalize to unit-ish size
+  let mn=[1e9,1e9,1e9],mx=[-1e9,-1e9,-1e9];
+  P.forEach(p=>{for(let k=0;k<3;k++){mn[k]=Math.min(mn[k],p[k]);mx[k]=Math.max(mx[k],p[k]);}});
+  center=[(mn[0]+mx[0])/2,(mn[1]+mx[1])/2,(mn[2]+mx[2])/2];
+  rad=Math.max(mx[0]-mn[0],mx[1]-mn[1],mx[2]-mn[2])/2||1;
+  const N=(i,j)=>{
+    const ii=S.wrapU?(i%S.nu+S.nu)%S.nu:i, jj=S.wrapV?(j%S.nv+S.nv)%S.nv:j;
+    return P[ii*NV+jj];
+  };
+  quads=[];
+  const iMax=S.wrapU?S.nu:S.nu, jMax=S.wrapV?S.nv:S.nv;
+  for(let i=0;i<iMax;i++)for(let j=0;j<jMax;j++){
+    if(!S.wrapU&&i+1>=NU)continue;
+    if(!S.wrapV&&j+1>=NV)continue;
+    quads.push([N(i,j),N(i+1,j),N(i+1,j+1),N(i,j+1)]);
+  }
+}
+function nrm(p){return [(p[0]-center[0])/rad,(p[1]-center[1])/rad,(p[2]-center[2])/rad];}
+
+let rotX=-0.35,rotY=0.7,breathe=0;
+function rot(p){
+  let[x,y,z]=p;
+  let y1=y*Math.cos(rotX)-z*Math.sin(rotX), z1=y*Math.sin(rotX)+z*Math.cos(rotX);
+  let x2=x*Math.cos(rotY)+z1*Math.sin(rotY), z2=-x*Math.sin(rotY)+z1*Math.cos(rotY);
+  return [x2,y1,z2];
+}
+function proj(p){const s=Math.min(W,H)*0.36*(1+0.015*Math.sin(breathe));
+  const persp=1/(1.9-p[2]*0.55);
+  return {x:W/2+p[0]*s*persp*1.6, y:H*0.47+p[1]*s*persp*1.6};}
+const LIGHT=(()=>{const L=[0.45,-0.65,0.62];const n=Math.hypot(...L);return L.map(x=>x/n);})();
+
+function draw(){
+  ctx.clearRect(0,0,W,H);
+  const S=SURFACES[cur],[tr,tg,tb]=S.tint;
+  // transform all quads
+  const world=quads.map(q=>{
+    const R=q.map(p=>rot(nrm(p)));
+    const z=(R[0][2]+R[1][2]+R[2][2]+R[3][2])/4;
+    // normal from diagonals
+    const d1=[R[2][0]-R[0][0],R[2][1]-R[0][1],R[2][2]-R[0][2]];
+    const d2=[R[3][0]-R[1][0],R[3][1]-R[1][1],R[3][2]-R[1][2]];
+    const n=[d1[1]*d2[2]-d1[2]*d2[1],d1[2]*d2[0]-d1[0]*d2[2],d1[0]*d2[1]-d1[1]*d2[0]];
+    const nl=Math.hypot(...n)||1;
+    const lam=Math.abs((n[0]*LIGHT[0]+n[1]*LIGHT[1]+n[2]*LIGHT[2])/nl);
+    return {R,z,lam};
+  }).sort((a,b)=>a.z-b.z);
+  // glass rendering: back faces dim, front brighter; translucent fills + fine edges
+  world.forEach(({R,z,lam})=>{
+    const pts=R.map(proj);
+    const depth=(z+1.4)/2.8;                      // 0 far → 1 near
+    const shade=0.25+0.75*lam;
+    const a=0.10+0.16*depth;                      // translucency
+    ctx.beginPath();
+    ctx.moveTo(pts[0].x,pts[0].y);
+    for(let k=1;k<4;k++)ctx.lineTo(pts[k].x,pts[k].y);
+    ctx.closePath();
+    ctx.fillStyle=`rgba(${(tr*shade)|0},${(tg*shade)|0},${(tb*shade)|0},${a})`;
+    ctx.fill();
+    // specular-ish rim on near, well-lit faces
+    const edgeA=0.05+0.25*depth*lam;
+    ctx.strokeStyle=`rgba(255,255,255,${edgeA*0.5})`;
+    ctx.lineWidth=0.6;
+    ctx.stroke();
+  });
+  // soft ground glow
+  const g=ctx.createRadialGradient(W/2,H*0.86,10,W/2,H*0.86,W*0.35);
+  g.addColorStop(0,`rgba(${tr},${tg},${tb},0.10)`);g.addColorStop(1,'rgba(0,0,0,0)');
+  ctx.fillStyle=g;ctx.fillRect(0,H*0.6,W,H*0.4);
+}
+let auto=true;
+function loop(){
+  if(auto){rotY+=0.007;rotX+=0.0016;}
+  breathe+=0.02;
+  draw();requestAnimationFrame(loop);
+}
+let drag=null;
+cv.addEventListener('pointerdown',e=>{drag={x:e.clientX,y:e.clientY};auto=false;cv.setPointerCapture(e.pointerId);});
+cv.addEventListener('pointermove',e=>{if(!drag)return;
+  rotY+=(e.clientX-drag.x)*0.008;rotX+=(e.clientY-drag.y)*0.008;
+  drag={x:e.clientX,y:e.clientY};});
+cv.addEventListener('pointerup',()=>{drag=null;setTimeout(()=>auto=true,2500);});
+
+const chipsEl=document.getElementById('chips');
+SURFACES.forEach((s,i)=>{const c=document.createElement('div');c.className='chip';c.textContent=s.name;
+  c.onclick=()=>set(i);chipsEl.appendChild(c);});
+function set(i){cur=i;build();
+  document.querySelectorAll('.chip').forEach((c,j)=>c.classList.toggle('on',j===cur));
+  document.getElementById('cap').textContent=SURFACES[cur].cap;
+  document.getElementById('facts').innerHTML=SURFACES[cur].facts;
+}
+resize();set(2);requestAnimationFrame(loop);
+</script>
+</body>
+</html>

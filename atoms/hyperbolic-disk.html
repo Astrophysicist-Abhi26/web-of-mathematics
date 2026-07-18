@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>The Hyperbolic Disk</title>
+<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0e1117;--text:#e9e6dc;--dim:#8f95a3;--gold:#d9a441;--teal:#57ab79;--blue:#5b9ce0;--line:rgba(255,255,255,0.09);}
+*{box-sizing:border-box;}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--text);
+  font-family:'Inter',system-ui,sans-serif;overflow:hidden;}
+#app{position:fixed;inset:0;display:flex;flex-direction:column;}
+header{padding:12px 16px 10px;border-bottom:1px solid var(--line);}
+h1{font-family:'Spectral',serif;font-size:18px;font-weight:600;margin:0;}
+h1 em{font-style:italic;color:var(--dim);font-weight:400;}
+.chips{display:flex;gap:6px;margin-top:9px;}
+.chip{flex:1;text-align:center;font-family:'IBM Plex Mono',monospace;font-size:10.5px;
+  padding:7px 4px;border-radius:999px;border:1px solid var(--line);color:var(--dim);
+  background:rgba(255,255,255,0.04);cursor:pointer;}
+.chip.on{border-color:var(--gold);color:var(--gold);background:rgba(217,164,65,0.12);}
+main{flex:1;position:relative;min-height:0;}
+canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;}
+footer{border-top:1px solid var(--line);padding:12px 16px 16px;}
+.cap{font-size:13px;line-height:1.5;}
+.facts{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--dim);margin-top:7px;line-height:1.7;}
+.facts b{color:#9fd6a8;font-weight:500;}
+.hint{font-size:10px;color:var(--dim);font-family:'IBM Plex Mono',monospace;margin-top:8px;}
+</style>
+</head>
+<body>
+<div id="app">
+  <header>
+    <h1>The Poincaré disk <em>— a whole infinite plane, seen at once</em></h1>
+    <div class="chips" id="chips"></div>
+  </header>
+  <main><canvas id="cv"></canvas></main>
+  <footer>
+    <div class="cap" id="cap"></div>
+    <div class="facts" id="facts"></div>
+    <div class="hint" id="hint">drag the points · the boundary circle is infinitely far away</div>
+  </footer>
+</div>
+<script>
+"use strict";
+/* Poincaré disk model of the hyperbolic plane.
+   Geodesics = circular arcs meeting the boundary at right angles (or diameters).
+   The boundary is at infinity: nothing ever reaches it. */
+const cv=document.getElementById('cv'),ctx=cv.getContext('2d');
+let W=0,H=0,DPR=1,cx=0,cy=0,Rd=0;
+function resize(){
+  DPR=Math.min(2,window.devicePixelRatio||1);
+  W=cv.clientWidth;H=cv.clientHeight;cv.width=W*DPR;cv.height=H*DPR;
+  ctx.setTransform(DPR,0,0,DPR,0,0);
+  cx=W/2;cy=H/2;Rd=Math.min(W,H)*0.44;
+}
+window.addEventListener('resize',resize);
+
+/* ---- disk math (unit disk, then scaled to screen) ---- */
+function toScreen(p){return {x:cx+p.x*Rd, y:cy+p.y*Rd};}
+function toDisk(s){return {x:(s.x-cx)/Rd, y:(s.y-cy)/Rd};}
+
+// geodesic through two points a,b in the unit disk.
+// Returns either {line:true,...} for a diameter, or {C,r} the orthogonal circle.
+function geodesic(a,b){
+  const cross=a.x*b.y-a.y*b.x;
+  if(Math.abs(cross)<1e-6) return {line:true,a,b}; // collinear w/ origin → diameter
+  const a2=a.x*a.x+a.y*a.y, b2=b.x*b.x+b.y*b.y;
+  // center (u,v) of orthogonal circle: solves the right-angle-at-boundary condition
+  const denom=2*cross;
+  const u=( b.y*(a2+1) - a.y*(b2+1) )/denom;
+  const v=( a.x*(b2+1) - b.x*(a2+1) )/denom;
+  const r=Math.hypot(u-a.x,v-a.y);
+  return {line:false,C:{x:u,y:v},r};
+}
+function drawGeodesicSeg(a,b,color,width){
+  ctx.strokeStyle=color;ctx.lineWidth=width||2;
+  const g=geodesic(a,b);
+  if(g.line){
+    const A=toScreen(a),B=toScreen(b);
+    ctx.beginPath();ctx.moveTo(A.x,A.y);ctx.lineTo(B.x,B.y);ctx.stroke();
+    return;
+  }
+  const ang=p=>Math.atan2(p.y-g.C.y,p.x-g.C.x);
+  let a1=ang(a),a2=ang(b);
+  // choose the minor arc (the one staying inside the disk)
+  let d=a2-a1;
+  while(d>Math.PI)d-=2*Math.PI;
+  while(d<-Math.PI)d+=2*Math.PI;
+  const Cs=toScreen(g.C), rs=g.r*Rd;
+  ctx.beginPath();ctx.arc(Cs.x,Cs.y,rs,a1,a1+d,d<0);ctx.stroke();
+}
+// full geodesic (both ends hit boundary) — for the "lines" view
+function drawFullGeodesic(a,b,color,width){
+  const g=geodesic(a,b);
+  ctx.strokeStyle=color;ctx.lineWidth=width||1.5;
+  if(g.line){
+    // diameter direction
+    const dx=b.x-a.x,dy=b.y-a.y,L=Math.hypot(dx,dy)||1;
+    const A=toScreen({x:-dx/L,y:-dy/L}),B=toScreen({x:dx/L,y:dy/L});
+    ctx.beginPath();ctx.moveTo(A.x,A.y);ctx.lineTo(B.x,B.y);ctx.stroke();return;
+  }
+  // arc between the two boundary intersection points
+  const Cs=toScreen(g.C),rs=g.r*Rd;
+  // intersection angles of orthogonal circle with unit circle
+  const dC=Math.hypot(g.C.x,g.C.y);
+  const base=Math.atan2(g.C.y,g.C.x);
+  const half=Math.acos(Math.min(1,Math.max(-1,(dC*dC+g.r*g.r-1)/(2*dC*g.r))));
+  const p1=base+Math.PI-half, p2=base+Math.PI+half;
+  ctx.beginPath();ctx.arc(Cs.x,Cs.y,rs,p1,p2);ctx.stroke();
+}
+
+/* hyperbolic distance (for readout) */
+function hdist(a,b){
+  const dx=a.x-b.x,dy=a.y-b.y;
+  const num=2*(dx*dx+dy*dy);
+  const den=(1-(a.x*a.x+a.y*a.y))*(1-(b.x*b.x+b.y*b.y));
+  return Math.acosh(1+num/den);
+}
+/* interior angle at vertex V between geodesics to P and Q,
+   measured as Euclidean angle of the arc tangents (conformal model ⇒ equals hyperbolic angle) */
+function tangentDir(V,X){ // direction of geodesic V→X at V
+  const g=geodesic(V,X);
+  if(g.line){const d={x:X.x-V.x,y:X.y-V.y};const L=Math.hypot(d.x,d.y)||1;return {x:d.x/L,y:d.y/L};}
+  // tangent to circle at V is perpendicular to radius (V-C); pick orientation toward X
+  let t={x:-(V.y-g.C.y),y:(V.x-g.C.x)};
+  const L=Math.hypot(t.x,t.y)||1;t={x:t.x/L,y:t.y/L};
+  // orient toward X along the arc
+  const toX={x:X.x-V.x,y:X.y-V.y};
+  if(t.x*toX.x+t.y*toX.y<0){t.x=-t.x;t.y=-t.y;}
+  return t;
+}
+function angleAt(V,P,Q){
+  const t1=tangentDir(V,P),t2=tangentDir(V,Q);
+  let a=Math.acos(Math.min(1,Math.max(-1,t1.x*t2.x+t1.y*t2.y)));
+  return a;
+}
+
+/* ---- draggable points ---- */
+let A={x:-0.35,y:0.28}, B={x:0.42,y:0.10}, Cp={x:-0.05,y:-0.42};
+const pts=[A,B,Cp];
+let dragging=null;
+cv.addEventListener('pointerdown',e=>{
+  const m=toDisk({x:e.offsetX*0+ (e.clientX-cv.getBoundingClientRect().left),
+                  y:(e.clientY-cv.getBoundingClientRect().top)});
+  let best=null,bd=0.09;
+  pts.forEach(p=>{const d=Math.hypot(p.x-m.x,p.y-m.y);if(d<bd){bd=d;best=p;}});
+  if(best){dragging=best;cv.setPointerCapture(e.pointerId);}
+});
+cv.addEventListener('pointermove',e=>{
+  if(!dragging)return;
+  const r=cv.getBoundingClientRect();
+  let m=toDisk({x:e.clientX-r.left,y:e.clientY-r.top});
+  const R=Math.hypot(m.x,m.y);
+  if(R>0.96){m.x*=0.96/R;m.y*=0.96/R;} // keep strictly inside
+  dragging.x=m.x;dragging.y=m.y;
+});
+cv.addEventListener('pointerup',()=>dragging=null);
+
+/* ---- views ---- */
+const VIEWS=[
+ {name:"Geodesic",cap:"The unique shortest path between two points. In this model it bows toward the center — a circular arc meeting the boundary at 90°. Drag A and B: the 'line' is never straight in the Euclidean sense, yet it is the true straight line of hyperbolic space.",
+  facts:()=>`hyperbolic distance A–B = <b>${hdist(A,B).toFixed(3)}</b> · as either point nears the rim, this distance → <b>∞</b>`},
+ {name:"Triangle",cap:"A hyperbolic triangle: three geodesic sides. Its angles always sum to LESS than 180° — and the missing amount (the defect) equals its area. Drag the vertices toward the boundary and watch the angles collapse toward zero.",
+  facts:()=>{
+    const aA=angleAt(A,B,Cp),aB=angleAt(B,A,Cp),aC=angleAt(Cp,A,B);
+    const sum=(aA+aB+aC)*180/Math.PI;
+    const defect=180-sum;
+    return `angle sum = <b>${sum.toFixed(1)}°</b> (Euclidean: always 180°) · defect = area = <b>${defect.toFixed(1)}°</b>`;
+  }},
+ {name:"Parallels",cap:"Euclid's fifth postulate fails here. Through the point A there are INFINITELY many geodesics that never meet the fixed line through B and C. Two of them (the 'limiting parallels') just barely avoid it; a whole fan lies between.",
+  facts:()=>"through one external point: <b>∞ parallels</b> to a given line — the discovery that broke 2000 years of assuming otherwise"},
+ {name:"Tiling",cap:"Because area is bounded below (every triangle has area < π) but the plane is infinite, hyperbolic space holds regular tilings impossible in flat space — here the {7,3} tiling, seven heptagons... rendered schematically as a geodesic web. The identical tiles look shrunken near the rim only because the rim is infinitely far.",
+  facts:()=>"flat plane: only 3 regular tilings · hyperbolic plane: <b>infinitely many</b> {p,q} with 1/p+1/q < 1/2"}
+];
+let view=0;
+
+function drawDisk(){
+  ctx.clearRect(0,0,W,H);
+  // boundary circle (at infinity)
+  ctx.strokeStyle='rgba(233,230,220,0.5)';ctx.lineWidth=2;
+  ctx.beginPath();ctx.arc(cx,cy,Rd,0,6.28);ctx.stroke();
+  ctx.strokeStyle='rgba(233,230,220,0.12)';ctx.lineWidth=1;
+  ctx.beginPath();ctx.arc(cx,cy,Rd+6,0,6.28);ctx.stroke();
+
+  if(view===3){ // tiling: a symmetric web of geodesics
+    const N=7;
+    const ring=[];
+    for(let i=0;i<N;i++){const a=i/N*2*Math.PI - Math.PI/2;ring.push({x:0.62*Math.cos(a),y:0.62*Math.sin(a)});}
+    ctx.globalAlpha=0.9;
+    for(let i=0;i<N;i++){
+      drawFullGeodesic(ring[i],ring[(i+1)%N],'rgba(87,171,121,0.55)',1.4);
+      drawFullGeodesic(ring[i],ring[(i+2)%N],'rgba(91,156,224,0.4)',1.1);
+      drawFullGeodesic(ring[i],ring[(i+3)%N],'rgba(217,164,65,0.3)',1);
+    }
+    ctx.globalAlpha=1;
+    // inner heptagon of geodesics
+    const inner=[];
+    for(let i=0;i<N;i++){const a=i/N*2*Math.PI-Math.PI/2;inner.push({x:0.3*Math.cos(a),y:0.3*Math.sin(a)});}
+    for(let i=0;i<N;i++)drawGeodesicSeg(inner[i],inner[(i+1)%N],'rgba(233,230,220,0.6)',1.5);
+    return;
+  }
+
+  if(view===2){ // parallels: fixed line + fan through A
+    const L1={x:0.1,y:0.55}, L2={x:0.15,y:-0.6};
+    drawFullGeodesic(L1,L2,'rgba(233,230,220,0.75)',2);
+    // fan of geodesics through A that don't cross the line
+    for(let k=-4;k<=4;k++){
+      const target={x:0.1+0.001*k, y:0.55 - (k+4)/8*1.15};
+      drawFullGeodesic(A,target, k===-4||k===4?'rgba(217,164,65,0.9)':'rgba(91,156,224,0.35)', k===-4||k===4?2:1.2);
+    }
+    const As=toScreen(A);
+    ctx.fillStyle='#d9a441';ctx.beginPath();ctx.arc(As.x,As.y,6,0,6.28);ctx.fill();
+    label('A',As.x+9,As.y+4,'#d9a441');
+    return;
+  }
+
+  if(view===1){ // triangle
+    drawGeodesicSeg(A,B,'rgba(217,164,65,0.95)',2.5);
+    drawGeodesicSeg(B,Cp,'rgba(217,164,65,0.95)',2.5);
+    drawGeodesicSeg(Cp,A,'rgba(217,164,65,0.95)',2.5);
+    // faint Euclidean triangle for contrast
+    const As=toScreen(A),Bs=toScreen(B),Cs=toScreen(Cp);
+    ctx.strokeStyle='rgba(91,156,224,0.3)';ctx.lineWidth=1;ctx.setLineDash([4,4]);
+    ctx.beginPath();ctx.moveTo(As.x,As.y);ctx.lineTo(Bs.x,Bs.y);ctx.lineTo(Cs.x,Cs.y);ctx.closePath();ctx.stroke();
+    ctx.setLineDash([]);
+    drawPts([[A,'A'],[B,'B'],[Cp,'C']]);
+    return;
+  }
+
+  // view 0: single geodesic
+  drawGeodesicSeg(A,B,'rgba(217,164,65,0.95)',2.5);
+  const As=toScreen(A),Bs=toScreen(B);
+  ctx.strokeStyle='rgba(91,156,224,0.3)';ctx.lineWidth=1;ctx.setLineDash([4,4]);
+  ctx.beginPath();ctx.moveTo(As.x,As.y);ctx.lineTo(Bs.x,Bs.y);ctx.stroke();ctx.setLineDash([]);
+  label('Euclidean chord',(As.x+Bs.x)/2-40,(As.y+Bs.y)/2-8,'rgba(91,156,224,0.6)');
+  drawPts([[A,'A'],[B,'B']]);
+}
+function drawPts(list){
+  list.forEach(([p,nm])=>{
+    const s=toScreen(p);
+    ctx.fillStyle='#e9e6dc';ctx.strokeStyle='#0e1117';ctx.lineWidth=2;
+    ctx.beginPath();ctx.arc(s.x,s.y,6,0,6.28);ctx.fill();ctx.stroke();
+    label(nm,s.x+9,s.y+4,'#e9e6dc');
+  });
+}
+function label(t,x,y,c){ctx.font='12px "IBM Plex Mono",monospace';ctx.fillStyle=c;ctx.fillText(t,x,y);}
+
+function loop(){drawDisk();
+  document.getElementById('facts').innerHTML=VIEWS[view].facts();
+  requestAnimationFrame(loop);}
+
+const chipsEl=document.getElementById('chips');
+VIEWS.forEach((v,i)=>{const c=document.createElement('div');c.className='chip';c.textContent=v.name;c.onclick=()=>setView(i);chipsEl.appendChild(c);});
+function setView(i){view=i;
+  document.querySelectorAll('.chip').forEach((c,j)=>c.classList.toggle('on',j===i));
+  document.getElementById('cap').textContent=VIEWS[i].cap;
+  document.getElementById('hint').textContent = (i===0||i===1)?'drag the points · the boundary is infinitely far away':'the boundary circle is infinitely far away';
+}
+resize();setView(0);requestAnimationFrame(loop);
+</script>
+</body>
+</html>

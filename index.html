@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>The Web of Mathematics</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div id="app">
+  <header>
+    <div class="titlerow">
+      <h1>The Web of Mathematics <span class="thin">— from logic upward</span></h1>
+    </div>
+    <div class="subtitle">8 domains · 45 fields · 211 topics · 72 bridges — each naming who built it and the theory behind it · 4 interactive atoms — three zoom levels: clusters resolve into branches, branches into topics</div>
+    <div class="toolbar">
+      <input id="search" type="text" placeholder="Search fields, theorems, bridges… (Enter jumps to first hit)">
+      <button id="bridgesBtn" class="tbtn">✦ Browse all bridges</button>
+    </div>
+    <div class="legend" id="legend"></div>
+  </header>
+  <main>
+    <svg id="svg" viewBox="0 0 2200 1700" preserveAspectRatio="xMidYMid meet">
+      <g id="viewport"></g>
+    </svg>
+    <div id="intro"><div class="big">pinch / scroll to zoom — clusters resolve into fields, gold edges are the bridges</div></div>
+    <div class="zoomctl">
+      <div class="zbtn" id="zin">+</div>
+      <div class="zbtn" id="zout">−</div>
+      <div class="zbtn small" id="zreset">⤾</div>
+    </div>
+  </main>
+</div>
+
+<div id="scrim"></div>
+<div id="panel">
+  <div class="panel-handle"></div>
+  <button class="closebtn" id="closepanel">✕</button>
+  <div class="panel-scroll">
+    <div class="p-eyebrow"><span class="dot" id="p-dot"></span><span id="p-eyebrow-text"></span></div>
+    <h2 id="p-title"></h2>
+    <p class="def" id="p-def"></p>
+    <div id="p-body"></div>
+  </div>
+</div>
+
+<script src="data/data.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

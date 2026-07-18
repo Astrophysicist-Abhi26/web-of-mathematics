@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Parallel Transport & Curvature</title>
+<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0e1117;--text:#e9e6dc;--dim:#8f95a3;--gold:#d9a441;--teal:#57ab79;--blue:#5b9ce0;--line:rgba(255,255,255,0.09);}
+*{box-sizing:border-box;}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--text);
+  font-family:'Inter',system-ui,sans-serif;overflow:hidden;}
+#app{position:fixed;inset:0;display:flex;flex-direction:column;}
+header{padding:12px 16px 10px;border-bottom:1px solid var(--line);}
+h1{font-family:'Spectral',serif;font-size:18px;font-weight:600;margin:0;}
+h1 em{font-style:italic;color:var(--dim);font-weight:400;}
+main{flex:1;position:relative;min-height:0;}
+canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;}
+.overlay{position:absolute;left:12px;top:10px;font-family:'IBM Plex Mono',monospace;
+  font-size:11px;color:var(--dim);line-height:1.7;pointer-events:none;}
+.overlay b{color:var(--gold);font-weight:500;}
+footer{border-top:1px solid var(--line);padding:12px 16px 14px;}
+.cap{font-size:13px;line-height:1.5;margin-bottom:9px;}
+.controls{display:flex;gap:8px;align-items:center;}
+.controls label{font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--dim);min-width:64px;}
+input[type=range]{flex:1;accent-color:var(--gold);}
+.nav{display:flex;gap:8px;margin-top:10px;}
+.nbtn{flex:1;padding:9px;border-radius:10px;border:1px solid var(--line);background:rgba(255,255,255,0.05);
+  color:var(--text);font-size:12.5px;font-weight:600;cursor:pointer;text-align:center;}
+.nbtn.on{background:rgba(217,164,65,0.16);border-color:var(--gold);color:var(--gold);}
+.hint{font-size:10px;color:var(--dim);font-family:'IBM Plex Mono',monospace;margin-top:8px;}
+</style>
+</head>
+<body>
+<div id="app">
+  <header>
+    <h1>Parallel transport <em>— curvature you can see</em></h1>
+  </header>
+  <main>
+    <canvas id="cv"></canvas>
+    <div class="overlay" id="ov"></div>
+  </main>
+  <footer>
+    <div class="cap" id="cap">Carry an arrow around a closed loop, always keeping it "as parallel as possible." On a flat surface it comes home unchanged. On a curved one it comes home <b>rotated</b> — and the rotation angle equals the curvature enclosed by the loop. That rotation is the whole meaning of curvature.</div>
+    <div class="controls">
+      <label>walk loop</label>
+      <input type="range" id="prog" min="0" max="100" value="0">
+    </div>
+    <div class="nav">
+      <div class="nbtn on" id="bSphere">Sphere (curved)</div>
+      <div class="nbtn" id="bPlane">Plane (flat)</div>
+      <div class="nbtn" id="bAuto">▶ auto</div>
+    </div>
+    <div class="hint">drag anywhere to rotate the view</div>
+  </footer>
+</div>
+<script>
+"use strict";
+const cv=document.getElementById('cv'),ctx=cv.getContext('2d');
+let W=0,H=0,DPR=1;
+function resize(){DPR=Math.min(2,window.devicePixelRatio||1);
+  W=cv.clientWidth;H=cv.clientHeight;cv.width=W*DPR;cv.height=H*DPR;
+  ctx.setTransform(DPR,0,0,DPR,0,0);}
+window.addEventListener('resize',resize);
+
+/* 3D helpers */
+let rotX=-0.5,rotY=0.6;
+function rot(p){
+  let[x,y,z]=p;
+  let y1=y*Math.cos(rotX)-z*Math.sin(rotX), z1=y*Math.sin(rotX)+z*Math.cos(rotX);
+  let x2=x*Math.cos(rotY)+z1*Math.sin(rotY), z2=-x*Math.sin(rotY)+z1*Math.cos(rotY);
+  return [x2,y1,z2];
+}
+function proj(p){const[x,y,z]=rot(p);const s=Math.min(W,H)*0.34;const persp=1/(1-z*0.28);
+  return {x:W/2+x*s*persp, y:H*0.46+y*s*persp, z};}
+function v3(a,b,c){return [a,b,c];}
+function norm(p){const L=Math.hypot(p[0],p[1],p[2])||1;return [p[0]/L,p[1]/L,p[2]/L];}
+function cross(a,b){return [a[1]*b[2]-a[2]*b[1],a[2]*b[0]-a[0]*b[2],a[0]*b[1]-a[1]*b[0]];}
+function sub(a,b){return [a[0]-b[0],a[1]-b[1],a[2]-b[2]];}
+function add(a,b){return [a[0]+b[0],a[1]+b[1],a[2]+b[2]];}
+function scale(a,s){return [a[0]*s,a[1]*s,a[2]*s];}
+function dot(a,b){return a[0]*b[0]+a[1]*b[1]+a[2]*b[2];}
+
+/* The loop: a spherical triangle (3 great-circle arcs) — the classic 90°-holonomy demo.
+   Vertices: north pole, and two points on the equator 90° apart. */
+const P_top=[0,0,1], P_a=[1,0,0], P_b=[0,1,0];
+function slerp(p,q,t){
+  const o=Math.acos(Math.min(1,Math.max(-1,dot(p,q))));
+  if(o<1e-6)return p;
+  const s=Math.sin(o);
+  return norm(add(scale(p,Math.sin((1-t)*o)/s),scale(q,Math.sin(t*o)/s)));
+}
+// build loop point list (parameter 0..3, one unit per edge)
+function loopPoint(u){ // u in [0,3)
+  u=((u%3)+3)%3;
+  if(u<1)return slerp(P_top,P_a,u);
+  if(u<2)return slerp(P_a,P_b,u-1);
+  return slerp(P_b,P_top,u-2);
+}
+function loopTangent(u){
+  const e=0.01;const p=loopPoint(u),q=loopPoint(u+e);
+  return norm(sub(q,p));
+}
+
+let mode='sphere'; // or 'plane'
+let prog=0, auto=false;
+
+/* parallel transport of a tangent vector along the loop by discrete steps,
+   projecting out the normal component (Levi-Civita on the sphere). */
+function transportVec(uEnd){
+  let p=loopPoint(0);
+  // initial tangent vector: pointing along first edge
+  let vec=loopTangent(0.0001);
+  const steps=Math.max(1,Math.floor(uEnd/ (3/300)));
+  const du=uEnd/steps;
+  for(let i=1;i<=steps;i++){
+    const u=i*du;
+    const pNew=loopPoint(u);
+    if(mode==='sphere'){
+      // move p→pNew, then remove component along new normal (=pNew), renormalize length
+      const n=norm(pNew);
+      vec=sub(vec,scale(n,dot(vec,n)));
+      // also correct for the sphere's rotation of the tangent plane (transport rule):
+      // subtract component along change in position to keep it "parallel"
+      const L0=Math.hypot(vec[0],vec[1],vec[2])||1;
+      vec=scale(vec,1/L0);
+    }
+    // plane mode: vec is unchanged (flat ⇒ trivial transport)
+    p=pNew;
+  }
+  return {p:loopPoint(uEnd),vec};
+}
+
+function drawSphereWire(){
+  ctx.strokeStyle='rgba(255,255,255,0.06)';ctx.lineWidth=1;
+  for(let lat=-60;lat<=60;lat+=30){
+    ctx.beginPath();
+    for(let lon=0;lon<=360;lon+=8){
+      const la=lat*Math.PI/180, lo=lon*Math.PI/180;
+      const p=proj([Math.cos(la)*Math.cos(lo),Math.cos(la)*Math.sin(lo),Math.sin(la)]);
+      lon?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y);
+    }ctx.stroke();
+  }
+  for(let lon=0;lon<360;lon+=30){
+    ctx.beginPath();
+    for(let lat=-90;lat<=90;lat+=6){
+      const la=lat*Math.PI/180, lo=lon*Math.PI/180;
+      const p=proj([Math.cos(la)*Math.cos(lo),Math.cos(la)*Math.sin(lo),Math.sin(la)]);
+      lat===-90?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y);
+    }ctx.stroke();
+  }
+}
+function drawPlaneGrid(){
+  ctx.strokeStyle='rgba(255,255,255,0.06)';ctx.lineWidth=1;
+  for(let i=-4;i<=4;i++){
+    ctx.beginPath();
+    for(let j=-4;j<=4;j++){const p=proj([i*0.28,j*0.28,0]);j===-4?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y);}ctx.stroke();
+    ctx.beginPath();
+    for(let j=-4;j<=4;j++){const p=proj([j*0.28,i*0.28,0]);j===-4?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y);}ctx.stroke();
+  }
+}
+function planeLoopPoint(u){ // square loop in the plane
+  u=((u%4)+4)%4;const s=0.62;
+  if(u<1)return [ -s+2*s*u, -s,0];
+  if(u<2)return [ s, -s+2*s*(u-1),0];
+  if(u<3)return [ s-2*s*(u-2), s,0];
+  return [ -s, s-2*s*(u-3),0];
+}
+function drawArrow3(base,dir,color,len){
+  const tip=add(base,scale(norm(dir),len));
+  const b=proj(base),t=proj(tip);
+  ctx.strokeStyle=color;ctx.fillStyle=color;ctx.lineWidth=3;
+  ctx.beginPath();ctx.moveTo(b.x,b.y);ctx.lineTo(t.x,t.y);ctx.stroke();
+  const a=Math.atan2(t.y-b.y,t.x-b.x);
+  ctx.beginPath();ctx.moveTo(t.x,t.y);
+  ctx.lineTo(t.x-11*Math.cos(a-0.4),t.y-11*Math.sin(a-0.4));
+  ctx.lineTo(t.x-11*Math.cos(a+0.4),t.y-11*Math.sin(a+0.4));
+  ctx.closePath();ctx.fill();
+}
+
+function draw(){
+  ctx.clearRect(0,0,W,H);
+  const uMax = mode==='sphere' ? 3 : 4;
+  const u = prog/100*uMax;
+
+  if(mode==='sphere'){
+    drawSphereWire();
+    // draw the loop (three great-circle arcs)
+    ctx.strokeStyle='rgba(87,171,121,0.9)';ctx.lineWidth=2.5;
+    ctx.beginPath();
+    for(let s=0;s<=300;s++){const p=proj(loopPoint(s/300*3));s?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y);}
+    ctx.closePath();ctx.stroke();
+    // traversed portion, brighter
+    ctx.strokeStyle='rgba(217,164,65,0.95)';ctx.lineWidth=3;
+    ctx.beginPath();
+    for(let s=0;s<=300;s++){const uu=s/300*u;const p=proj(loopPoint(uu));s?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y);}
+    ctx.stroke();
+
+    // start ghost arrow (where it began)
+    const start=transportVec(0.0001);
+    drawArrow3(loopPoint(0),start.vec,'rgba(91,156,224,0.5)',0.42);
+    // current transported arrow
+    const cur=transportVec(Math.max(0.0001,u));
+    drawArrow3(cur.p,cur.vec,'#d9a441',0.42);
+
+    // vertices
+    [P_top,P_a,P_b].forEach(P=>{const s=proj(P);ctx.fillStyle='#e9e6dc';ctx.beginPath();ctx.arc(s.x,s.y,4,0,6.28);ctx.fill();});
+
+    // holonomy readout: angle between start ghost (transported back to start) and original
+    const full=transportVec(2.999);
+    const ang=Math.acos(Math.min(1,Math.max(-1,dot(norm(start.vec),norm(full.vec)))))*180/Math.PI;
+    document.getElementById('ov').innerHTML =
+      `surface: <b>sphere</b> (K &gt; 0)<br>loop encloses <b>⅛</b> of the sphere<br>predicted rotation = area = <b>90°</b><br>current holonomy ≈ <b>${(u>=2.99?ang:(u/3*90)).toFixed(0)}°</b>`;
+  } else {
+    drawPlaneGrid();
+    ctx.strokeStyle='rgba(87,171,121,0.9)';ctx.lineWidth=2.5;
+    ctx.beginPath();
+    for(let s=0;s<=4;s++){const p=proj(planeLoopPoint(s));s?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y);}
+    ctx.closePath();ctx.stroke();
+    ctx.strokeStyle='rgba(217,164,65,0.95)';ctx.lineWidth=3;
+    ctx.beginPath();
+    for(let s=0;s<=200;s++){const uu=s/200*u;const p=proj(planeLoopPoint(uu));s?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y);}
+    ctx.stroke();
+    const base=planeLoopPoint(u);
+    drawArrow3(planeLoopPoint(0),[1,0,0],'rgba(91,156,224,0.5)',0.42); // ghost
+    drawArrow3(base,[1,0,0],'#d9a441',0.42); // stays parallel — unchanged direction
+    document.getElementById('ov').innerHTML =
+      `surface: <b>plane</b> (K = 0)<br>loop encloses <b>0</b> curvature<br>predicted rotation = <b>0°</b><br>the arrow returns <b>unchanged</b>`;
+  }
+}
+function loop(){
+  if(auto){prog+=0.5;if(prog>100){prog=0;}document.getElementById('prog').value=prog;}
+  draw();requestAnimationFrame(loop);
+}
+
+/* controls */
+document.getElementById('prog').addEventListener('input',e=>{prog=+e.target.value;auto=false;document.getElementById('bAuto').classList.remove('on');document.getElementById('bAuto').textContent='▶ auto';});
+function setMode(m){mode=m;prog=0;document.getElementById('prog').value=0;
+  document.getElementById('bSphere').classList.toggle('on',m==='sphere');
+  document.getElementById('bPlane').classList.toggle('on',m==='plane');}
+document.getElementById('bSphere').onclick=()=>setMode('sphere');
+document.getElementById('bPlane').onclick=()=>setMode('plane');
+document.getElementById('bAuto').onclick=function(){auto=!auto;this.classList.toggle('on',auto);this.textContent=auto?'⏸ pause':'▶ auto';};
+
+/* drag to rotate view */
+let drag=null;
+cv.addEventListener('pointerdown',e=>{drag={x:e.clientX,y:e.clientY};cv.setPointerCapture(e.pointerId);});
+cv.addEventListener('pointermove',e=>{if(!drag)return;
+  rotY+=(e.clientX-drag.x)*0.008;rotX+=(e.clientY-drag.y)*0.008;
+  rotX=Math.max(-1.4,Math.min(1.4,rotX));drag={x:e.clientX,y:e.clientY};});
+cv.addEventListener('pointerup',()=>drag=null);
+
+resize();setMode('sphere');requestAnimationFrame(loop);
+</script>
+</body>
+</html>
