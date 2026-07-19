@@ -1,6 +1,14 @@
 /* THE WEB OF MATHEMATICS — renderer
    Semantic zoom: level 0 shows 8 domains; zooming in resolves each into its fields.
-   Data lives entirely in data/data.js — this file never needs editing to grow the map. */
+   Data lives entirely in data/data.js — this file never needs editing to grow the map.
+
+   WAVE 1 — typographic hierarchy + level-of-detail
+   · Four type voices: Spectral serif (domains) / Inter 17 semibold (fields)
+     / Inter 10.5 regular (topics) / Plex Mono 9.5 italic lowercase (bridges)
+   · One applyLOD() drives all zoom-dependent visibility (fade, don't pop)
+   · Viewport culling above field zoom kills the hairball
+   · One-shot greedy collision pass hides overlapping topic labels
+   · Glow filters reserved for navigable levels — topic dots are flat (perf) */
 
 (function(){
 "use strict";
@@ -46,21 +54,22 @@ function edgePath(a,b,bend){
   const cx=mx - dy/len * len*k, cy=my + dx/len * len*k;
   return `M ${a.x} ${a.y} Q ${cx} ${cy} ${b.x} ${b.y}`;
 }
+/* mix a hex colour toward white: tint('#d9a441', .6) → high-luminance hue */
+function tint(hex, w){
+  const n=parseInt(hex.slice(1),16);
+  const r=(n>>16)&255, g=(n>>8)&255, b=n&255;
+  const m=v=>Math.round(v+(255-v)*w);
+  return 'rgb('+m(r)+','+m(g)+','+m(b)+')';
+}
 
-/* ---------- defs: glows & gradients (Part 4 visual overhaul) ---------- */
+/* ---------- defs: glows & gradients ---------- */
 const defs = el('defs',{},svg);
 (function buildDefs(){
-  // node glow
-  const glow = el('filter',{id:'glow',x:'-80%',y:'-80%',width:'260%',height:'260%'},defs);
-  el('feGaussianBlur',{'in':'SourceGraphic',stdDeviation:'5',result:'b'},glow);
-  const gm = el('feMerge',{},glow);
-  el('feMergeNode',{'in':'b'},gm); el('feMergeNode',{'in':'SourceGraphic'},gm);
-  // soft wide glow for bridges
-  const glowE = el('filter',{id:'glowE',x:'-40%',y:'-40%',width:'180%',height:'180%'},defs);
-  el('feGaussianBlur',{'in':'SourceGraphic',stdDeviation:'2.6',result:'b'},glowE);
-  const gm2 = el('feMerge',{},glowE);
-  el('feMergeNode',{'in':'b'},gm2); el('feMergeNode',{'in':'SourceGraphic'},gm2);
-  // per-domain orb + nebula gradients
+  /* No feGaussianBlur filters here. Bloom is painted with radial gradients
+     instead (see bloom-<domain> below) — a filter makes the browser render
+     the element to an offscreen surface and blur it again on every frame the
+     element moves, which is exactly what panning does. */
+  // per-domain orb + nebula + bloom gradients
   D.domains.forEach(d=>{
     const og = el('radialGradient',{id:'orb-'+d.id},defs);
     el('stop',{offset:'0%','stop-color':'#ffffff','stop-opacity':'0.95'},og);
@@ -70,6 +79,10 @@ const defs = el('defs',{},svg);
     el('stop',{offset:'0%','stop-color':d.color,'stop-opacity':'0.20'},ng);
     el('stop',{offset:'55%','stop-color':d.color,'stop-opacity':'0.08'},ng);
     el('stop',{offset:'100%','stop-color':d.color,'stop-opacity':'0'},ng);
+    const bg = el('radialGradient',{id:'bloom-'+d.id},defs);
+    el('stop',{offset:'0%','stop-color':d.color,'stop-opacity':'0.55'},bg);
+    el('stop',{offset:'45%','stop-color':d.color,'stop-opacity':'0.16'},bg);
+    el('stop',{offset:'100%','stop-color':d.color,'stop-opacity':'0'},bg);
   });
 })();
 
@@ -85,22 +98,30 @@ const gStars = el('g',{id:'layer-stars'},viewport);
 })();
 
 /* ---------- layers ---------- */
-const gAgg    = el('g',{id:'layer-agg'},viewport);     // domain-level aggregate edges
+const gAgg    = el('g',{id:'layer-agg'},viewport);     // domain-level aggregate ribbons
 const gDomain = el('g',{id:'layer-domains'},viewport);
 const gEdges  = el('g',{id:'layer-edges'},viewport);   // field-level edges
 const gFields = el('g',{id:'layer-fields'},viewport);
 
-/* aggregate edges between domains (deduped) */
-const aggSeen = new Set();
+/* aggregate ribbons between domains (deduped) — the only edges at full zoom-out.
+   Wide, soft gradient strokes running hue→hue between their two domains, so the
+   overview reads as regions with currents between them, not a wire hairball. */
+const aggSeen = new Set(); let aggN=0;
 D.edges.forEach(e=>{
   const da = fieldById[e.from].domain, db = fieldById[e.to].domain;
   if(da===db) return;
   const key=[da,db].sort().join('|');
   if(aggSeen.has(key)) return; aggSeen.add(key);
-  el('path',{d:edgePath(domById[da],domById[db],0.08),'class':'agg-edge'},gAgg);
+  const A=domById[da], B=domById[db];
+  const gid='aggrad-'+(aggN++);
+  const lg=el('linearGradient',{id:gid,gradientUnits:'userSpaceOnUse',
+    x1:A.x,y1:A.y,x2:B.x,y2:B.y},defs);
+  el('stop',{offset:'0%','stop-color':A.color,'stop-opacity':'0.5'},lg);
+  el('stop',{offset:'100%','stop-color':B.color,'stop-opacity':'0.5'},lg);
+  el('path',{d:edgePath(A,B,0.08),'class':'agg-edge',stroke:'url(#'+gid+')'},gAgg);
 });
 
-/* domain nodes */
+/* domain nodes — L0 voice: Spectral serif, letterspaced, high-luminance domain hue */
 D.domains.forEach(d=>{
   const g = el('g',{'class':'domain-g'},gDomain);
   d._neb = el('circle',{cx:d.x,cy:d.y,r:d.R+40,'class':'domain-nebula',
@@ -108,19 +129,25 @@ D.domains.forEach(d=>{
   d._ring = el('circle',{cx:d.x,cy:d.y,r:d.R,'class':'domain-ring',stroke:d.color},g);
   d._halo = el('circle',{cx:d.x,cy:d.y,r:d.R,'class':'domain-halo',
     fill:d.color+'14', stroke:d.color+'55','stroke-width':1.5},g);
+  d._bloom = el('circle',{cx:d.x,cy:d.y,r:46,'class':'domain-bloom',
+    fill:'url(#bloom-'+d.id+')'},g);
   d._core = el('circle',{cx:d.x,cy:d.y,r:18,'class':'domain-core',
-    fill:'url(#orb-'+d.id+')',filter:'url(#glow)',opacity:0.95},g);
-  d._label = el('text',{x:d.x,y:d.y+d.R+34,'class':'domain-label','font-size':30},g);
+    fill:'url(#orb-'+d.id+')',opacity:0.95},g);
+  d._label = el('text',{x:d.x,y:d.y+d.R+34,'class':'domain-label','font-size':44,
+    fill:tint(d.color,0.55)},g);
   d._label.textContent = d.label;
+  d._label.style.filter = 'drop-shadow(0 0 14px '+d.color+'66)';
   d._tag = el('text',{x:d.x,y:d.y+d.R+58,'class':'domain-tag','font-size':13},g);
   d._tag.textContent = d.tag;
   const hit = el('circle',{cx:d.x,cy:d.y,r:Math.max(70,d.R*0.55),'class':'domain-hit'},g);
   hit.addEventListener('click',()=>{ if(scale<FIELD_ZOOM) zoomTo(d.x,d.y,1.9); else openDomain(d); });
 });
 
-/* field-level edges (drawn beneath fields) */
+/* field-level edges (drawn beneath fields) — the bridge's own voice lives on the
+   via label: mono italic lowercase gold, unlike any node text on the canvas */
 D.edges.forEach(e=>{
   const A=fieldById[e.from], B=fieldById[e.to];
+  e._A=A; e._B=B;
   const same = A.domain===B.domain;
   const color = e.type==='sig' ? '#d9a441' : (domById[A.domain].color);
   const path = el('path',{d:edgePath(A,B, same?0.22:0.1),'class':'edge edge-'+e.type,
@@ -135,31 +162,35 @@ D.edges.forEach(e=>{
     const dx=B.x-A.x, dy=B.y-A.y, len=Math.hypot(dx,dy)||1;
     const lx=mx - dy/len*len*0.1, ly=my + dx/len*len*0.1 - 6;
     e._via = el('text',{x:lx,y:ly,'class':'via-label'},gEdges);
-    e._via.textContent = e.via;
+    e._via.textContent = e.via.toLowerCase();
   }
 });
 
-/* field nodes */
+/* field nodes — L1 voice: Inter 17 semibold, near-white carrying the domain hue */
 D.fields.forEach(f=>{
   const c = domById[f.domain].color;
   const g = el('g',{'class':'field-g enter'},gFields);
   g.style.animationDelay=(window.__fi=(window.__fi||0)+1)*28+'ms';
   f._g = g;
-  el('circle',{cx:f.x,cy:f.y,r:11,'class':'field-pulse',stroke:c},g);
-  el('circle',{cx:f.x,cy:f.y,r:10,'class':'field-orb',fill:'url(#orb-'+f.domain+')',filter:'url(#glow)'},g);
+  el('circle',{cx:f.x,cy:f.y,r:10,'class':'field-pulse',stroke:c},g);
+  el('circle',{cx:f.x,cy:f.y,r:23,'class':'field-bloom',fill:'url(#bloom-'+f.domain+')'},g);
+  el('circle',{cx:f.x,cy:f.y,r:9,'class':'field-orb',fill:'url(#orb-'+f.domain+')'},g);
   const words = f.label.split(' ');
   let lines=[]; let cur='';
   words.forEach(w=>{ if((cur+' '+w).trim().length>16){lines.push(cur.trim());cur=w;} else cur+=' '+w; });
   if(cur.trim()) lines.push(cur.trim());
   lines.forEach((ln,i)=>{
-    const t=el('text',{x:f.x,y:f.y+26+i*13,'class':'field-label'},g);
+    const t=el('text',{x:f.x,y:f.y+27+i*19,'class':'field-label',fill:tint(c,0.82)},g);
     t.textContent=ln;
   });
   const hit = el('circle',{cx:f.x,cy:f.y,r:30,'class':'field-hit'},g);
   hit.addEventListener('click',ev=>{ev.stopPropagation(); openField(f);});
 });
 
-/* ---------- L3: topic satellites (third zoom level) ---------- */
+/* ---------- L3: topic satellites (third zoom level) ----------
+   L2 voice: Inter 10.5 regular, muted blue-grey. Dots are flat — glow is
+   reserved for navigable levels, and topic dots are the most numerous elements
+   on the map, so dropping their filter is also the Wave-1 performance fix. */
 const gTopics = el('g',{id:'layer-topics'},viewport);
 function normTopic(c){ return typeof c==='string' ? {label:c} : c; }
 D.fields.forEach(f=>{
@@ -175,133 +206,497 @@ D.fields.forEach(f=>{
     const g=el('g',{'class':'topic-g'},gTopics);
     tp._g=g;
     el('line',{x1:f.x,y1:f.y,x2:tp.x,y2:tp.y,'class':'topic-spoke',stroke:c},g);
-    el('circle',{cx:tp.x,cy:tp.y,r:tp.def?4.4:3.2,'class':'topic-dot',
+    el('circle',{cx:tp.x,cy:tp.y,r:tp.def?4.5:3.2,'class':'topic-dot',
       fill:tp.def?c:'#0e1117',stroke:c,'stroke-width':1.2},g);
     const anchor = cos>0.35?'start':(cos<-0.35?'end':'middle');
     const lx=tp.x+cos*10;
     const ly=tp.y+sin*10 + (Math.abs(cos)<=0.35 ? (sin>0?9:-5):3);
     const t=el('text',{x:lx,y:ly,'class':'topic-label','text-anchor':anchor},g);
     t.textContent=tp.label;
+    tp._labelEl=t; tp._lx=lx; tp._ly=ly; tp._anchor=anchor; tp._cos=cos; tp._sin=sin;
     const hit=el('circle',{cx:tp.x,cy:tp.y,r:15,'class':'topic-hit'},g);
     hit.addEventListener('click',ev=>{ev.stopPropagation(); openTopic(tp);});
   });
 });
 
-/* ---------- semantic zoom ---------- */
-let tx=0, ty=0, scale=1;
-function applyTransform(){
-  viewport.setAttribute('transform',`translate(${tx} ${ty}) scale(${scale})`);
-  const t = Math.min(1, Math.max(0, (scale-1.0)/(FIELD_ZOOM-1.0)));   // 0=domain view, 1=field view
-  gFields.style.opacity = t;
-  gEdges.style.opacity  = t;
-  gFields.style.pointerEvents = t>0.5 ? 'auto':'none';
-  gEdges.style.pointerEvents  = t>0.5 ? 'auto':'none';
-  gAgg.style.opacity = (1-t)*0.9;
-  D.domains.forEach(d=>{
-    d._label.style.opacity = 1 - t*0.25;
-    d._tag.style.opacity = (1-t);
-    d._core.style.opacity = (1-t)*0.95;
-    d._halo.setAttribute('fill', d.color + (t>0.5?'0a':'14'));
-    d._neb.style.opacity = 1-t*0.55;
-    d._ring.style.opacity = (1-t)*0.7;
+/* ---------- topic label collision: one-shot greedy pass ----------
+   Label size and label separation both scale linearly with zoom, so overlap is
+   zoom-invariant — one pass at build time settles it for every zoom level.
+   Shortest labels are placed first (easiest to seat); each tries its home slot,
+   then two nudges further out along its spoke, then four tangential slides that
+   keep it beside its own dot. Only a label with no free slot is hidden — its dot
+   stays tappable and it's still reachable through the field panel's topic chips.
+   On this data: 190 seat at home, 20 nudge, 1 hides (Group representations). */
+(function collidePass(){
+  const CHAR_W=0.56*10.5, H_UP=9.5, H_DN=2.5, PAD=1;
+  const entries=[];
+  D.fields.forEach(f=>(f._topics||[]).forEach(tp=>entries.push(tp)));
+  entries.sort((a,b)=>a.label.length-b.label.length);
+  const placed=[];
+  const rectAt=(tp,dx,dy)=>{
+    const w=tp.label.length*CHAR_W;
+    const lx=tp._lx+dx, ly=tp._ly+dy;
+    const x0 = tp._anchor==='start' ? lx : (tp._anchor==='end' ? lx-w : lx-w/2);
+    return {x0:x0, y0:ly-H_UP, x1:x0+w, y1:ly+H_DN, dx:dx, dy:dy};
+  };
+  const free=r=>!placed.some(p=>!(r.x1<p.x0+PAD||r.x0>p.x1-PAD||r.y1<p.y0+PAD||r.y0>p.y1-PAD));
+  entries.forEach(tp=>{
+    const c=tp._cos, s=tp._sin;
+    const tries=[
+      [0,0],                              // home slot
+      [c*13, s*13], [c*26, s*26],         // push further out along the spoke
+      [-s*12, c*12], [s*12, -c*12],       // slide tangentially, either way
+      [c*13-s*12, s*13+c*12],             // diagonal blends of the two
+      [c*13+s*12, s*13-c*12]
+    ];
+    let seated=null;
+    for(let i=0;i<tries.length;i++){
+      const r=rectAt(tp,tries[i][0],tries[i][1]);
+      if(free(r)){seated=r; break;}
+    }
+    if(!seated){ tp._labelEl.classList.add('label-hidden'); return; }
+    placed.push(seated);
+    if(seated.dx||seated.dy){          // rescued by a nudge — move the text to match
+      tp._labelEl.setAttribute('x', tp._lx+seated.dx);
+      tp._labelEl.setAttribute('y', tp._ly+seated.dy);
+    }
   });
-  // via labels only readable when zoomed well in
-  const showVia = scale>1.8 ? 1 : 0;
-  D.edges.forEach(e=>{ if(e._via) e._via.style.opacity = showVia; });
-  // topics: third zoom level, fading in from scale 2.1 → 3.0
-  const t2 = Math.min(1, Math.max(0,(scale-2.1)/0.9));
-  gTopics.style.opacity = t2;
-  gTopics.style.pointerEvents = t2>0.5 ? 'auto':'none';
-}
+})();
 
-/* ---------- pan / zoom (pointer + wheel + pinch) ---------- */
-const pointers=new Map(); let mode=null;
-let panRef={}, pinchRef={};
-function clientToVB(x,y){
-  const r=svg.getBoundingClientRect();
-  // preserveAspectRatio="xMidYMid meet": uniform fit scale + centering offsets
-  const scaleFit = Math.min(r.width/VB_W, r.height/VB_H);
-  const ox = (r.width - VB_W*scaleFit)/2, oy=(r.height-VB_H*scaleFit)/2;
-  return { u:(x-r.left-ox)/scaleFit, v:(y-r.top-oy)/scaleFit };
-}
+/* ============================================================
+   CAMERA, RENDER LOOP AND LEVEL-OF-DETAIL
+   ------------------------------------------------------------
+   Design rule: input handlers never touch the DOM. They move the
+   camera and ask for a frame. One rAF callback per frame does all
+   the writing. Everything below exists to keep the per-frame cost
+   flat no matter how much data is on screen.
+   ============================================================ */
+
+const MIN_S = 0.5, MAX_S = 6.0;
+let tx = 0, ty = 0, scale = 1;
+function ramp(s,a,b){return Math.max(0,Math.min(1,(s-a)/(b-a)));}
 function clamp(v,lo,hi){return Math.max(lo,Math.min(hi,v));}
 
-svg.addEventListener('pointerdown',e=>{
-  svg.setPointerCapture(e.pointerId);
-  pointers.set(e.pointerId,{x:e.clientX,y:e.clientY});
-  if(pointers.size===1){
-    mode='pan';
-    const p=clientToVB(e.clientX,e.clientY);
-    panRef={u0:p.u,v0:p.v,tx0:tx,ty0:ty};
-    svg.classList.add('panning');
-  }else if(pointers.size===2){
-    mode='pinch';
-    const pts=[...pointers.values()];
-    const dist=Math.hypot(pts[0].x-pts[1].x,pts[0].y-pts[1].y)||1;
-    const m=clientToVB((pts[0].x+pts[1].x)/2,(pts[0].y+pts[1].y)/2);
-    pinchRef={dist0:dist,scale0:scale,ax:(m.u-tx)/scale,ay:(m.v-ty)/scale};
-  }
-});
-window.addEventListener('pointermove',e=>{
-  if(!pointers.has(e.pointerId))return;
-  pointers.set(e.pointerId,{x:e.clientX,y:e.clientY});
-  if(mode==='pan'&&pointers.size===1){
-    const p=clientToVB(e.clientX,e.clientY);
-    tx=panRef.tx0+(p.u-panRef.u0); ty=panRef.ty0+(p.v-panRef.v0);
-    applyTransform();
-  }else if(mode==='pinch'&&pointers.size===2){
-    const pts=[...pointers.values()];
-    const dist=Math.hypot(pts[0].x-pts[1].x,pts[0].y-pts[1].y)||1;
-    const m=clientToVB((pts[0].x+pts[1].x)/2,(pts[0].y+pts[1].y)/2);
-    scale=clamp(pinchRef.scale0*(dist/pinchRef.dist0),0.55,4.5);
-    tx=m.u-pinchRef.ax*scale; ty=m.v-pinchRef.ay*scale;
-    applyTransform();
-  }
-});
-function endPtr(e){
-  pointers.delete(e.pointerId);
-  svg.classList.remove('panning');
-  if(pointers.size===1){
-    const[only]=[...pointers.values()];
-    mode='pan';
-    const p=clientToVB(only.x,only.y);
-    panRef={u0:p.u,v0:p.v,tx0:tx,ty0:ty};
-  } else if(pointers.size===0) mode=null;
+/* ---------- write-through cache -----------------------------
+   Setting .style.x to the value it already holds still costs a
+   string compare and a style invalidation in most engines. With
+   ~350 nodes updated per frame that was most of the old cost, so
+   every write goes through here and no-ops when unchanged. */
+function sset(node, prop, val){
+  const m = node._ss || (node._ss = {});
+  if(m[prop] === val) return;
+  m[prop] = val;
+  node.style[prop] = val;
 }
-window.addEventListener('pointerup',endPtr);
-window.addEventListener('pointercancel',endPtr);
-svg.addEventListener('wheel',e=>{
-  e.preventDefault();
-  const f=e.deltaY<0?1.12:0.89;
-  const m=clientToVB(e.clientX,e.clientY);
-  const ax=(m.u-tx)/scale, ay=(m.v-ty)/scale;
-  scale=clamp(scale*f,0.55,4.5);
-  tx=m.u-ax*scale; ty=m.v-ay*scale;
-  applyTransform();
-  hideIntroSoon();
-},{passive:false});
+function aset(node, attr, val){
+  const m = node._sa || (node._sa = {});
+  if(m[attr] === val) return;
+  m[attr] = val;
+  node.setAttribute(attr, val);
+}
 
-function zoomTo(x,y,s,animate){
-  const target={tx:VB_W/2-x*s, ty:VB_H/2-y*s, s:s};
-  if(!animate){ tx=target.tx;ty=target.ty;scale=target.s;applyTransform();return; }
-  const from={tx,ty,s:scale}; const t0=performance.now(), dur=520;
-  function step(t){
-    const k=Math.min(1,(t-t0)/dur), e=1-Math.pow(1-k,3);
-    tx=from.tx+(target.tx-from.tx)*e; ty=from.ty+(target.ty-from.ty)*e;
-    scale=from.s+(target.s-from.s)*e; applyTransform();
-    if(k<1) requestAnimationFrame(step);
+/* ---------- geometry of the visible area --------------------
+   getBoundingClientRect forces a synchronous layout. Calling it
+   on every pointermove — which the old code did, via clientToVB —
+   is what made panning stutter. Measured once, reused until the
+   window actually changes. */
+let rectCache = null, fitCache = null;
+function svgRect(){
+  if(!rectCache) rectCache = svg.getBoundingClientRect();
+  return rectCache;
+}
+function fitExtents(){
+  if(fitCache) return fitCache;
+  const r = svgRect();
+  const sf = Math.min(r.width/VB_W, r.height/VB_H) || 1;
+  const exU = (r.width/sf - VB_W)/2, exV = (r.height/sf - VB_H)/2;
+  fitCache = {u0:-exU, u1:VB_W+exU, v0:-exV, v1:VB_H+exV, sf:sf};
+  return fitCache;
+}
+function invalidateRect(){ rectCache = null; fitCache = null; requestRender(); }
+window.addEventListener('resize', invalidateRect);
+window.addEventListener('orientationchange', invalidateRect);
+window.addEventListener('scroll', invalidateRect, true);
+if(window.visualViewport) window.visualViewport.addEventListener('resize', invalidateRect);
+
+/* screen pixel → viewBox unit. Pure arithmetic now: no layout. */
+function clientToVB(x,y){
+  const r = svgRect(), f = fitExtents();
+  const ox = (r.width - VB_W*f.sf)/2, oy = (r.height - VB_H*f.sf)/2;
+  return { u:(x - r.left - ox)/f.sf, v:(y - r.top - oy)/f.sf };
+}
+
+/* ---------- how far you're allowed to wander ----------------
+   The old build let you pan the map entirely off screen with no
+   way back except the reset button. The centre of the view is
+   kept inside the content, so the map is always where you left it. */
+const BOUNDS = (function(){
+  let x0=Infinity,y0=Infinity,x1=-Infinity,y1=-Infinity;
+  D.domains.forEach(d=>{
+    x0=Math.min(x0,d.x-d.R); x1=Math.max(x1,d.x+d.R);
+    y0=Math.min(y0,d.y-d.R); y1=Math.max(y1,d.y+d.R);
+  });
+  const pad=150;
+  return {x0:x0-pad, y0:y0-pad, x1:x1+pad, y1:y1+pad};
+})();
+function clampPan(){
+  const e = fitExtents();
+  const cu = (e.u0+e.u1)/2, cv = (e.v0+e.v1)/2;
+  const wx = (cu - tx)/scale, wy = (cv - ty)/scale;
+  const nx = clamp(wx, BOUNDS.x0, BOUNDS.x1);
+  const ny = clamp(wy, BOUNDS.y0, BOUNDS.y1);
+  if(nx !== wx) tx = cu - nx*scale;
+  if(ny !== wy) ty = cv - ny*scale;
+}
+
+/* zoom about a fixed point, in viewBox coordinates */
+function zoomAbout(px, py, factor){
+  const ns = clamp(scale*factor, MIN_S, MAX_S);
+  const k = ns/scale;
+  tx = px - (px - tx)*k;
+  ty = py - (py - ty)*k;
+  scale = ns;
+}
+
+/* ---------- the frame loop ---------------------------------- */
+let rafPending = false, anim = null;
+let vel = {x:0, y:0}, gliding = false;
+const FRICTION = 0.93, GLIDE_STOP = 0.35;
+
+function requestRender(){
+  if(rafPending) return;
+  rafPending = true;
+  requestAnimationFrame(renderFrame);
+}
+function renderFrame(now){
+  rafPending = false;
+  let more = false;
+
+  if(anim){
+    const k = Math.min(1, (now - anim.t0)/anim.dur);
+    const e = k<0.5 ? 4*k*k*k : 1 - Math.pow(-2*k+2,3)/2;   // easeInOutCubic
+    tx    = anim.tx0 + (anim.tx1 - anim.tx0)*e;
+    ty    = anim.ty0 + (anim.ty1 - anim.ty0)*e;
+    scale = anim.s0  + (anim.s1  - anim.s0 )*e;
+    if(k >= 1) anim = null; else more = true;
+  } else if(gliding){
+    tx += vel.x; ty += vel.y;
+    vel.x *= FRICTION; vel.y *= FRICTION;
+    clampPan();
+    if(Math.hypot(vel.x, vel.y) < GLIDE_STOP){ gliding = false; endInteract(); }
+    else more = true;
   }
-  requestAnimationFrame(step);
+
+  aset(viewport, 'transform', 'translate('+tx.toFixed(2)+' '+ty.toFixed(2)+') scale('+scale.toFixed(4)+')');
+  applyLOD();
+  if(more) requestRender();
+}
+
+/* animate the camera to a target (used by search, legend, panel jumps) */
+function flyTo(x, y, s, dur){
+  s = clamp(s, MIN_S, MAX_S);
+  const e = fitExtents();
+  const cu = (e.u0+e.u1)/2, cv = (e.v0+e.v1)/2;
+  anim = {t0:performance.now(), dur:dur||620,
+          tx0:tx, ty0:ty, s0:scale,
+          tx1:cu - x*s, ty1:cv - y*s, s1:s};
+  gliding = false; vel.x = vel.y = 0;
+  requestRender();
   hideIntroSoon();
 }
-document.getElementById('zin').onclick =()=>{const c=centerVB();zoomAt(c.x,c.y,1.25);};
-document.getElementById('zout').onclick=()=>{const c=centerVB();zoomAt(c.x,c.y,0.8);};
-document.getElementById('zreset').onclick=()=>zoomTo(VB_W/2,VB_H/2,0.62,true);
-function centerVB(){return {x:(VB_W/2-tx)/scale, y:(VB_H/2-ty)/scale};}
-function zoomAt(x,y,f){
-  scale=clamp(scale*f,0.55,4.5);
-  tx=VB_W/2-x*scale; ty=VB_H/2-y*scale; applyTransform();
+/* kept for the call sites that already exist elsewhere in this file */
+function zoomTo(x, y, s, animate){
+  if(animate) return flyTo(x, y, s);
+  const e = fitExtents();
+  scale = clamp(s, MIN_S, MAX_S);
+  tx = (e.u0+e.u1)/2 - x*scale;
+  ty = (e.v0+e.v1)/2 - y*scale;
+  anim = null; gliding = false;
+  clampPan(); requestRender();
 }
+function centerVB(){
+  const e = fitExtents();
+  return {x:((e.u0+e.u1)/2 - tx)/scale, y:((e.v0+e.v1)/2 - ty)/scale};
+}
+
+/* ---------- interaction state ------------------------------
+   While the camera is moving we pause every looping CSS animation
+   and drop the opacity transitions. ~240 elements were animating
+   continuously (stars, field pulses, domain rings, bridge dashes);
+   pausing them for the duration of a drag is most of the win. */
+let interacting = false, calmTimer = 0;
+function beginInteract(){
+  if(calmTimer){ clearTimeout(calmTimer); calmTimer = 0; }
+  if(interacting) return;
+  interacting = true;
+  svg.classList.add('interacting');
+}
+function endInteract(){
+  if(calmTimer) clearTimeout(calmTimer);
+  calmTimer = setTimeout(()=>{
+    interacting = false; calmTimer = 0;
+    svg.classList.remove('interacting');
+    requestRender();
+  }, 180);
+}
+
+/* ---------- level of detail --------------------------------- */
+let enterCleaned=false, enterTimerSet=false, fieldsWereOn=false;
+let lastChromeSig = -1;
+let cullRef = {s:0, x:1e9, y:1e9};
+
+function applyLOD(){
+  const s = scale;
+  /* band ramps — every boundary is a fade, nothing pops */
+  const fields = ramp(s,1.0,1.35);          // fields fade in
+  const fEdges = ramp(s,1.35,1.7);          // field edges past field zoom
+  const topics = ramp(s,2.1,2.8);           // topics + bridge labels together
+  const chrome = 1-ramp(s,1.0,1.35);        // domain orb/ring/tag hand over
+
+  /* group-level opacity: four writes, all cached */
+  sset(gAgg,'opacity', String(1-fields));
+  sset(gAgg,'display', fields>=1 ? 'none':'');
+
+  sset(gFields,'opacity', String(fields));
+  const fieldsOn = s>0.98;
+  sset(gFields,'display', fieldsOn ? '':'none');
+  sset(gFields,'pointerEvents', fields>0.5 ? 'auto':'none');
+  if(fieldsOn && !fieldsWereOn && !enterCleaned && !enterTimerSet){
+    enterTimerSet = true;
+    setTimeout(()=>{D.fields.forEach(f=>f._g.classList.remove('enter')); enterCleaned=true;},2400);
+  }
+  fieldsWereOn = fieldsOn;
+
+  sset(gEdges,'opacity', String(fEdges));
+  sset(gEdges,'display', s>1.33 ? '':'none');
+  sset(gEdges,'pointerEvents', fEdges>0.5 ? 'auto':'none');
+
+  sset(gTopics,'opacity', String(topics));
+  sset(gTopics,'display', s>2.05 ? '':'none');
+  sset(gTopics,'pointerEvents', topics>0.5 ? 'auto':'none');
+
+  /* per-domain chrome changes slowly; recompute only when the
+     quantised zoom actually moves, not on every frame of a pan */
+  const chromeSig = Math.round(s*80);
+  if(chromeSig !== lastChromeSig){
+    lastChromeSig = chromeSig;
+    let dom;
+    if(s<1.0)       dom=1;
+    else if(s<1.35) dom=1   -0.40*ramp(s,1.0,1.35);
+    else if(s<2.1)  dom=0.60-0.25*ramp(s,1.35,2.1);
+    else if(s<2.8)  dom=0.35-0.15*ramp(s,2.1,2.8);
+    else            dom=Math.max(0.12, 0.20-0.08*ramp(s,2.8,3.4));
+    const dfs = Math.round(Math.max(30, Math.min(44, 27/s+10)));
+    const haloFill = s>FIELD_ZOOM ? '0a' : '14';
+    const domS = dom.toFixed(3), chromeS = (chrome*0.95).toFixed(3),
+          ringS = (chrome*0.7).toFixed(3), nebS = (0.15+0.85*dom).toFixed(3);
+    D.domains.forEach(d=>{
+      sset(d._label,'opacity', domS);
+      aset(d._label,'font-size', dfs);
+      sset(d._tag,'opacity', String(chrome));
+      sset(d._core,'opacity', chromeS);
+      sset(d._bloom,'opacity', chromeS);
+      sset(d._ring,'opacity', ringS);
+      sset(d._neb,'opacity', nebS);
+      aset(d._halo,'fill', d.color + haloFill);
+    });
+    const viaS = String(topics);
+    D.edges.forEach(e=>{ if(e._via) sset(e._via,'opacity', viaS); });
+  }
+
+  /* culling: only re-test when the view has actually moved far
+     enough to change what's on screen. Margins are generous, so
+     nothing pops in at the edge between tests. */
+  if(s>1.33){
+    const moved = Math.abs(s-cullRef.s) > cullRef.s*0.025
+               || Math.abs(tx-cullRef.x) > 55
+               || Math.abs(ty-cullRef.y) > 55;
+    if(moved){
+      cullRef = {s:s, x:tx, y:ty};
+      const ext = fitExtents();
+      const x0=(ext.u0-tx)/s, x1=(ext.u1-tx)/s, y0=(ext.v0-ty)/s, y1=(ext.v1-ty)/s;
+      const M=110;
+      D.edges.forEach(e=>{
+        const ex0=Math.min(e._A.x,e._B.x)-M, ex1=Math.max(e._A.x,e._B.x)+M;
+        const ey0=Math.min(e._A.y,e._B.y)-M, ey1=Math.max(e._A.y,e._B.y)+M;
+        const vis=!(ex1<x0||ex0>x1||ey1<y0||ey0>y1);
+        if(vis!==e._vis){
+          e._vis=vis;
+          const dsp=vis?'':'none';
+          sset(e._path,'display',dsp); sset(e._hit,'display',dsp);
+          if(e._via) sset(e._via,'display',dsp);
+        }
+      });
+      if(s>2.05){
+        const T=130;
+        D.fields.forEach(f=>(f._topics||[]).forEach(tp=>{
+          const vis = tp.x>x0-T && tp.x<x1+T && tp.y>y0-T && tp.y<y1+T;
+          if(vis!==tp._vis){ tp._vis=vis; sset(tp._g,'display', vis?'':'none'); }
+        }));
+      }
+    }
+  }
+}
+
+/* ============================================================
+   INPUT
+   ============================================================ */
+
+/* ---------- drag to pan, two fingers to pinch --------------- */
+const pointers = new Map();
+let mode = null, panRef = null, pinchRef = null;
+let lastMove = {u:0, v:0, t:0};
+
+svg.addEventListener('pointerdown', e=>{
+  svg.setPointerCapture(e.pointerId);
+  pointers.set(e.pointerId, {x:e.clientX, y:e.clientY});
+  anim = null; gliding = false; vel.x = vel.y = 0;
+  beginInteract();
+  if(pointers.size === 1){
+    mode = 'pan';
+    const p = clientToVB(e.clientX, e.clientY);
+    panRef = {u0:p.u, v0:p.v, tx0:tx, ty0:ty};
+    lastMove = {u:p.u, v:p.v, t:performance.now()};
+    svg.classList.add('panning');
+  } else if(pointers.size === 2){
+    mode = 'pinch';
+    const pts = [...pointers.values()];
+    const dist = Math.hypot(pts[0].x-pts[1].x, pts[0].y-pts[1].y) || 1;
+    const m = clientToVB((pts[0].x+pts[1].x)/2, (pts[0].y+pts[1].y)/2);
+    pinchRef = {dist0:dist, s0:scale, ax:(m.u-tx)/scale, ay:(m.v-ty)/scale};
+  }
+});
+
+window.addEventListener('pointermove', e=>{
+  if(!pointers.has(e.pointerId)) return;
+  pointers.set(e.pointerId, {x:e.clientX, y:e.clientY});
+
+  if(mode === 'pan' && pointers.size === 1){
+    const p = clientToVB(e.clientX, e.clientY);
+    const ntx = panRef.tx0 + (p.u - panRef.u0);
+    const nty = panRef.ty0 + (p.v - panRef.v0);
+    const now = performance.now();
+    const dt = Math.max(8, now - lastMove.t);
+    /* velocity in viewBox units per 16ms frame, smoothed so one
+       jittery sample can't launch the map across the screen */
+    vel.x = vel.x*0.65 + ((ntx - tx)*16/dt)*0.35;
+    vel.y = vel.y*0.65 + ((nty - ty)*16/dt)*0.35;
+    lastMove = {u:p.u, v:p.v, t:now};
+    tx = ntx; ty = nty;
+    clampPan();
+    requestRender();
+  } else if(mode === 'pinch' && pointers.size === 2){
+    const pts = [...pointers.values()];
+    const dist = Math.hypot(pts[0].x-pts[1].x, pts[0].y-pts[1].y) || 1;
+    const m = clientToVB((pts[0].x+pts[1].x)/2, (pts[0].y+pts[1].y)/2);
+    scale = clamp(pinchRef.s0 * (dist/pinchRef.dist0), MIN_S, MAX_S);
+    tx = m.u - pinchRef.ax*scale;   // pinch pans and zooms together
+    ty = m.v - pinchRef.ay*scale;
+    clampPan();
+    requestRender();
+  }
+  hideIntroSoon();
+}, {passive:true});
+
+function endPtr(e){
+  if(!pointers.delete(e.pointerId)) return;
+  svg.classList.remove('panning');
+  if(pointers.size === 1){
+    const [only] = [...pointers.values()];
+    mode = 'pan';
+    const p = clientToVB(only.x, only.y);
+    panRef = {u0:p.u, v0:p.v, tx0:tx, ty0:ty};
+    lastMove = {u:p.u, v:p.v, t:performance.now()};
+    vel.x = vel.y = 0;
+  } else if(pointers.size === 0){
+    /* let go mid-sweep and the map keeps travelling, then settles */
+    const fresh = performance.now() - lastMove.t < 90;
+    const speed = Math.hypot(vel.x, vel.y);
+    if(mode === 'pan' && fresh && speed > 1.2){
+      vel.x = clamp(vel.x, -60, 60);
+      vel.y = clamp(vel.y, -60, 60);
+      gliding = true;
+      requestRender();
+    } else {
+      endInteract();
+    }
+    mode = null;
+  }
+}
+window.addEventListener('pointerup', endPtr);
+window.addEventListener('pointercancel', endPtr);
+
+/* ---------- wheel and trackpad ------------------------------
+   The old handler applied a flat ±12% per event no matter how far
+   you actually scrolled, which is what made zoom arrive in steps.
+   Zoom is exponential in the scroll distance now, so a slow drag
+   creeps and a fast flick travels — and a trackpad pinch, which
+   Safari and Chrome deliver as ctrl+wheel, is finally handled. */
+svg.addEventListener('wheel', e=>{
+  e.preventDefault();
+  anim = null; gliding = false;
+  beginInteract();
+
+  let dx = e.deltaX, dy = e.deltaY;
+  if(e.deltaMode === 1){ dx *= 16; dy *= 16; }              // lines
+  else if(e.deltaMode === 2){ dx *= 400; dy *= 400; }        // pages
+
+  if(e.shiftKey && !e.ctrlKey){                              // shift-scroll pans
+    tx -= dx || dy;
+    clampPan(); requestRender(); endInteract(); hideIntroSoon(); return;
+  }
+  if(!e.ctrlKey && Math.abs(dx) > Math.abs(dy)*1.6){         // sideways swipe pans
+    tx -= dx;
+    clampPan(); requestRender(); endInteract(); hideIntroSoon(); return;
+  }
+
+  const k = e.ctrlKey ? 0.011 : 0.0022;   // pinch gestures are far more sensitive
+  const f = clamp(Math.exp(-dy*k), 0.7, 1.42);
+  const p = clientToVB(e.clientX, e.clientY);
+  zoomAbout(p.u, p.v, f);
+  clampPan();
+  requestRender();
+  endInteract();
+  hideIntroSoon();
+}, {passive:false});
+
+/* ---------- buttons, double-click, keyboard ----------------- */
+function nudgeZoom(factor){
+  const c = centerVB();
+  flyTo(c.x, c.y, clamp(scale*factor, MIN_S, MAX_S), 300);
+}
+document.getElementById('zin').onclick  = ()=>nudgeZoom(1.6);
+document.getElementById('zout').onclick = ()=>nudgeZoom(1/1.6);
+document.getElementById('zreset').onclick = ()=>flyTo(VB_W/2, VB_H/2-40, 0.62, 700);
+
+svg.addEventListener('dblclick', e=>{
+  /* double-tapping empty space zooms in; double-tapping a node is just
+     two clicks on that node, and shouldn't also fling the camera */
+  const cls = (e.target && e.target.getAttribute && e.target.getAttribute('class')) || '';
+  if(/-hit$/.test(cls)) return;
+  e.preventDefault();
+  const p = clientToVB(e.clientX, e.clientY);
+  const w = {x:(p.u-tx)/scale, y:(p.v-ty)/scale};
+  flyTo(w.x, w.y, clamp(scale*1.9, MIN_S, MAX_S), 420);
+});
+
+window.addEventListener('keydown', e=>{
+  if(e.target && /input|textarea/i.test(e.target.tagName)) return;
+  const step = 110/scale;
+  let handled = true;
+  switch(e.key){
+    case 'ArrowLeft':  tx += 110; break;
+    case 'ArrowRight': tx -= 110; break;
+    case 'ArrowUp':    ty += 110; break;
+    case 'ArrowDown':  ty -= 110; break;
+    case '+': case '=': nudgeZoom(1.35); return;
+    case '-': case '_': nudgeZoom(1/1.35); return;
+    case '0': flyTo(VB_W/2, VB_H/2-40, 0.62, 700); return;
+    case 'Escape': closePanel(); return;
+    default: handled = false;
+  }
+  if(handled){ e.preventDefault(); anim=null; clampPan(); requestRender(); }
+});
 
 /* ---------- detail panel ---------- */
 const panel=document.getElementById('panel');
@@ -549,6 +944,25 @@ legend.appendChild(sig);
 
 const bb=document.getElementById('bridgesBtn');
 if(bb) bb.onclick=()=>openBridgeIndex();
+
+/* ---------- collapsible header (Wave 2) ---------- */
+(function(){
+  const btn=document.getElementById('hdrToggle');
+  if(!btn) return;
+  const KEY='wom.hdr';
+  const apply=v=>{
+    const min = v==='min';
+    document.body.classList.toggle('hdr-min', min);
+    btn.setAttribute('aria-label', min?'Expand header':'Collapse header');
+    btn.title = min?'Expand header':'Collapse header';
+  };
+  let saved=null; try{saved=localStorage.getItem(KEY);}catch(e){}
+  apply(saved);
+  btn.addEventListener('click',()=>{
+    const v=document.body.classList.contains('hdr-min')?'full':'min';
+    apply(v); try{localStorage.setItem(KEY,v);}catch(e){}
+  });
+})();
 
 /* ---------- intro hint ---------- */
 let introHidden=false;

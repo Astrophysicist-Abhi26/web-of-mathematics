@@ -1,0 +1,1899 @@
+diff --git a/NOTES.md b/NOTES.md
+new file mode 100644
+index 0000000..1b2d812
+--- /dev/null
++++ b/NOTES.md
+@@ -0,0 +1,114 @@
++# Wave 2 — Visual Identity: directions & decisions
++
++*Written overnight for your morning review. Read this, then `PROGRESS.md`.*
++
++---
++
++## ⚠️ Two things to know before anything else
++
++**1. `ROADMAP.md` is not in the repo.** You asked me to read `README.md` and
++`ROADMAP.md` first and called the roadmap the plan of record. `README.md` is
++here; `ROADMAP.md` is **not committed** on `main` or the branch, and isn't in
++git history. The web container clones fresh, so a local-only uncommitted file
++never arrives. I worked from the Wave 2 guidance you wrote inline in the task
++(manuscript/plate palette, warmer+darker than neon-on-black, one signature
++element, reduced ambient motion, collapsible header). **Please `git add
++ROADMAP.md && commit` so future sessions have the real plan** — especially for
++Wave 3, where I deliberately stayed conservative without it (see PROGRESS.md).
++
++**2. Wave 1 was committed but never actually live.** "wave 1: typographic
++hierarchy + LOD" wrote its real code to root-level `app.js` and `style.css`,
++but `index.html` loads `js/app.js` and `css/style.css`. So the deployed site
++was still the pre-Wave-1 original; the Wave-1 work (four type voices, unified
++`applyLOD`, viewport culling for the pan-stutter fix, topic-label collision
++pass) sat in files the page never loaded. I promoted that code into the loaded
++paths and deleted the orphaned duplicates (separate commit, easy to revert).
++Wave 2 is built on top of a now-genuinely-live Wave 1. If you'd already spotted
++this and *intended* the root files, tell me and I'll re-point instead.
++
++---
++
++## The brief, restated
++
++Move the identity from **neon-on-black** (deep-space: blue-black radial ground,
++twinkling starfield, animated title shimmer, spinning domain rings, breathing
++field pulses, gold "energy" flowing along the bridges) to a **manuscript /
++plate** register: warmer *and* darker, a pigment palette (aged-paper golds,
++iron-gall ink, oxidised copper), **one memorable signature element**, **reduced
++ambient animation**, and a **collapsible header**.
++
++---
++
++## Three directions
++
++All three honour the brief (warm dark ground, pigment palette, reduced motion,
++collapsible header). They differ in *concept* and in the **one signature
++element** each commits to.
++
++### 1. "Iron-Gall Codex" — illuminated manuscript  ← **provisional pick**
++- **Ground:** warm vellum-dark (deep bister/sepia-black in candlelight), faint
++  static paper grain + foxing specks — *warmer and darker* than the blue-black.
++- **Palette (the 8 domains as real manuscript pigments):** iron-gall pewter
++  (Foundations — the ink everything is written in), vermilion / red-ochre
++  (Algebra), lapis lazuli (Analysis), verdigris / oxidised copper (Geometry &
++  Topology), orpiment / aged gold (Number Theory), Tyrian mulberry (Discrete),
++  turnsole violet (Probability), celadon (Order).
++- **Detail panel:** returns to **aged parchment with iron-gall ink text** — the
++  paper CSS is *already in the file*, just overridden by the Part-4 dark glass.
++  Tapping a node opens the manuscript leaf.
++- **Signature element:** **illuminated gold-leaf bridges.** The signature (★)
++  cross-domain bridges are rendered as inlaid gold leaf — a matte gilt
++  double-stroke with a faint craquelure and a soft specular sheen that appears
++  only on hover/focus — instead of neon energy flowing along a dashed line.
++  *Rationale:* the whole project argues the bridges are the point; in a codex
++  the gold is the precious, hand-laid illumination. Make the bridges the gold.
++- **Motion:** near-zero. Kill starfield twinkle, title shimmer, ring spin,
++  field pulse, and the flowing dash; keep only interaction transitions and the
++  one-time field entrance. `prefers-reduced-motion` disables even that.
++- **Why it wins:** maps one-to-one onto your exact words; biggest warmth/calm
++  swing from today; the signature element *is* the thesis; and it reuses type
++  (Spectral serif) and the paper-panel CSS already present, so it's low-risk.
++
++### 2. "Copperplate Atlas" — engraved scientific plate
++- Darker warm charcoal-taupe, like a photographed intaglio print. A tighter,
++  three-pigment identity — **oxidised copper / iron-gall ink / aged-paper
++  gold** — with the 8 domains as tinted stops along that warm axis. Nothing
++  glows: halos become hairline cross-hatch, orbs lose their bloom, edges are
++  engraved lines.
++- **Signature element:** **the platemark frame + engraved cartouche** — the
++  whole canvas bordered by a fine double platemark with rounded plate corners,
++  the title set in a ruled cartouche with a printer's fleuron (❦). The map
++  reads as one printed plate in an old atlas.
++- **Why not (yet):** most "period-accurate" and beautiful on desktop, but the
++  platemark border eats scarce mobile real estate and visually fights an
++  infinite pan/zoom canvas (a plate has edges; the web doesn't). Higher risk
++  against "don't break the navigation feel."
++
++### 3. "Astrolabe Vellum" — instrument on vellum
++- Tobacco/vellum ground; brass-and-patina palette (warm brass gold, patinated
++  copper-green, deep indigo, oxblood).
++- **Signature element:** a faint **engraved astrolabe / compass reticle** —
++  concentric degree rings and a hairline rose centred behind the map, so the 8
++  domains read as stations on a brass instrument laid on vellum.
++- **Why not (yet):** the reticle is lovely but competes with the domain layout
++  for the centre of attention, and risks reading as decoration bolted on rather
++  than identity. Strong candidate for a *later* flourish once the palette lands.
++
++---
++
++## Decision (provisional — redirect me freely)
++
++**Implementing Direction 1, "Iron-Gall Codex."** It's the most faithful to your
++words, gives the strongest calm/warmth contrast with the current look, makes
++the signature element the bridges (the project's whole argument), and reuses
++existing type + paper-panel CSS so it least endangers the working nav/panels/
++search/label systems.
++
++This is a **taste call and it is yours** — if in the morning you prefer the
++Copperplate frame or the Astrolabe reticle (or a blend), say so and I'll switch;
++the palette + motion + header work carries over to any of them, so a redirect is
++cheap. Everything below the palette is layered so individual pieces
++(gold-leaf bridges, parchment panel, paper grain) can be kept or dropped
++independently.
++
++See `PROGRESS.md` for exactly what shipped, what I skipped, and what needs you.
+diff --git a/PROGRESS.md b/PROGRESS.md
+new file mode 100644
+index 0000000..377da6b
+--- /dev/null
++++ b/PROGRESS.md
+@@ -0,0 +1,141 @@
++# PROGRESS — overnight session
++
++*Newest first. Start with this file, then `NOTES.md`.*
++*Branch: `claude/web-math-wave-2-xjpr2v`.*
++
++---
++
++## 🚨 READ FIRST — I could not push (needs your action)
++
++**GitHub write access is denied for this session, so nothing reached GitHub.**
++`git push` returns **403** from the git relay, and the GitHub App returns
++**`403 Resource not accessible by integration`** — the integration is
++**read-only** on this repo. I did not route around it (I'm told not to).
++
++Everything is **committed locally** and, because this container is temporary and
++will be reclaimed, I've also **delivered a git bundle to you in the chat**
++(`web-of-mathematics-wave2.bundle`) so the work survives. To get it onto GitHub:
++
++```bash
++# in your local clone of the repo:
++git fetch /path/to/web-of-mathematics-wave2.bundle \
++    'claude/web-math-wave-2-xjpr2v:claude/web-math-wave-2-xjpr2v'
++git checkout claude/web-math-wave-2-xjpr2v      # review it
++git push -u origin claude/web-math-wave-2-xjpr2v # you have write access; I don't
++```
++
++Then Pages redeploys as you expected. **To let me push directly in future
++sessions, grant write access** to the Claude GitHub integration for this repo
++(Claude GitHub settings / repo App permissions → Contents: write).
++
++---
++
++## TL;DR for the morning
++
++- ⛔ **Blocker:** couldn't push — read-only GitHub integration (see box above).
++  Work is committed locally + delivered as a bundle in chat.
++- ✅ **Discovered + fixed:** Wave 1 was committed but never live (written to
++  root `app.js`/`style.css` that `index.html` doesn't load). Promoted into the
++  loaded paths. Wave 1 is now genuinely in the code.
++- ✅ **Wave 2 done:** "Iron-Gall Codex" visual identity — manuscript palette,
++  warm dark ground, gold-leaf bridges (the signature element), parchment reading
++  panel, reduced ambient motion, collapsible header. Verified headlessly.
++- ⚠️ **Needs you:** `ROADMAP.md` isn't in the repo — please commit it. The
++  Wave-2 direction is a **provisional taste call** (see NOTES.md) — redirect if
++  you'd prefer Copperplate or Astrolabe.
++- ⏭️ **Wave 3:** see the Wave 3 section at the bottom for exactly what I did /
++  didn't touch and why.
++
++---
++
++## Verification method
++
++Static site, no build. I test headlessly with Playwright-core driving the
++pre-installed Chromium against `file://…/index.html`: it loads the page,
++captures JS/console errors, asserts the 8 domains / 45 fields / 211 topics /
++72 bridges render, drives zoom to field + topic levels, opens field/topic/edge
++panels, runs search, opens the bridge index, toggles the header, and screenshots
++each state. (Google Fonts is blocked in the sandbox, so screenshots use fallback
++fonts — layout/colour/motion are faithful, letterforms are not.) Harness lives
++in the scratchpad; not committed.
++
++---
++
++## Log
++
++### 1. Wave 1 promotion (commit `af65e2a`)
++`index.html` loads `js/app.js` + `css/style.css`; the "wave 1" commit had put
++its code in root `app.js` + `style.css`. Copied the real Wave-1 code into the
++loaded paths, deleted the orphaned root duplicates. 15/15 headless checks pass
++(nav, panels, search, bridge index+story, LOD across zoom, collision pass, no JS
++errors). Separate commit so it's trivial to revert if you intended otherwise.
++
++### 2. Wave 2 — Iron-Gall Codex (commit `wave 2: visual identity`)
++
++Provisional direction (see NOTES.md) — **redirect me freely in the morning.**
++Built so each piece is independent and revert is cheap: the visual work is one
++appended block at the bottom of `css/style.css` (delete it → back to neon), plus
++8 colour values in `data.js`, one button in `index.html`, one small IIFE in
++`js/app.js`. What shipped:
++
++- **Palette — 8 domains as manuscript pigments** (`data/data.js`): iron-gall
++  pewter (Foundations), vermilion/red-ochre (Algebra), lapis (Analysis),
++  verdigris/oxidised-copper (Geometry & Topology), orpiment gold (Number
++  Theory), Tyrian mulberry (Discrete), turnsole violet (Probability), celadon
++  (Order). Every orb/halo/ribbon/label recolours automatically from these.
++- **The ground:** cold blue-black radial → **warm bister/vellum** radial
++  (`#241a0f→#17120b→#0d0904`) — warmer *and* darker. Faint static paper-grain
++  overlay (SVG turbulence, ~5%, fixed to viewport) on the map.
++- **Signature element — gold-leaf bridges:** the ★ signature bridges are now a
++  static, matte **gilt line with a fine dark under-edge** (reads as inlaid,
++  hand-laid gold leaf) instead of neon energy flowing along a dash. The gold is
++  the illumination; the bridges are the project's whole argument.
++- **Reading panel → aged manuscript leaf:** parchment ground + subtle grain +
++  warm top vignette, **iron-gall ink text**, gilt rules, illuminated story
++  drop-cap. (Reuses the paper CSS already in the file, re-skinned for every
++  inner element so who/via/story/bridge-row all read on cream.)
++- **Reduced ambient motion:** killed starfield twinkle (now static foxing),
++  title shimmer (static gilt + ❦ fleuron), domain-ring spin, field-pulse
++  breathing, and the flowing bridge dash. Kept interaction transitions and the
++  one-time field entrance. Added a `prefers-reduced-motion` block that stills
++  even those.
++- **Collapsible header:** a gilt chevron toggle in the title row hides the
++  subtitle + legend and shrinks the title, reclaiming ~50px of map (measured
++  147→97px), smooth transition, choice persisted in `localStorage`.
++
++**Verified:** 17/17 headless checks pass (nav, zoom L0→L1→L2, field/topic/edge
++panels, search, bridge index+story, header collapse *and* re-expand, no JS/
++console errors). Screenshots reviewed at all four zoom levels + the panel.
++
++Deliberately **not** done (left as your calls): craquelure texture on the gold
++leaf (drop-shadow was enough and lower-risk); the Copperplate platemark frame
++and the Astrolabe reticle (those are the *other* two directions in NOTES.md —
++pick one and I'll switch); any change to the atoms pages (they're standalone and
++untouched).
++
++### 3. Wave 3 (content depth, Geometry & Topology) — deliberately NOT started
++
++I stopped here on purpose, and I want to be explicit about why rather than guess:
++
++- **The gate is missing.** You scoped Wave 3 to "*only the parts the roadmap
++  marks as safe/unambiguous.*" `ROADMAP.md` isn't in the repo (see top of file),
++  so I have no definition of which parts *you* consider safe. Inventing that
++  boundary is itself a guess.
++- **Nothing mechanical is left.** I checked: all **211/211** topics already
++  carry full definitions, and all **8** Geometry & Topology fields are complete
++  (`Classical & Non-Euclidean Geometry, Point-Set Topology, Algebraic Topology,
++  Differential Topology, Differential Geometry, Low-Dimensional Topology & Knots,
++  Algebraic Geometry, Fiber Bundles & Characteristic Classes`). There are **0**
++  stub strings to fill. So the safe, unambiguous "turn a stub into `{label,
++  def}`" work is *already done*.
++- **What's left is editorial.** Per the README, remaining Wave-3-ish depth means
++  new L4 "named-theorem" cards, new interactive atoms, MathJax, or richer prose
++  — all of which are mathematical/authorial **taste calls** in a domain you know
++  far better than I do. Your instruction was: if it's ambiguous or a judgment
++  call you'd want to make yourself, *don't guess*. So I didn't.
++- **Push is blocked anyway**, so speculative content couldn't ship tonight.
++
++**If you want me to proceed on Wave 3**, the fastest unblock is to commit
++`ROADMAP.md` (so I can see what's marked safe) and, ideally, grant write access.
++Point me at, say, "add L4 theorem cards for Differential Geometry per the
++roadmap" and I'll run with the parts you've marked safe.
+diff --git a/app.js b/app.js
+deleted file mode 100644
+index 5b6aef1..0000000
+--- a/app.js
++++ /dev/null
+@@ -1,712 +0,0 @@
+-/* THE WEB OF MATHEMATICS — renderer
+-   Semantic zoom: level 0 shows 8 domains; zooming in resolves each into its fields.
+-   Data lives entirely in data/data.js — this file never needs editing to grow the map.
+-
+-   WAVE 1 — typographic hierarchy + level-of-detail
+-   · Four type voices: Spectral serif (domains) / Inter 17 semibold (fields)
+-     / Inter 10.5 regular (topics) / Plex Mono 9.5 italic lowercase (bridges)
+-   · One applyLOD() drives all zoom-dependent visibility (fade, don't pop)
+-   · Viewport culling above field zoom kills the hairball
+-   · One-shot greedy collision pass hides overlapping topic labels
+-   · Glow filters reserved for navigable levels — topic dots are flat (perf) */
+-
+-(function(){
+-"use strict";
+-const D = window.MATH_DATA;
+-const VB_W = 2200, VB_H = 1700;
+-const FIELD_ZOOM = 1.35;          // scale at which fields take over from domains
+-const svg = document.getElementById('svg');
+-const viewport = document.getElementById('viewport');
+-
+-/* ---------- index the data ---------- */
+-const domById = {}; D.domains.forEach(d=>domById[d.id]=d);
+-const fieldById = {}; D.fields.forEach(f=>fieldById[f.id]=f);
+-const fieldsOf = {}; D.domains.forEach(d=>fieldsOf[d.id]=[]);
+-D.fields.forEach(f=>fieldsOf[f.domain].push(f));
+-const edgesOf = {}; D.fields.forEach(f=>edgesOf[f.id]=[]);
+-D.edges.forEach((e,i)=>{e._i=i; edgesOf[e.from].push(e); edgesOf[e.to].push(e);});
+-
+-/* ---------- radial layout of fields around their domain ---------- */
+-D.domains.forEach(d=>{
+-  const fs = fieldsOf[d.id];
+-  const n = fs.length;
+-  const R = n<=3 ? 130 : n<=5 ? 175 : n<=7 ? 215 : 250;
+-  fs.forEach((f,i)=>{
+-    const a = -Math.PI/2 + i*(2*Math.PI/n);
+-    f.x = d.x + R*Math.cos(a);
+-    f.y = d.y + R*Math.sin(a);
+-  });
+-  d.R = R + 62;
+-});
+-
+-/* ---------- svg helpers ---------- */
+-const NS='http://www.w3.org/2000/svg';
+-function el(tag, attrs, parent){
+-  const e=document.createElementNS(NS,tag);
+-  for(const k in attrs) e.setAttribute(k,attrs[k]);
+-  if(parent) parent.appendChild(e);
+-  return e;
+-}
+-function edgePath(a,b,bend){
+-  const mx=(a.x+b.x)/2, my=(a.y+b.y)/2;
+-  const dx=b.x-a.x, dy=b.y-a.y, len=Math.hypot(dx,dy)||1;
+-  const k=(bend===undefined?0.12:bend);
+-  const cx=mx - dy/len * len*k, cy=my + dx/len * len*k;
+-  return `M ${a.x} ${a.y} Q ${cx} ${cy} ${b.x} ${b.y}`;
+-}
+-/* mix a hex colour toward white: tint('#d9a441', .6) → high-luminance hue */
+-function tint(hex, w){
+-  const n=parseInt(hex.slice(1),16);
+-  const r=(n>>16)&255, g=(n>>8)&255, b=n&255;
+-  const m=v=>Math.round(v+(255-v)*w);
+-  return 'rgb('+m(r)+','+m(g)+','+m(b)+')';
+-}
+-
+-/* ---------- defs: glows & gradients ---------- */
+-const defs = el('defs',{},svg);
+-(function buildDefs(){
+-  // node glow — navigable levels only (domains, fields)
+-  const glow = el('filter',{id:'glow',x:'-80%',y:'-80%',width:'260%',height:'260%'},defs);
+-  el('feGaussianBlur',{'in':'SourceGraphic',stdDeviation:'5',result:'b'},glow);
+-  const gm = el('feMerge',{},glow);
+-  el('feMergeNode',{'in':'b'},gm); el('feMergeNode',{'in':'SourceGraphic'},gm);
+-  // soft wide glow for bridges
+-  const glowE = el('filter',{id:'glowE',x:'-40%',y:'-40%',width:'180%',height:'180%'},defs);
+-  el('feGaussianBlur',{'in':'SourceGraphic',stdDeviation:'2.6',result:'b'},glowE);
+-  const gm2 = el('feMerge',{},glowE);
+-  el('feMergeNode',{'in':'b'},gm2); el('feMergeNode',{'in':'SourceGraphic'},gm2);
+-  // per-domain orb + nebula gradients
+-  D.domains.forEach(d=>{
+-    const og = el('radialGradient',{id:'orb-'+d.id},defs);
+-    el('stop',{offset:'0%','stop-color':'#ffffff','stop-opacity':'0.95'},og);
+-    el('stop',{offset:'30%','stop-color':d.color,'stop-opacity':'1'},og);
+-    el('stop',{offset:'100%','stop-color':d.color,'stop-opacity':'0.15'},og);
+-    const ng = el('radialGradient',{id:'nebula-'+d.id},defs);
+-    el('stop',{offset:'0%','stop-color':d.color,'stop-opacity':'0.20'},ng);
+-    el('stop',{offset:'55%','stop-color':d.color,'stop-opacity':'0.08'},ng);
+-    el('stop',{offset:'100%','stop-color':d.color,'stop-opacity':'0'},ng);
+-  });
+-})();
+-
+-/* ---------- starfield backdrop ---------- */
+-const gStars = el('g',{id:'layer-stars'},viewport);
+-(function stars(){
+-  let seed=42; const rnd=()=>{seed=(seed*1103515245+12345)%2147483648;return seed/2147483648;};
+-  for(let i=0;i<170;i++){
+-    const s=el('circle',{cx:rnd()*VB_W,cy:rnd()*VB_H,r:(0.5+rnd()*1.4).toFixed(2),'class':'star'},gStars);
+-    s.style.animationDelay=(rnd()*4).toFixed(2)+'s';
+-    s.style.animationDuration=(2.4+rnd()*3.6).toFixed(2)+'s';
+-  }
+-})();
+-
+-/* ---------- layers ---------- */
+-const gAgg    = el('g',{id:'layer-agg'},viewport);     // domain-level aggregate ribbons
+-const gDomain = el('g',{id:'layer-domains'},viewport);
+-const gEdges  = el('g',{id:'layer-edges'},viewport);   // field-level edges
+-const gFields = el('g',{id:'layer-fields'},viewport);
+-
+-/* aggregate ribbons between domains (deduped) — the only edges at full zoom-out.
+-   Wide, soft gradient strokes running hue→hue between their two domains, so the
+-   overview reads as regions with currents between them, not a wire hairball. */
+-const aggSeen = new Set(); let aggN=0;
+-D.edges.forEach(e=>{
+-  const da = fieldById[e.from].domain, db = fieldById[e.to].domain;
+-  if(da===db) return;
+-  const key=[da,db].sort().join('|');
+-  if(aggSeen.has(key)) return; aggSeen.add(key);
+-  const A=domById[da], B=domById[db];
+-  const gid='aggrad-'+(aggN++);
+-  const lg=el('linearGradient',{id:gid,gradientUnits:'userSpaceOnUse',
+-    x1:A.x,y1:A.y,x2:B.x,y2:B.y},defs);
+-  el('stop',{offset:'0%','stop-color':A.color,'stop-opacity':'0.5'},lg);
+-  el('stop',{offset:'100%','stop-color':B.color,'stop-opacity':'0.5'},lg);
+-  el('path',{d:edgePath(A,B,0.08),'class':'agg-edge',stroke:'url(#'+gid+')'},gAgg);
+-});
+-
+-/* domain nodes — L0 voice: Spectral serif, letterspaced, high-luminance domain hue */
+-D.domains.forEach(d=>{
+-  const g = el('g',{'class':'domain-g'},gDomain);
+-  d._neb = el('circle',{cx:d.x,cy:d.y,r:d.R+40,'class':'domain-nebula',
+-    fill:'url(#nebula-'+d.id+')'},g);
+-  d._ring = el('circle',{cx:d.x,cy:d.y,r:d.R,'class':'domain-ring',stroke:d.color},g);
+-  d._halo = el('circle',{cx:d.x,cy:d.y,r:d.R,'class':'domain-halo',
+-    fill:d.color+'14', stroke:d.color+'55','stroke-width':1.5},g);
+-  d._core = el('circle',{cx:d.x,cy:d.y,r:18,'class':'domain-core',
+-    fill:'url(#orb-'+d.id+')',filter:'url(#glow)',opacity:0.95},g);
+-  d._label = el('text',{x:d.x,y:d.y+d.R+34,'class':'domain-label','font-size':44,
+-    fill:tint(d.color,0.55)},g);
+-  d._label.textContent = d.label;
+-  d._label.style.filter = 'drop-shadow(0 0 14px '+d.color+'66)';
+-  d._tag = el('text',{x:d.x,y:d.y+d.R+58,'class':'domain-tag','font-size':13},g);
+-  d._tag.textContent = d.tag;
+-  const hit = el('circle',{cx:d.x,cy:d.y,r:Math.max(70,d.R*0.55),'class':'domain-hit'},g);
+-  hit.addEventListener('click',()=>{ if(scale<FIELD_ZOOM) zoomTo(d.x,d.y,1.9); else openDomain(d); });
+-});
+-
+-/* field-level edges (drawn beneath fields) — the bridge's own voice lives on the
+-   via label: mono italic lowercase gold, unlike any node text on the canvas */
+-D.edges.forEach(e=>{
+-  const A=fieldById[e.from], B=fieldById[e.to];
+-  e._A=A; e._B=B;
+-  const same = A.domain===B.domain;
+-  const color = e.type==='sig' ? '#d9a441' : (domById[A.domain].color);
+-  const path = el('path',{d:edgePath(A,B, same?0.22:0.1),'class':'edge edge-'+e.type,
+-    stroke:color,'stroke-width': e.type==='sig'?2.2:1.3,
+-    'stroke-opacity': e.type==='sig'?0.85:0.4},gEdges);
+-  if(e.type==='pre') path.setAttribute('stroke-dasharray','none');
+-  const hit = el('path',{d:edgePath(A,B, same?0.22:0.1),'class':'edge-hit'},gEdges);
+-  hit.addEventListener('click',ev=>{ev.stopPropagation(); openEdge(e);});
+-  e._path = path; e._hit = hit;
+-  if(e.type==='sig'){
+-    const mx=(A.x+B.x)/2, my=(A.y+B.y)/2;
+-    const dx=B.x-A.x, dy=B.y-A.y, len=Math.hypot(dx,dy)||1;
+-    const lx=mx - dy/len*len*0.1, ly=my + dx/len*len*0.1 - 6;
+-    e._via = el('text',{x:lx,y:ly,'class':'via-label'},gEdges);
+-    e._via.textContent = e.via.toLowerCase();
+-  }
+-});
+-
+-/* field nodes — L1 voice: Inter 17 semibold, near-white carrying the domain hue */
+-D.fields.forEach(f=>{
+-  const c = domById[f.domain].color;
+-  const g = el('g',{'class':'field-g enter'},gFields);
+-  g.style.animationDelay=(window.__fi=(window.__fi||0)+1)*28+'ms';
+-  f._g = g;
+-  el('circle',{cx:f.x,cy:f.y,r:10,'class':'field-pulse',stroke:c},g);
+-  el('circle',{cx:f.x,cy:f.y,r:9,'class':'field-orb',fill:'url(#orb-'+f.domain+')',filter:'url(#glow)'},g);
+-  const words = f.label.split(' ');
+-  let lines=[]; let cur='';
+-  words.forEach(w=>{ if((cur+' '+w).trim().length>16){lines.push(cur.trim());cur=w;} else cur+=' '+w; });
+-  if(cur.trim()) lines.push(cur.trim());
+-  lines.forEach((ln,i)=>{
+-    const t=el('text',{x:f.x,y:f.y+27+i*19,'class':'field-label',fill:tint(c,0.82)},g);
+-    t.textContent=ln;
+-  });
+-  const hit = el('circle',{cx:f.x,cy:f.y,r:30,'class':'field-hit'},g);
+-  hit.addEventListener('click',ev=>{ev.stopPropagation(); openField(f);});
+-});
+-
+-/* ---------- L3: topic satellites (third zoom level) ----------
+-   L2 voice: Inter 10.5 regular, muted blue-grey. Dots are flat — glow is
+-   reserved for navigable levels, and topic dots are the most numerous elements
+-   on the map, so dropping their filter is also the Wave-1 performance fix. */
+-const gTopics = el('g',{id:'layer-topics'},viewport);
+-function normTopic(c){ return typeof c==='string' ? {label:c} : c; }
+-D.fields.forEach(f=>{
+-  const tps=(f.children||[]).map(normTopic);
+-  if(!tps.length) return;
+-  f._topics=tps;
+-  const c=domById[f.domain].color;
+-  const n=tps.length, R=52+n*5;
+-  tps.forEach((tp,i)=>{
+-    const a=-Math.PI/2 + i*(2*Math.PI/n);
+-    const cos=Math.cos(a), sin=Math.sin(a);
+-    tp.x=f.x+R*cos; tp.y=f.y+R*sin; tp.field=f.id;
+-    const g=el('g',{'class':'topic-g'},gTopics);
+-    tp._g=g;
+-    el('line',{x1:f.x,y1:f.y,x2:tp.x,y2:tp.y,'class':'topic-spoke',stroke:c},g);
+-    el('circle',{cx:tp.x,cy:tp.y,r:tp.def?4.5:3.2,'class':'topic-dot',
+-      fill:tp.def?c:'#0e1117',stroke:c,'stroke-width':1.2},g);
+-    const anchor = cos>0.35?'start':(cos<-0.35?'end':'middle');
+-    const lx=tp.x+cos*10;
+-    const ly=tp.y+sin*10 + (Math.abs(cos)<=0.35 ? (sin>0?9:-5):3);
+-    const t=el('text',{x:lx,y:ly,'class':'topic-label','text-anchor':anchor},g);
+-    t.textContent=tp.label;
+-    tp._labelEl=t; tp._lx=lx; tp._ly=ly; tp._anchor=anchor; tp._cos=cos; tp._sin=sin;
+-    const hit=el('circle',{cx:tp.x,cy:tp.y,r:15,'class':'topic-hit'},g);
+-    hit.addEventListener('click',ev=>{ev.stopPropagation(); openTopic(tp);});
+-  });
+-});
+-
+-/* ---------- topic label collision: one-shot greedy pass ----------
+-   Label size and label separation both scale linearly with zoom, so overlap is
+-   zoom-invariant — one pass at build time settles it for every zoom level.
+-   Shortest labels are placed first (easiest to seat); each tries its home slot,
+-   then two nudges further out along its spoke, then four tangential slides that
+-   keep it beside its own dot. Only a label with no free slot is hidden — its dot
+-   stays tappable and it's still reachable through the field panel's topic chips.
+-   On this data: 190 seat at home, 20 nudge, 1 hides (Group representations). */
+-(function collidePass(){
+-  const CHAR_W=0.56*10.5, H_UP=9.5, H_DN=2.5, PAD=1;
+-  const entries=[];
+-  D.fields.forEach(f=>(f._topics||[]).forEach(tp=>entries.push(tp)));
+-  entries.sort((a,b)=>a.label.length-b.label.length);
+-  const placed=[];
+-  const rectAt=(tp,dx,dy)=>{
+-    const w=tp.label.length*CHAR_W;
+-    const lx=tp._lx+dx, ly=tp._ly+dy;
+-    const x0 = tp._anchor==='start' ? lx : (tp._anchor==='end' ? lx-w : lx-w/2);
+-    return {x0:x0, y0:ly-H_UP, x1:x0+w, y1:ly+H_DN, dx:dx, dy:dy};
+-  };
+-  const free=r=>!placed.some(p=>!(r.x1<p.x0+PAD||r.x0>p.x1-PAD||r.y1<p.y0+PAD||r.y0>p.y1-PAD));
+-  entries.forEach(tp=>{
+-    const c=tp._cos, s=tp._sin;
+-    const tries=[
+-      [0,0],                              // home slot
+-      [c*13, s*13], [c*26, s*26],         // push further out along the spoke
+-      [-s*12, c*12], [s*12, -c*12],       // slide tangentially, either way
+-      [c*13-s*12, s*13+c*12],             // diagonal blends of the two
+-      [c*13+s*12, s*13-c*12]
+-    ];
+-    let seated=null;
+-    for(let i=0;i<tries.length;i++){
+-      const r=rectAt(tp,tries[i][0],tries[i][1]);
+-      if(free(r)){seated=r; break;}
+-    }
+-    if(!seated){ tp._labelEl.classList.add('label-hidden'); return; }
+-    placed.push(seated);
+-    if(seated.dx||seated.dy){          // rescued by a nudge — move the text to match
+-      tp._labelEl.setAttribute('x', tp._lx+seated.dx);
+-      tp._labelEl.setAttribute('y', tp._ly+seated.dy);
+-    }
+-  });
+-})();
+-
+-/* ---------- semantic zoom: one function owns all visibility ---------- */
+-let tx=0, ty=0, scale=1;
+-function ramp(s,a,b){return Math.max(0,Math.min(1,(s-a)/(b-a)));}
+-
+-/* visible world-rect for culling; letterboxing means the visible area can
+-   exceed the viewBox on one axis, so measure the real element box (cached) */
+-let fitCache=null;
+-function fitExtents(){
+-  if(fitCache) return fitCache;
+-  const r=svg.getBoundingClientRect();
+-  const sf=Math.min(r.width/VB_W, r.height/VB_H)||1;
+-  const exU=(r.width/sf-VB_W)/2, exV=(r.height/sf-VB_H)/2;
+-  fitCache={u0:-exU, u1:VB_W+exU, v0:-exV, v1:VB_H+exV};
+-  return fitCache;
+-}
+-window.addEventListener('resize',()=>{fitCache=null; applyTransform();});
+-
+-let enterCleaned=false, enterTimerSet=false, fieldsWereOn=false;
+-function applyTransform(){
+-  viewport.setAttribute('transform',`translate(${tx} ${ty}) scale(${scale})`);
+-  applyLOD();
+-}
+-function applyLOD(){
+-  const s=scale;
+-  /* band ramps — every boundary is a fade, nothing pops */
+-  const fields = ramp(s,1.0,1.35);          // fields fade in
+-  const fEdges = ramp(s,1.35,1.7);          // field edges only past field zoom
+-  const topics = ramp(s,2.1,2.8);           // topics + bridge labels ride together
+-  const chrome = 1-ramp(s,1.0,1.35);        // domain orb/ring/tag hand over to fields
+-  /* domain presence: 100 → 60 → 35 → 20 → 12 % across the bands, interpolated */
+-  let dom;
+-  if(s<1.0)       dom=1;
+-  else if(s<1.35) dom=1   -0.40*ramp(s,1.0,1.35);
+-  else if(s<2.1)  dom=0.60-0.25*ramp(s,1.35,2.1);
+-  else if(s<2.8)  dom=0.35-0.15*ramp(s,2.1,2.8);
+-  else            dom=Math.max(0.12, 0.20-0.08*ramp(s,2.8,3.4));
+-
+-  /* domain type eases larger as you pull out: 44 at overview → 30 at field zoom */
+-  const dfs=Math.max(30, Math.min(44, 27/s+10));
+-
+-  gAgg.style.opacity = 1-fields;
+-  gAgg.style.display = fields>=1 ? 'none':'';
+-
+-  gFields.style.opacity = fields;
+-  const fieldsOn = s>0.98;
+-  gFields.style.display = fieldsOn ? '':'none';
+-  gFields.style.pointerEvents = fields>0.5 ? 'auto':'none';
+-  if(fieldsOn && !fieldsWereOn && !enterCleaned && !enterTimerSet){
+-    /* the first reveal plays the entrance cascade once; then the classes come
+-       off so later band-crossings don't replay it */
+-    enterTimerSet=true;
+-    setTimeout(()=>{D.fields.forEach(f=>f._g.classList.remove('enter')); enterCleaned=true;},2400);
+-  }
+-  fieldsWereOn=fieldsOn;
+-
+-  gEdges.style.opacity = fEdges;
+-  gEdges.style.display = s>1.33 ? '':'none';
+-  gEdges.style.pointerEvents = fEdges>0.5 ? 'auto':'none';
+-
+-  gTopics.style.opacity = topics;
+-  gTopics.style.display = s>2.05 ? '':'none';
+-  gTopics.style.pointerEvents = topics>0.5 ? 'auto':'none';
+-
+-  D.domains.forEach(d=>{
+-    d._label.style.opacity = dom;
+-    d._label.setAttribute('font-size', dfs);
+-    d._tag.style.opacity  = chrome;
+-    d._core.style.opacity = chrome*0.95;
+-    d._ring.style.opacity = chrome*0.7;
+-    d._neb.style.opacity  = 0.15+0.85*dom;
+-    d._halo.setAttribute('fill', d.color + (s>FIELD_ZOOM?'0a':'14'));
+-  });
+-
+-  /* viewport culling — this is what kills the hairball and the pan stutter */
+-  const ext=fitExtents();
+-  const x0=(ext.u0-tx)/s, x1=(ext.u1-tx)/s, y0=(ext.v0-ty)/s, y1=(ext.v1-ty)/s;
+-  if(s>1.33){
+-    const M=90;   // margin for curve bow + label overhang
+-    D.edges.forEach(e=>{
+-      const ex0=Math.min(e._A.x,e._B.x)-M, ex1=Math.max(e._A.x,e._B.x)+M;
+-      const ey0=Math.min(e._A.y,e._B.y)-M, ey1=Math.max(e._A.y,e._B.y)+M;
+-      const vis=!(ex1<x0||ex0>x1||ey1<y0||ey0>y1);
+-      if(vis!==e._vis){
+-        e._vis=vis;
+-        const dsp=vis?'':'none';
+-        e._path.style.display=dsp; e._hit.style.display=dsp;
+-        if(e._via) e._via.style.display=dsp;
+-      }
+-    });
+-    if(s>2.05){
+-      const T=110;  // topic dot + label reach
+-      D.fields.forEach(f=>(f._topics||[]).forEach(tp=>{
+-        const vis=tp.x>x0-T&&tp.x<x1+T&&tp.y>y0-T&&tp.y<y1+T;
+-        if(vis!==tp._vis){tp._vis=vis; tp._g.style.display=vis?'':'none';}
+-      }));
+-    }
+-  }
+-  /* bridge labels ride the topic band (readable only once there is room) */
+-  D.edges.forEach(e=>{ if(e._via) e._via.style.opacity=topics; });
+-}
+-
+-/* ---------- pan / zoom (pointer + wheel + pinch) ---------- */
+-const pointers=new Map(); let mode=null;
+-let panRef={}, pinchRef={};
+-function clientToVB(x,y){
+-  const r=svg.getBoundingClientRect();
+-  // preserveAspectRatio="xMidYMid meet": uniform fit scale + centering offsets
+-  const scaleFit = Math.min(r.width/VB_W, r.height/VB_H);
+-  const ox = (r.width - VB_W*scaleFit)/2, oy=(r.height-VB_H*scaleFit)/2;
+-  return { u:(x-r.left-ox)/scaleFit, v:(y-r.top-oy)/scaleFit };
+-}
+-function clamp(v,lo,hi){return Math.max(lo,Math.min(hi,v));}
+-
+-svg.addEventListener('pointerdown',e=>{
+-  svg.setPointerCapture(e.pointerId);
+-  pointers.set(e.pointerId,{x:e.clientX,y:e.clientY});
+-  if(pointers.size===1){
+-    mode='pan';
+-    const p=clientToVB(e.clientX,e.clientY);
+-    panRef={u0:p.u,v0:p.v,tx0:tx,ty0:ty};
+-    svg.classList.add('panning');
+-  }else if(pointers.size===2){
+-    mode='pinch';
+-    const pts=[...pointers.values()];
+-    const dist=Math.hypot(pts[0].x-pts[1].x,pts[0].y-pts[1].y)||1;
+-    const m=clientToVB((pts[0].x+pts[1].x)/2,(pts[0].y+pts[1].y)/2);
+-    pinchRef={dist0:dist,scale0:scale,ax:(m.u-tx)/scale,ay:(m.v-ty)/scale};
+-  }
+-});
+-window.addEventListener('pointermove',e=>{
+-  if(!pointers.has(e.pointerId))return;
+-  pointers.set(e.pointerId,{x:e.clientX,y:e.clientY});
+-  if(mode==='pan'&&pointers.size===1){
+-    const p=clientToVB(e.clientX,e.clientY);
+-    tx=panRef.tx0+(p.u-panRef.u0); ty=panRef.ty0+(p.v-panRef.v0);
+-    applyTransform();
+-  }else if(mode==='pinch'&&pointers.size===2){
+-    const pts=[...pointers.values()];
+-    const dist=Math.hypot(pts[0].x-pts[1].x,pts[0].y-pts[1].y)||1;
+-    const m=clientToVB((pts[0].x+pts[1].x)/2,(pts[0].y+pts[1].y)/2);
+-    scale=clamp(pinchRef.scale0*(dist/pinchRef.dist0),0.55,4.5);
+-    tx=m.u-pinchRef.ax*scale; ty=m.v-pinchRef.ay*scale;
+-    applyTransform();
+-  }
+-});
+-function endPtr(e){
+-  pointers.delete(e.pointerId);
+-  svg.classList.remove('panning');
+-  if(pointers.size===1){
+-    const[only]=[...pointers.values()];
+-    mode='pan';
+-    const p=clientToVB(only.x,only.y);
+-    panRef={u0:p.u,v0:p.v,tx0:tx,ty0:ty};
+-  } else if(pointers.size===0) mode=null;
+-}
+-window.addEventListener('pointerup',endPtr);
+-window.addEventListener('pointercancel',endPtr);
+-svg.addEventListener('wheel',e=>{
+-  e.preventDefault();
+-  const f=e.deltaY<0?1.12:0.89;
+-  const m=clientToVB(e.clientX,e.clientY);
+-  const ax=(m.u-tx)/scale, ay=(m.v-ty)/scale;
+-  scale=clamp(scale*f,0.55,4.5);
+-  tx=m.u-ax*scale; ty=m.v-ay*scale;
+-  applyTransform();
+-  hideIntroSoon();
+-},{passive:false});
+-
+-function zoomTo(x,y,s,animate){
+-  const target={tx:VB_W/2-x*s, ty:VB_H/2-y*s, s:s};
+-  if(!animate){ tx=target.tx;ty=target.ty;scale=target.s;applyTransform();return; }
+-  const from={tx,ty,s:scale}; const t0=performance.now(), dur=520;
+-  function step(t){
+-    const k=Math.min(1,(t-t0)/dur), e=1-Math.pow(1-k,3);
+-    tx=from.tx+(target.tx-from.tx)*e; ty=from.ty+(target.ty-from.ty)*e;
+-    scale=from.s+(target.s-from.s)*e; applyTransform();
+-    if(k<1) requestAnimationFrame(step);
+-  }
+-  requestAnimationFrame(step);
+-  hideIntroSoon();
+-}
+-document.getElementById('zin').onclick =()=>{const c=centerVB();zoomAt(c.x,c.y,1.25);};
+-document.getElementById('zout').onclick=()=>{const c=centerVB();zoomAt(c.x,c.y,0.8);};
+-document.getElementById('zreset').onclick=()=>zoomTo(VB_W/2,VB_H/2,0.62,true);
+-function centerVB(){return {x:(VB_W/2-tx)/scale, y:(VB_H/2-ty)/scale};}
+-function zoomAt(x,y,f){
+-  scale=clamp(scale*f,0.55,4.5);
+-  tx=VB_W/2-x*scale; ty=VB_H/2-y*scale; applyTransform();
+-}
+-
+-/* ---------- detail panel ---------- */
+-const panel=document.getElementById('panel');
+-const scrim=document.getElementById('scrim');
+-const P = id=>document.getElementById(id);
+-function openPanel(){panel.classList.add('open');scrim.classList.add('open');}
+-function closePanel(){panel.classList.remove('open');scrim.classList.remove('open');clearFocus();}
+-P('closepanel').onclick=closePanel; scrim.onclick=closePanel;
+-
+-function chip(label,onclick,stub){
+-  const c=document.createElement('div');
+-  c.className='chip'+(stub?' stub':'');
+-  c.textContent=label;
+-  if(onclick)c.onclick=onclick;
+-  return c;
+-}
+-
+-function openDomain(d){
+-  P('p-dot').style.background=d.color;
+-  P('p-eyebrow-text').textContent='Domain';
+-  P('p-title').textContent=d.label;
+-  P('p-def').textContent=d.def;
+-  P('p-body').innerHTML='';
+-  const lab=document.createElement('div');lab.className='section-label';
+-  lab.textContent='Fields ('+fieldsOf[d.id].length+')';
+-  const row=document.createElement('div');row.className='chips';
+-  fieldsOf[d.id].forEach(f=>row.appendChild(chip(f.label,()=>{openField(f);zoomTo(f.x,f.y,2.4,true);})));
+-  P('p-body').appendChild(lab);P('p-body').appendChild(row);
+-  openPanel();
+-}
+-
+-function openField(f){
+-  focusField(f);
+-  const d=domById[f.domain];
+-  P('p-dot').style.background=d.color;
+-  P('p-eyebrow-text').textContent=d.label;
+-  P('p-title').textContent=f.label;
+-  P('p-def').textContent=f.def;
+-  const body=P('p-body'); body.innerHTML='';
+-
+-  if(f.theorems&&f.theorems.length){
+-    const lab=document.createElement('div');lab.className='section-label';lab.textContent='Landmark theorems';
+-    const ul=document.createElement('ul');ul.className='theorems';
+-    f.theorems.forEach(t=>{const li=document.createElement('li');li.textContent=t;ul.appendChild(li);});
+-    body.appendChild(lab);body.appendChild(ul);
+-  }
+-  if(f.book){
+-    const lab=document.createElement('div');lab.className='section-label';lab.textContent='Canonical text';
+-    const bk=document.createElement('div');bk.className='book';bk.textContent=f.book;
+-    body.appendChild(lab);body.appendChild(bk);
+-  }
+-  if(f.schuller){
+-    const lab=document.createElement('div');lab.className='section-label';
+-    lab.textContent='Companion lectures — Schuller, Geometric Anatomy of Theoretical Physics';
+-    const sv=document.createElement('div');sv.className='schuller';sv.textContent='🎥 '+f.schuller;
+-    body.appendChild(lab);body.appendChild(sv);
+-  }
+-  if(f.atom){
+-    const a=document.createElement('a');a.className='atom-btn';
+-    a.href=f.atom.href;a.target='_blank';a.rel='noopener';
+-    a.textContent='🧪 '+f.atom.label;
+-    body.appendChild(a);
+-  }
+-  const conns=edgesOf[f.id];
+-  if(conns.length){
+-    const lab=document.createElement('div');lab.className='section-label';
+-    lab.textContent='Connections — tap one to read the bridge';
+-    const row=document.createElement('div');row.className='chips';
+-    conns.forEach(e=>{
+-      const other = e.from===f.id? fieldById[e.to] : fieldById[e.from];
+-      const pre = e.type==='sig'?'★ ':'';
+-      row.appendChild(chip(pre+other.label,()=>openEdge(e)));
+-    });
+-    body.appendChild(lab);body.appendChild(row);
+-  }
+-  if(f._topics&&f._topics.length){
+-    const anyLive=f._topics.some(t=>t.def);
+-    const lab=document.createElement('div');lab.className='section-label';
+-    lab.textContent=anyLive
+-      ? 'Inside this field — tap a topic (they orbit this node at max zoom)'
+-      : 'Inside this field (stubs — content arriving in Part 3 waves)';
+-    const row=document.createElement('div');row.className='chips';
+-    f._topics.forEach(tp=>row.appendChild(
+-      chip(tp.label, tp.def?()=>openTopic(tp):null, !tp.def)));
+-    body.appendChild(lab);body.appendChild(row);
+-  }
+-  openPanel();
+-}
+-
+-function openTopic(tp){
+-  const f=fieldById[tp.field], d=domById[f.domain];
+-  focusField(f);
+-  P('p-dot').style.background=d.color;
+-  P('p-eyebrow-text').textContent=f.label+' · topic';
+-  P('p-title').textContent=tp.label;
+-  P('p-def').textContent=tp.def
+-    || 'Topic stub — the full entry arrives as Part 3 content fills in, domain by domain. Add it yourself in data/data.js by turning this string into {label, def}.';
+-  const body=P('p-body'); body.innerHTML='';
+-  const lab=document.createElement('div');lab.className='section-label';lab.textContent='Nearby';
+-  const row=document.createElement('div');row.className='chips';
+-  row.appendChild(chip('↩ '+f.label,()=>openField(f)));
+-  (f._topics||[]).filter(x=>x!==tp&&x.def).slice(0,6)
+-    .forEach(x=>row.appendChild(chip(x.label,()=>openTopic(x))));
+-  body.appendChild(lab);body.appendChild(row);
+-  openPanel();
+-}
+-
+-function openEdge(e){
+-  const A=fieldById[e.from],B=fieldById[e.to];
+-  focusEdge(e);
+-  P('p-dot').style.background='#d9a441';
+-  P('p-eyebrow-text').textContent=(e.type==='sig'?'Signature bridge':'Natural flow');
+-  P('p-title').innerHTML='';
+-  const t=P('p-title');
+-  t.appendChild(document.createTextNode(A.label+' '));
+-  const ar=document.createElement('span');ar.className='arrow';ar.textContent='⟷';t.appendChild(ar);
+-  t.appendChild(document.createTextNode(' '+B.label));
+-  P('p-def').textContent='';
+-  const body=P('p-body');body.innerHTML='';
+-
+-  // who built the bridge
+-  if(e.who){
+-    const who=document.createElement('div');who.className='who-box';
+-    who.innerHTML='<span class="who-eyebrow">Bridged by</span><span class="who-name">'+e.who+'</span>';
+-    body.appendChild(who);
+-  }
+-  // mediating concept
+-  const box=document.createElement('div');box.className='via-box';
+-  box.innerHTML='<b>Mediating concept — '+e.via+'</b>'+(e.note||'');
+-  body.appendChild(box);
+-  // the theory of the bridge
+-  if(e.story){
+-    const lab=document.createElement('div');lab.className='section-label';
+-    lab.textContent='The theory of the bridge';
+-    const st=document.createElement('div');st.className='story-box';st.textContent=e.story;
+-    body.appendChild(lab);body.appendChild(st);
+-  }
+-  const row=document.createElement('div');row.className='chips';
+-  row.appendChild(chip('Open '+A.label,()=>openField(A)));
+-  row.appendChild(chip('Open '+B.label,()=>openField(B)));
+-  body.appendChild(row);
+-  // let people surf bridge → bridge
+-  const near=D.edges.filter(x=>x!==e&&(x.from===e.from||x.to===e.to||x.from===e.to||x.to===e.from)).slice(0,6);
+-  if(near.length){
+-    const lab=document.createElement('div');lab.className='section-label';lab.textContent='Adjacent bridges';
+-    const r2=document.createElement('div');r2.className='chips';
+-    near.forEach(x=>{
+-      const a=fieldById[x.from].label, b=fieldById[x.to].label;
+-      r2.appendChild(chip((x.type==='sig'?'★ ':'')+a+' ⟷ '+b,()=>openEdge(x)));
+-    });
+-    body.appendChild(lab);body.appendChild(r2);
+-  }
+-  openPanel();
+-}
+-
+-/* ---------- browsable index of every bridge ---------- */
+-function openBridgeIndex(){
+-  clearFocus();
+-  P('p-dot').style.background='#d9a441';
+-  P('p-eyebrow-text').textContent='Index';
+-  P('p-title').textContent='All bridges';
+-  P('p-def').textContent='Every connection on the map, and the person who built it. Signature bridges (★) are the deep cross-domain links; tap any to read its story.';
+-  const body=P('p-body');body.innerHTML='';
+-  const sigs=D.edges.filter(e=>e.type==='sig');
+-  const pres=D.edges.filter(e=>e.type!=='sig');
+-  const section=(title,list)=>{
+-    const lab=document.createElement('div');lab.className='section-label';lab.textContent=title;
+-    body.appendChild(lab);
+-    list.forEach(e=>{
+-      const a=fieldById[e.from], b=fieldById[e.to];
+-      const card=document.createElement('div');card.className='bridge-row';
+-      card.innerHTML='<div class="bridge-row-t">'+(e.type==='sig'?'★ ':'')+a.label+' <span class="arrow">⟷</span> '+b.label+'</div>'+
+-                     '<div class="bridge-row-w">'+(e.who||'')+' · <i>'+e.via+'</i></div>';
+-      card.onclick=()=>openEdge(e);
+-      body.appendChild(card);
+-    });
+-  };
+-  section('Signature bridges ('+sigs.length+')',sigs);
+-  section('Natural flows ('+pres.length+')',pres);
+-  openPanel();
+-}
+-window._openBridgeIndex = openBridgeIndex;
+-
+-/* ---------- focus / dim ---------- */
+-function clearFocus(){
+-  D.fields.forEach(f=>f._g.classList.remove('dimmed'));
+-  D.edges.forEach(e=>{e._path.classList.remove('dimmed'); if(e._via)e._via.classList.remove('dimmed');});
+-}
+-function focusField(f){
+-  const keep=new Set([f.id]);
+-  edgesOf[f.id].forEach(e=>{keep.add(e.from);keep.add(e.to);});
+-  D.fields.forEach(x=>x._g.classList.toggle('dimmed',!keep.has(x.id)));
+-  D.edges.forEach(e=>{
+-    const on = e.from===f.id||e.to===f.id;
+-    e._path.classList.toggle('dimmed',!on);
+-    if(e._via)e._via.classList.toggle('dimmed',!on);
+-  });
+-}
+-function focusEdge(e){
+-  D.fields.forEach(x=>x._g.classList.toggle('dimmed', x.id!==e.from && x.id!==e.to));
+-  D.edges.forEach(x=>{
+-    x._path.classList.toggle('dimmed', x!==e);
+-    if(x._via)x._via.classList.toggle('dimmed', x!==e);
+-  });
+-}
+-
+-/* ---------- search ---------- */
+-const searchBox=document.getElementById('search');
+-searchBox.addEventListener('input',()=>{
+-  const q=searchBox.value.trim().toLowerCase();
+-  if(!q){clearFocus();return;}
+-  if(scale<FIELD_ZOOM){ zoomTo(centerVB().x,centerVB().y,1.6,true); }
+-  D.fields.forEach(f=>{
+-    const kids=(f.children||[]).map(c=>typeof c==='string'?c:(c.label+' '+(c.def||''))).join(' ');
+-    const hay=(f.label+' '+f.def+' '+(f.theorems||[]).join(' ')+' '+kids).toLowerCase();
+-    f._g.classList.toggle('dimmed', !hay.includes(q));
+-  });
+-  D.edges.forEach(e=>{
+-    const hay=(e.via+' '+e.note).toLowerCase();
+-    const hit=hay.includes(q);
+-    e._path.classList.toggle('dimmed',!hit);
+-    if(e._via)e._via.classList.toggle('dimmed',!hit);
+-  });
+-});
+-searchBox.addEventListener('keydown',e=>{
+-  if(e.key==='Enter'){
+-    const q=searchBox.value.trim().toLowerCase(); if(!q)return;
+-    const hit=D.fields.find(f=>(f.label+' '+f.def).toLowerCase().includes(q));
+-    if(hit){zoomTo(hit.x,hit.y,2.4,true);openField(hit);}
+-  }
+-});
+-
+-/* ---------- legend ---------- */
+-const legend=document.getElementById('legend');
+-D.domains.forEach(d=>{
+-  const s=document.createElement('span');s.className='lgitem';
+-  s.innerHTML='<span class="dot" style="background:'+d.color+'"></span>'+d.label;
+-  s.onclick=()=>zoomTo(d.x,d.y,1.9,true);
+-  legend.appendChild(s);
+-});
+-const sig=document.createElement('span');sig.className='lgitem';
+-sig.innerHTML='<span class="dot" style="background:#d9a441"></span>★ signature bridge';
+-sig.onclick=()=>openBridgeIndex();
+-legend.appendChild(sig);
+-
+-const bb=document.getElementById('bridgesBtn');
+-if(bb) bb.onclick=()=>openBridgeIndex();
+-
+-/* ---------- intro hint ---------- */
+-let introHidden=false;
+-function hideIntroSoon(){
+-  if(introHidden)return; introHidden=true;
+-  document.getElementById('intro').classList.add('gone');
+-}
+-setTimeout(hideIntroSoon,7000);
+-
+-/* ---------- start ---------- */
+-zoomTo(VB_W/2,VB_H/2-40,0.62,false);
+-})();
+diff --git a/css/style.css b/css/style.css
+index 53aa152..60076e7 100644
+--- a/css/style.css
++++ b/css/style.css
+@@ -43,7 +43,8 @@ svg.panning{cursor:grabbing;}
+ 
+ /* graph elements */
+ .domain-halo{transition:opacity .35s;}
+-.domain-label{font-family:'Spectral',serif;font-weight:600;fill:var(--text);
++/* L0 voice — serif, letterspaced; fill is the domain hue (set per-element in JS) */
++.domain-label{font-family:'Spectral',serif;font-weight:600;letter-spacing:0.07em;
+   text-anchor:middle;transition:opacity .35s;pointer-events:none;}
+ .domain-tag{font-family:'IBM Plex Mono',monospace;fill:var(--text-dim);
+   text-anchor:middle;transition:opacity .35s;pointer-events:none;}
+@@ -51,7 +52,8 @@ svg.panning{cursor:grabbing;}
+ 
+ .field-g{transition:opacity .35s;}
+ .field-circle{stroke-width:1.6;}
+-.field-label{font-family:'IBM Plex Mono',monospace;font-size:11px;fill:var(--text);
++/* L1 voice — sans semibold, clearly bigger than topics, clearly unlike domains */
++.field-label{font-family:'Inter',system-ui,sans-serif;font-size:17px;font-weight:600;
+   pointer-events:none;text-anchor:middle;}
+ .field-hit{fill:transparent;cursor:pointer;}
+ 
+@@ -59,9 +61,12 @@ svg.panning{cursor:grabbing;}
+ .edge-hit{fill:none;stroke:transparent;stroke-width:16;cursor:pointer;pointer-events:stroke;}
+ .edge-sig{stroke-dasharray:none;}
+ .edge-pre{}
+-.agg-edge{fill:none;stroke:rgba(255,255,255,0.12);stroke-width:2;transition:opacity .35s;pointer-events:none;}
+-.via-label{font-family:'IBM Plex Mono',monospace;font-size:9px;fill:var(--gold);
+-  text-anchor:middle;pointer-events:none;transition:opacity .35s;}
++/* zoomed-out ribbons: wide soft hue→hue currents between domains, not wires */
++.agg-edge{fill:none;stroke-width:7;stroke-linecap:round;opacity:0.22;
++  transition:opacity .35s;pointer-events:none;}
++/* bridge voice — mono italic lowercase: a sentence between fields, not a label */
++.via-label{font-family:'IBM Plex Mono',monospace;font-size:9.5px;font-style:italic;
++  fill:var(--gold);text-anchor:middle;pointer-events:none;transition:opacity .35s;}
+ 
+ .dimmed{opacity:0.12 !important;}
+ 
+@@ -127,8 +132,11 @@ ul.theorems{margin:0;padding-left:18px;font-size:13.5px;line-height:1.6;color:#3
+ #layer-topics{opacity:0;pointer-events:none;}
+ .topic-spoke{stroke-opacity:0.28;stroke-width:0.8;}
+ .topic-dot{}
+-.topic-label{font-family:'IBM Plex Mono',monospace;font-size:8.5px;fill:#c8cdd8;
+-  paint-order:stroke;stroke:#0e1117;stroke-width:2.5px;stroke-linejoin:round;}
++/* L2 voice — small sans regular, muted: legible up close, recessive by design */
++.topic-label{font-family:'Inter',system-ui,sans-serif;font-size:10.5px;font-weight:400;
++  fill:#a9b2c4;opacity:0.72;
++  paint-order:stroke;stroke:#0e1117;stroke-width:2px;stroke-linejoin:round;}
++.label-hidden{display:none;}
+ .topic-hit{fill:transparent;cursor:pointer;}
+ .topic-g:active .topic-dot{stroke-width:2.4;}
+ 
+@@ -182,7 +190,7 @@ header h1 em{-webkit-text-fill-color:var(--gold);}
+ @keyframes pulse{0%{transform:scale(.7);opacity:.85;stroke-width:2}
+   70%{transform:scale(2.1);opacity:0;stroke-width:.5}100%{opacity:0}}
+ .field-g{cursor:pointer;}
+-.field-g:hover .field-orb,.field-g:active .field-orb{r:13;}
++.field-g:hover .field-orb,.field-g:active .field-orb{r:12;}
+ .field-orb{transition:r .18s ease;}
+ .field-label{paint-order:stroke;stroke:#0b0e15;stroke-width:3px;stroke-linejoin:round;}
+ 
+@@ -192,8 +200,8 @@ header h1 em{-webkit-text-fill-color:var(--gold);}
+ .edge-pre{stroke-opacity:0.3;}
+ .via-label{paint-order:stroke;stroke:#0b0e15;stroke-width:3px;stroke-linejoin:round;}
+ 
+-/* topics glow faintly */
+-.topic-dot{filter:drop-shadow(0 0 3px rgba(255,255,255,0.45));}
++/* topic dots stay flat — glow is reserved for navigable levels (211 dots
++   with filters was the pan-stutter culprit) */
+ .topic-g{cursor:pointer;}
+ 
+ /* glass panel replaces paper */
+@@ -244,3 +252,139 @@ header h1 em{-webkit-text-fill-color:var(--gold);}
+ .bridge-row-t .arrow{color:var(--gold);}
+ .bridge-row-w{font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:#9aa0ad;margin-top:3px;}
+ .bridge-row-w i{color:#c7b483;font-style:normal;}
++
++/* ============================================================
++   WAVE 2 — IRON-GALL CODEX (visual identity)
++   A single appended override block: warmer + darker manuscript
++   ground, pigment palette, stilled ambient motion, gold-leaf
++   bridges (the signature element), a parchment reading panel,
++   and a collapsible header. Everything here overrides the
++   Part-4 "deep-space" look purely by cascade order — delete this
++   whole block to fall back to the neon-on-black identity.
++   ============================================================ */
++
++/* ---- palette: manuscript pigments on aged vellum ---- */
++:root{
++  --bg:#17120b;              /* warm bister-black */
++  --bg2:#100b05;
++  --paper:#ece1c8;          /* aged parchment */
++  --paper-2:#e3d6b8;
++  --paper-edge:#cdbc92;
++  --ink:#241d12;            /* iron-gall ink */
++  --ink-soft:#6a5c44;
++  --text:#ece2cf;           /* warm off-white on the ground */
++  --text-dim:#9d917a;       /* warm taupe */
++  --gold:#c9a24a;           /* keep the historic var name = gilt */
++  --gilt:#c9a24a;
++  --gilt-bright:#e6c877;
++  --gilt-deep:#7c5c22;
++  --line:rgba(226,206,150,0.10);
++}
++
++/* ---- the ground: aged vellum in low candlelight ---- */
++body{background:radial-gradient(1200px 820px at 50% 6%,
++      #241a0f 0%, #17120b 50%, #0d0904 100%) !important;}
++
++/* faint, static paper grain over the map (fixed to the viewport, not the
++   content — so it reads as the surface you're looking through, not texture
++   painted onto the map) */
++main::before{
++  content:"";position:absolute;inset:0;z-index:3;pointer-events:none;
++  opacity:.05;mix-blend-mode:soft-light;
++  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
++  background-size:160px 160px;}
++
++/* ---- stilled ambient motion (reduce, don't remove all life) ---- */
++.star{fill:#cdbb90 !important;opacity:.05 !important;animation:none !important;} /* foxing, not twinkle */
++.domain-ring{animation:none !important;opacity:.5;}                              /* no spin */
++.field-pulse{display:none !important;}                                          /* no breathing */
++.field-orb{filter:none !important;}                                             /* flat pigment beads, not neon */
++header h1{background:none !important;-webkit-text-fill-color:#d8c08a !important;
++  color:#d8c08a;animation:none !important;letter-spacing:.3px;}                  /* static gilt title, no shimmer */
++header h1 .thin{-webkit-text-fill-color:#b49a66 !important;color:#b49a66;}
++header h1::before{content:"\2766\00a0";color:var(--gilt);-webkit-text-fill-color:var(--gilt);
++  font-size:0.8em;opacity:.9;}                                                  /* printer's fleuron ❦ */
++
++/* ---- signature element: gold-leaf bridges ----
++   the ★ cross-domain bridges become inlaid gold leaf — a matte gilt line with
++   a fine dark under-edge that reads as raised, hand-laid gold, instead of neon
++   energy flowing along a dash. Static: the gold is precious, not animated. */
++.edge-sig{
++  stroke:var(--gilt) !important;
++  stroke-width:2.3 !important;
++  stroke-dasharray:none !important;
++  stroke-linecap:round;
++  animation:none !important;
++  filter:drop-shadow(0 0 0.6px rgba(58,38,6,.95)) drop-shadow(0 1px 1px rgba(38,24,4,.5)) !important;
++}
++.edge-pre{stroke-opacity:.26 !important;}
++.agg-edge{opacity:.30 !important;}
++
++/* ---- the reading panel becomes an aged manuscript leaf ---- */
++#panel{
++  background:var(--paper) !important;color:var(--ink) !important;
++  backdrop-filter:none !important;-webkit-backdrop-filter:none !important;
++  border-top:1px solid var(--paper-edge) !important;
++  box-shadow:0 -10px 40px rgba(0,0,0,.55) !important;
++  background-image:
++    radial-gradient(130% 70% at 50% 0%, rgba(255,251,238,.55), rgba(0,0,0,0) 62%),
++    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='150'%3E%3Cfilter id='p'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23p)' opacity='0.35'/%3E%3C/svg%3E") !important;
++}
++@media(min-width:900px){#panel{border-top:none !important;
++  border-left:1px solid var(--paper-edge) !important;
++  box-shadow:-10px 0 40px rgba(0,0,0,.4) !important;}}
++.panel-handle{background:var(--paper-edge) !important;}
++#closepanel{background:rgba(40,30,10,.08) !important;color:var(--ink) !important;}
++#panel h2{color:var(--ink) !important;text-shadow:none !important;}
++#panel p.def{color:#3a3122 !important;}
++.p-eyebrow{color:var(--ink-soft) !important;}
++.section-label{color:var(--ink-soft) !important;border-color:rgba(40,30,10,.14) !important;}
++ul.theorems{color:#33302a !important;}
++.book{color:#5a4d34 !important;}
++.chips .chip{background:rgba(40,30,10,.05) !important;border:1px solid rgba(40,30,10,.16) !important;
++  color:var(--ink) !important;}
++.chips .chip:hover,.chips .chip:active{background:rgba(201,162,74,.20) !important;
++  border-color:rgba(201,162,74,.55) !important;}
++.chip.stub{opacity:.6 !important;border-style:dashed !important;}
++.via-box{background:#f0e2b6 !important;border-left:3px solid var(--gilt) !important;color:#3a2f14 !important;}
++.via-box b{color:#7a5a10 !important;}
++.who-box{background:linear-gradient(135deg,rgba(201,162,74,.20),rgba(201,162,74,.06)) !important;
++  border:1px solid rgba(201,162,74,.4) !important;box-shadow:none !important;}
++.who-eyebrow{color:#8a6a1e !important;}
++.who-name{color:var(--ink) !important;}
++.story-box{color:#2f2718 !important;}
++.story-box::first-letter{color:var(--gilt-deep) !important;}   /* illuminated initial */
++.edge-title .arrow{color:var(--gilt-deep) !important;}
++.bridge-row{background:rgba(40,30,10,.035) !important;border:1px solid rgba(40,30,10,.10) !important;}
++.bridge-row:hover{background:rgba(201,162,74,.14) !important;border-color:rgba(201,162,74,.4) !important;}
++.bridge-row-t{color:var(--ink) !important;}
++.bridge-row-t .arrow{color:var(--gilt-deep) !important;}
++.bridge-row-w{color:#6a5c44 !important;}
++.bridge-row-w i{color:#8a6a1e !important;}
++.schuller{background:#e7ecf5 !important;color:#33414f !important;border-left:3px solid #6a86a8 !important;}
++.atom-btn{background:linear-gradient(180deg,#dfeecb,#cfe3b8) !important;color:#26361a !important;
++  border:1px solid #a9c98f !important;text-shadow:none !important;box-shadow:none !important;}
++
++/* map text: warm the topic label (its fill is set in CSS, not per-element) */
++.topic-label{fill:#b8ac90 !important;}
++
++/* ---- collapsible header ---- */
++#hdrToggle{margin-left:auto;flex:0 0 auto;width:30px;height:30px;border-radius:8px;
++  border:1px solid var(--line);background:rgba(201,162,74,.08);color:var(--gilt);
++  font-size:13px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;
++  transition:transform .28s cubic-bezier(.2,.8,.3,1),background .2s;}
++#hdrToggle:hover{background:rgba(201,162,74,.18);}
++.titlerow{align-items:center;}
++.subtitle,.legend{transition:max-height .3s ease,opacity .25s ease,margin .3s ease;
++  max-height:70px;overflow:hidden;}
++body.hdr-min .subtitle,body.hdr-min .legend{max-height:0;opacity:0;margin-top:0;pointer-events:none;}
++body.hdr-min header{padding-bottom:9px;}
++body.hdr-min h1{font-size:17px;}
++body.hdr-min #hdrToggle{transform:rotate(180deg);}
++
++/* ---- honour reduced-motion: kill even the one-time entrance ---- */
++@media (prefers-reduced-motion: reduce){
++  *,*::before,*::after{animation:none !important;}
++  .field-g.enter{opacity:1 !important;transform:none !important;}
++  #panel{transition:none !important;}
++}
+diff --git a/data/data.js b/data/data.js
+index 882069a..89c3708 100644
+--- a/data/data.js
++++ b/data/data.js
+@@ -13,7 +13,7 @@ window.MATH_DATA = {
+   {
+    "id": "foundations",
+    "label": "Foundations",
+-   "color": "#9aa3b2",
++   "color": "#8f97a6",
+    "x": 350,
+    "y": 820,
+    "tag": "logic · sets · categories",
+@@ -22,7 +22,7 @@ window.MATH_DATA = {
+   {
+    "id": "algebra",
+    "label": "Algebra",
+-   "color": "#e0685c",
++   "color": "#c5624c",
+    "x": 1050,
+    "y": 360,
+    "tag": "structure · symmetry",
+@@ -31,7 +31,7 @@ window.MATH_DATA = {
+   {
+    "id": "analysis",
+    "label": "Analysis",
+-   "color": "#5b9ce0",
++   "color": "#4f80bd",
+    "x": 1050,
+    "y": 1280,
+    "tag": "limits · the infinite",
+@@ -40,7 +40,7 @@ window.MATH_DATA = {
+   {
+    "id": "geometry",
+    "label": "Geometry & Topology",
+-   "color": "#57ab79",
++   "color": "#3f9a76",
+    "x": 1760,
+    "y": 860,
+    "tag": "shape · space · curvature",
+@@ -49,7 +49,7 @@ window.MATH_DATA = {
+   {
+    "id": "number",
+    "label": "Number Theory",
+-   "color": "#d9a441",
++   "color": "#c39433",
+    "x": 1830,
+    "y": 300,
+    "tag": "integers · primes",
+@@ -58,7 +58,7 @@ window.MATH_DATA = {
+   {
+    "id": "discrete",
+    "label": "Discrete & Combinatorics",
+-   "color": "#c46fb8",
++   "color": "#a85f8c",
+    "x": 430,
+    "y": 280,
+    "tag": "counting · graphs",
+@@ -67,7 +67,7 @@ window.MATH_DATA = {
+   {
+    "id": "probability",
+    "label": "Probability",
+-   "color": "#8f7be0",
++   "color": "#7f74bf",
+    "x": 1760,
+    "y": 1400,
+    "tag": "rigorous randomness",
+@@ -76,7 +76,7 @@ window.MATH_DATA = {
+   {
+    "id": "order",
+    "label": "Order & Universal Algebra",
+-   "color": "#6fb8b0",
++   "color": "#6ea79b",
+    "x": 380,
+    "y": 1400,
+    "tag": "lattices · posets",
+diff --git a/index.html b/index.html
+index fbf70fe..d4c6e6f 100644
+--- a/index.html
++++ b/index.html
+@@ -13,6 +13,7 @@
+   <header>
+     <div class="titlerow">
+       <h1>The Web of Mathematics <span class="thin">— from logic upward</span></h1>
++      <button id="hdrToggle" type="button" title="Collapse header" aria-label="Collapse header">▾</button>
+     </div>
+     <div class="subtitle">8 domains · 45 fields · 211 topics · 72 bridges — each naming who built it and the theory behind it · 4 interactive atoms — three zoom levels: clusters resolve into branches, branches into topics</div>
+     <div class="toolbar">
+diff --git a/js/app.js b/js/app.js
+index 752e0c4..ea390bf 100644
+--- a/js/app.js
++++ b/js/app.js
+@@ -1,6 +1,14 @@
+ /* THE WEB OF MATHEMATICS — renderer
+    Semantic zoom: level 0 shows 8 domains; zooming in resolves each into its fields.
+-   Data lives entirely in data/data.js — this file never needs editing to grow the map. */
++   Data lives entirely in data/data.js — this file never needs editing to grow the map.
++
++   WAVE 1 — typographic hierarchy + level-of-detail
++   · Four type voices: Spectral serif (domains) / Inter 17 semibold (fields)
++     / Inter 10.5 regular (topics) / Plex Mono 9.5 italic lowercase (bridges)
++   · One applyLOD() drives all zoom-dependent visibility (fade, don't pop)
++   · Viewport culling above field zoom kills the hairball
++   · One-shot greedy collision pass hides overlapping topic labels
++   · Glow filters reserved for navigable levels — topic dots are flat (perf) */
+ 
+ (function(){
+ "use strict";
+@@ -46,11 +54,18 @@ function edgePath(a,b,bend){
+   const cx=mx - dy/len * len*k, cy=my + dx/len * len*k;
+   return `M ${a.x} ${a.y} Q ${cx} ${cy} ${b.x} ${b.y}`;
+ }
++/* mix a hex colour toward white: tint('#d9a441', .6) → high-luminance hue */
++function tint(hex, w){
++  const n=parseInt(hex.slice(1),16);
++  const r=(n>>16)&255, g=(n>>8)&255, b=n&255;
++  const m=v=>Math.round(v+(255-v)*w);
++  return 'rgb('+m(r)+','+m(g)+','+m(b)+')';
++}
+ 
+-/* ---------- defs: glows & gradients (Part 4 visual overhaul) ---------- */
++/* ---------- defs: glows & gradients ---------- */
+ const defs = el('defs',{},svg);
+ (function buildDefs(){
+-  // node glow
++  // node glow — navigable levels only (domains, fields)
+   const glow = el('filter',{id:'glow',x:'-80%',y:'-80%',width:'260%',height:'260%'},defs);
+   el('feGaussianBlur',{'in':'SourceGraphic',stdDeviation:'5',result:'b'},glow);
+   const gm = el('feMerge',{},glow);
+@@ -85,22 +100,30 @@ const gStars = el('g',{id:'layer-stars'},viewport);
+ })();
+ 
+ /* ---------- layers ---------- */
+-const gAgg    = el('g',{id:'layer-agg'},viewport);     // domain-level aggregate edges
++const gAgg    = el('g',{id:'layer-agg'},viewport);     // domain-level aggregate ribbons
+ const gDomain = el('g',{id:'layer-domains'},viewport);
+ const gEdges  = el('g',{id:'layer-edges'},viewport);   // field-level edges
+ const gFields = el('g',{id:'layer-fields'},viewport);
+ 
+-/* aggregate edges between domains (deduped) */
+-const aggSeen = new Set();
++/* aggregate ribbons between domains (deduped) — the only edges at full zoom-out.
++   Wide, soft gradient strokes running hue→hue between their two domains, so the
++   overview reads as regions with currents between them, not a wire hairball. */
++const aggSeen = new Set(); let aggN=0;
+ D.edges.forEach(e=>{
+   const da = fieldById[e.from].domain, db = fieldById[e.to].domain;
+   if(da===db) return;
+   const key=[da,db].sort().join('|');
+   if(aggSeen.has(key)) return; aggSeen.add(key);
+-  el('path',{d:edgePath(domById[da],domById[db],0.08),'class':'agg-edge'},gAgg);
++  const A=domById[da], B=domById[db];
++  const gid='aggrad-'+(aggN++);
++  const lg=el('linearGradient',{id:gid,gradientUnits:'userSpaceOnUse',
++    x1:A.x,y1:A.y,x2:B.x,y2:B.y},defs);
++  el('stop',{offset:'0%','stop-color':A.color,'stop-opacity':'0.5'},lg);
++  el('stop',{offset:'100%','stop-color':B.color,'stop-opacity':'0.5'},lg);
++  el('path',{d:edgePath(A,B,0.08),'class':'agg-edge',stroke:'url(#'+gid+')'},gAgg);
+ });
+ 
+-/* domain nodes */
++/* domain nodes — L0 voice: Spectral serif, letterspaced, high-luminance domain hue */
+ D.domains.forEach(d=>{
+   const g = el('g',{'class':'domain-g'},gDomain);
+   d._neb = el('circle',{cx:d.x,cy:d.y,r:d.R+40,'class':'domain-nebula',
+@@ -110,17 +133,21 @@ D.domains.forEach(d=>{
+     fill:d.color+'14', stroke:d.color+'55','stroke-width':1.5},g);
+   d._core = el('circle',{cx:d.x,cy:d.y,r:18,'class':'domain-core',
+     fill:'url(#orb-'+d.id+')',filter:'url(#glow)',opacity:0.95},g);
+-  d._label = el('text',{x:d.x,y:d.y+d.R+34,'class':'domain-label','font-size':30},g);
++  d._label = el('text',{x:d.x,y:d.y+d.R+34,'class':'domain-label','font-size':44,
++    fill:tint(d.color,0.55)},g);
+   d._label.textContent = d.label;
++  d._label.style.filter = 'drop-shadow(0 0 14px '+d.color+'66)';
+   d._tag = el('text',{x:d.x,y:d.y+d.R+58,'class':'domain-tag','font-size':13},g);
+   d._tag.textContent = d.tag;
+   const hit = el('circle',{cx:d.x,cy:d.y,r:Math.max(70,d.R*0.55),'class':'domain-hit'},g);
+   hit.addEventListener('click',()=>{ if(scale<FIELD_ZOOM) zoomTo(d.x,d.y,1.9); else openDomain(d); });
+ });
+ 
+-/* field-level edges (drawn beneath fields) */
++/* field-level edges (drawn beneath fields) — the bridge's own voice lives on the
++   via label: mono italic lowercase gold, unlike any node text on the canvas */
+ D.edges.forEach(e=>{
+   const A=fieldById[e.from], B=fieldById[e.to];
++  e._A=A; e._B=B;
+   const same = A.domain===B.domain;
+   const color = e.type==='sig' ? '#d9a441' : (domById[A.domain].color);
+   const path = el('path',{d:edgePath(A,B, same?0.22:0.1),'class':'edge edge-'+e.type,
+@@ -135,31 +162,34 @@ D.edges.forEach(e=>{
+     const dx=B.x-A.x, dy=B.y-A.y, len=Math.hypot(dx,dy)||1;
+     const lx=mx - dy/len*len*0.1, ly=my + dx/len*len*0.1 - 6;
+     e._via = el('text',{x:lx,y:ly,'class':'via-label'},gEdges);
+-    e._via.textContent = e.via;
++    e._via.textContent = e.via.toLowerCase();
+   }
+ });
+ 
+-/* field nodes */
++/* field nodes — L1 voice: Inter 17 semibold, near-white carrying the domain hue */
+ D.fields.forEach(f=>{
+   const c = domById[f.domain].color;
+   const g = el('g',{'class':'field-g enter'},gFields);
+   g.style.animationDelay=(window.__fi=(window.__fi||0)+1)*28+'ms';
+   f._g = g;
+-  el('circle',{cx:f.x,cy:f.y,r:11,'class':'field-pulse',stroke:c},g);
+-  el('circle',{cx:f.x,cy:f.y,r:10,'class':'field-orb',fill:'url(#orb-'+f.domain+')',filter:'url(#glow)'},g);
++  el('circle',{cx:f.x,cy:f.y,r:10,'class':'field-pulse',stroke:c},g);
++  el('circle',{cx:f.x,cy:f.y,r:9,'class':'field-orb',fill:'url(#orb-'+f.domain+')',filter:'url(#glow)'},g);
+   const words = f.label.split(' ');
+   let lines=[]; let cur='';
+   words.forEach(w=>{ if((cur+' '+w).trim().length>16){lines.push(cur.trim());cur=w;} else cur+=' '+w; });
+   if(cur.trim()) lines.push(cur.trim());
+   lines.forEach((ln,i)=>{
+-    const t=el('text',{x:f.x,y:f.y+26+i*13,'class':'field-label'},g);
++    const t=el('text',{x:f.x,y:f.y+27+i*19,'class':'field-label',fill:tint(c,0.82)},g);
+     t.textContent=ln;
+   });
+   const hit = el('circle',{cx:f.x,cy:f.y,r:30,'class':'field-hit'},g);
+   hit.addEventListener('click',ev=>{ev.stopPropagation(); openField(f);});
+ });
+ 
+-/* ---------- L3: topic satellites (third zoom level) ---------- */
++/* ---------- L3: topic satellites (third zoom level) ----------
++   L2 voice: Inter 10.5 regular, muted blue-grey. Dots are flat — glow is
++   reserved for navigable levels, and topic dots are the most numerous elements
++   on the map, so dropping their filter is also the Wave-1 performance fix. */
+ const gTopics = el('g',{id:'layer-topics'},viewport);
+ function normTopic(c){ return typeof c==='string' ? {label:c} : c; }
+ D.fields.forEach(f=>{
+@@ -175,43 +205,162 @@ D.fields.forEach(f=>{
+     const g=el('g',{'class':'topic-g'},gTopics);
+     tp._g=g;
+     el('line',{x1:f.x,y1:f.y,x2:tp.x,y2:tp.y,'class':'topic-spoke',stroke:c},g);
+-    el('circle',{cx:tp.x,cy:tp.y,r:tp.def?4.4:3.2,'class':'topic-dot',
++    el('circle',{cx:tp.x,cy:tp.y,r:tp.def?4.5:3.2,'class':'topic-dot',
+       fill:tp.def?c:'#0e1117',stroke:c,'stroke-width':1.2},g);
+     const anchor = cos>0.35?'start':(cos<-0.35?'end':'middle');
+     const lx=tp.x+cos*10;
+     const ly=tp.y+sin*10 + (Math.abs(cos)<=0.35 ? (sin>0?9:-5):3);
+     const t=el('text',{x:lx,y:ly,'class':'topic-label','text-anchor':anchor},g);
+     t.textContent=tp.label;
++    tp._labelEl=t; tp._lx=lx; tp._ly=ly; tp._anchor=anchor; tp._cos=cos; tp._sin=sin;
+     const hit=el('circle',{cx:tp.x,cy:tp.y,r:15,'class':'topic-hit'},g);
+     hit.addEventListener('click',ev=>{ev.stopPropagation(); openTopic(tp);});
+   });
+ });
+ 
+-/* ---------- semantic zoom ---------- */
++/* ---------- topic label collision: one-shot greedy pass ----------
++   Label size and label separation both scale linearly with zoom, so overlap is
++   zoom-invariant — one pass at build time settles it for every zoom level.
++   Shortest labels are placed first (easiest to seat); each tries its home slot,
++   then two nudges further out along its spoke, then four tangential slides that
++   keep it beside its own dot. Only a label with no free slot is hidden — its dot
++   stays tappable and it's still reachable through the field panel's topic chips.
++   On this data: 190 seat at home, 20 nudge, 1 hides (Group representations). */
++(function collidePass(){
++  const CHAR_W=0.56*10.5, H_UP=9.5, H_DN=2.5, PAD=1;
++  const entries=[];
++  D.fields.forEach(f=>(f._topics||[]).forEach(tp=>entries.push(tp)));
++  entries.sort((a,b)=>a.label.length-b.label.length);
++  const placed=[];
++  const rectAt=(tp,dx,dy)=>{
++    const w=tp.label.length*CHAR_W;
++    const lx=tp._lx+dx, ly=tp._ly+dy;
++    const x0 = tp._anchor==='start' ? lx : (tp._anchor==='end' ? lx-w : lx-w/2);
++    return {x0:x0, y0:ly-H_UP, x1:x0+w, y1:ly+H_DN, dx:dx, dy:dy};
++  };
++  const free=r=>!placed.some(p=>!(r.x1<p.x0+PAD||r.x0>p.x1-PAD||r.y1<p.y0+PAD||r.y0>p.y1-PAD));
++  entries.forEach(tp=>{
++    const c=tp._cos, s=tp._sin;
++    const tries=[
++      [0,0],                              // home slot
++      [c*13, s*13], [c*26, s*26],         // push further out along the spoke
++      [-s*12, c*12], [s*12, -c*12],       // slide tangentially, either way
++      [c*13-s*12, s*13+c*12],             // diagonal blends of the two
++      [c*13+s*12, s*13-c*12]
++    ];
++    let seated=null;
++    for(let i=0;i<tries.length;i++){
++      const r=rectAt(tp,tries[i][0],tries[i][1]);
++      if(free(r)){seated=r; break;}
++    }
++    if(!seated){ tp._labelEl.classList.add('label-hidden'); return; }
++    placed.push(seated);
++    if(seated.dx||seated.dy){          // rescued by a nudge — move the text to match
++      tp._labelEl.setAttribute('x', tp._lx+seated.dx);
++      tp._labelEl.setAttribute('y', tp._ly+seated.dy);
++    }
++  });
++})();
++
++/* ---------- semantic zoom: one function owns all visibility ---------- */
+ let tx=0, ty=0, scale=1;
++function ramp(s,a,b){return Math.max(0,Math.min(1,(s-a)/(b-a)));}
++
++/* visible world-rect for culling; letterboxing means the visible area can
++   exceed the viewBox on one axis, so measure the real element box (cached) */
++let fitCache=null;
++function fitExtents(){
++  if(fitCache) return fitCache;
++  const r=svg.getBoundingClientRect();
++  const sf=Math.min(r.width/VB_W, r.height/VB_H)||1;
++  const exU=(r.width/sf-VB_W)/2, exV=(r.height/sf-VB_H)/2;
++  fitCache={u0:-exU, u1:VB_W+exU, v0:-exV, v1:VB_H+exV};
++  return fitCache;
++}
++window.addEventListener('resize',()=>{fitCache=null; applyTransform();});
++
++let enterCleaned=false, enterTimerSet=false, fieldsWereOn=false;
+ function applyTransform(){
+   viewport.setAttribute('transform',`translate(${tx} ${ty}) scale(${scale})`);
+-  const t = Math.min(1, Math.max(0, (scale-1.0)/(FIELD_ZOOM-1.0)));   // 0=domain view, 1=field view
+-  gFields.style.opacity = t;
+-  gEdges.style.opacity  = t;
+-  gFields.style.pointerEvents = t>0.5 ? 'auto':'none';
+-  gEdges.style.pointerEvents  = t>0.5 ? 'auto':'none';
+-  gAgg.style.opacity = (1-t)*0.9;
++  applyLOD();
++}
++function applyLOD(){
++  const s=scale;
++  /* band ramps — every boundary is a fade, nothing pops */
++  const fields = ramp(s,1.0,1.35);          // fields fade in
++  const fEdges = ramp(s,1.35,1.7);          // field edges only past field zoom
++  const topics = ramp(s,2.1,2.8);           // topics + bridge labels ride together
++  const chrome = 1-ramp(s,1.0,1.35);        // domain orb/ring/tag hand over to fields
++  /* domain presence: 100 → 60 → 35 → 20 → 12 % across the bands, interpolated */
++  let dom;
++  if(s<1.0)       dom=1;
++  else if(s<1.35) dom=1   -0.40*ramp(s,1.0,1.35);
++  else if(s<2.1)  dom=0.60-0.25*ramp(s,1.35,2.1);
++  else if(s<2.8)  dom=0.35-0.15*ramp(s,2.1,2.8);
++  else            dom=Math.max(0.12, 0.20-0.08*ramp(s,2.8,3.4));
++
++  /* domain type eases larger as you pull out: 44 at overview → 30 at field zoom */
++  const dfs=Math.max(30, Math.min(44, 27/s+10));
++
++  gAgg.style.opacity = 1-fields;
++  gAgg.style.display = fields>=1 ? 'none':'';
++
++  gFields.style.opacity = fields;
++  const fieldsOn = s>0.98;
++  gFields.style.display = fieldsOn ? '':'none';
++  gFields.style.pointerEvents = fields>0.5 ? 'auto':'none';
++  if(fieldsOn && !fieldsWereOn && !enterCleaned && !enterTimerSet){
++    /* the first reveal plays the entrance cascade once; then the classes come
++       off so later band-crossings don't replay it */
++    enterTimerSet=true;
++    setTimeout(()=>{D.fields.forEach(f=>f._g.classList.remove('enter')); enterCleaned=true;},2400);
++  }
++  fieldsWereOn=fieldsOn;
++
++  gEdges.style.opacity = fEdges;
++  gEdges.style.display = s>1.33 ? '':'none';
++  gEdges.style.pointerEvents = fEdges>0.5 ? 'auto':'none';
++
++  gTopics.style.opacity = topics;
++  gTopics.style.display = s>2.05 ? '':'none';
++  gTopics.style.pointerEvents = topics>0.5 ? 'auto':'none';
++
+   D.domains.forEach(d=>{
+-    d._label.style.opacity = 1 - t*0.25;
+-    d._tag.style.opacity = (1-t);
+-    d._core.style.opacity = (1-t)*0.95;
+-    d._halo.setAttribute('fill', d.color + (t>0.5?'0a':'14'));
+-    d._neb.style.opacity = 1-t*0.55;
+-    d._ring.style.opacity = (1-t)*0.7;
++    d._label.style.opacity = dom;
++    d._label.setAttribute('font-size', dfs);
++    d._tag.style.opacity  = chrome;
++    d._core.style.opacity = chrome*0.95;
++    d._ring.style.opacity = chrome*0.7;
++    d._neb.style.opacity  = 0.15+0.85*dom;
++    d._halo.setAttribute('fill', d.color + (s>FIELD_ZOOM?'0a':'14'));
+   });
+-  // via labels only readable when zoomed well in
+-  const showVia = scale>1.8 ? 1 : 0;
+-  D.edges.forEach(e=>{ if(e._via) e._via.style.opacity = showVia; });
+-  // topics: third zoom level, fading in from scale 2.1 → 3.0
+-  const t2 = Math.min(1, Math.max(0,(scale-2.1)/0.9));
+-  gTopics.style.opacity = t2;
+-  gTopics.style.pointerEvents = t2>0.5 ? 'auto':'none';
++
++  /* viewport culling — this is what kills the hairball and the pan stutter */
++  const ext=fitExtents();
++  const x0=(ext.u0-tx)/s, x1=(ext.u1-tx)/s, y0=(ext.v0-ty)/s, y1=(ext.v1-ty)/s;
++  if(s>1.33){
++    const M=90;   // margin for curve bow + label overhang
++    D.edges.forEach(e=>{
++      const ex0=Math.min(e._A.x,e._B.x)-M, ex1=Math.max(e._A.x,e._B.x)+M;
++      const ey0=Math.min(e._A.y,e._B.y)-M, ey1=Math.max(e._A.y,e._B.y)+M;
++      const vis=!(ex1<x0||ex0>x1||ey1<y0||ey0>y1);
++      if(vis!==e._vis){
++        e._vis=vis;
++        const dsp=vis?'':'none';
++        e._path.style.display=dsp; e._hit.style.display=dsp;
++        if(e._via) e._via.style.display=dsp;
++      }
++    });
++    if(s>2.05){
++      const T=110;  // topic dot + label reach
++      D.fields.forEach(f=>(f._topics||[]).forEach(tp=>{
++        const vis=tp.x>x0-T&&tp.x<x1+T&&tp.y>y0-T&&tp.y<y1+T;
++        if(vis!==tp._vis){tp._vis=vis; tp._g.style.display=vis?'':'none';}
++      }));
++    }
++  }
++  /* bridge labels ride the topic band (readable only once there is room) */
++  D.edges.forEach(e=>{ if(e._via) e._via.style.opacity=topics; });
+ }
+ 
+ /* ---------- pan / zoom (pointer + wheel + pinch) ---------- */
+@@ -550,6 +699,25 @@ legend.appendChild(sig);
+ const bb=document.getElementById('bridgesBtn');
+ if(bb) bb.onclick=()=>openBridgeIndex();
+ 
++/* ---------- collapsible header (Wave 2) ---------- */
++(function(){
++  const btn=document.getElementById('hdrToggle');
++  if(!btn) return;
++  const KEY='wom.hdr';
++  const apply=v=>{
++    const min = v==='min';
++    document.body.classList.toggle('hdr-min', min);
++    btn.setAttribute('aria-label', min?'Expand header':'Collapse header');
++    btn.title = min?'Expand header':'Collapse header';
++  };
++  let saved=null; try{saved=localStorage.getItem(KEY);}catch(e){}
++  apply(saved);
++  btn.addEventListener('click',()=>{
++    const v=document.body.classList.contains('hdr-min')?'full':'min';
++    apply(v); try{localStorage.setItem(KEY,v);}catch(e){}
++  });
++})();
++
+ /* ---------- intro hint ---------- */
+ let introHidden=false;
+ function hideIntroSoon(){
+diff --git a/style.css b/style.css
+deleted file mode 100644
+index 2ca08f8..0000000
+--- a/style.css
++++ /dev/null
+@@ -1,254 +0,0 @@
+-:root{
+-  --bg:#0e1117;
+-  --bg2:#090b10;
+-  --paper:#f7f3ea;
+-  --ink:#211d17;
+-  --ink-soft:#6a6355;
+-  --line:rgba(255,255,255,0.08);
+-  --text:#e9e6dc;
+-  --text-dim:#8f95a3;
+-  --gold:#d9a441;
+-}
+-*{box-sizing:border-box;}
+-html,body{margin:0;padding:0;height:100%;background:var(--bg);overflow:hidden;
+-  font-family:'Inter',system-ui,sans-serif;color:var(--text);}
+-#app{position:fixed;inset:0;display:flex;flex-direction:column;}
+-
+-header{flex:0 0 auto;background:linear-gradient(180deg,var(--bg2),var(--bg));
+-  border-bottom:1px solid var(--line);padding:12px 16px 10px;z-index:6;}
+-.titlerow{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;}
+-h1{font-family:'Spectral',serif;font-weight:600;font-size:20px;margin:0;letter-spacing:0.2px;}
+-h1 .thin{font-style:italic;font-weight:400;color:var(--gold);}
+-.subtitle{font-size:11px;color:var(--text-dim);margin-top:2px;font-family:'IBM Plex Mono',monospace;}
+-
+-.toolbar{display:flex;gap:8px;margin-top:10px;align-items:center;}
+-#search{flex:1;background:rgba(255,255,255,0.06);border:1px solid var(--line);
+-  color:var(--text);border-radius:8px;padding:8px 11px;font-size:13px;font-family:'Inter',sans-serif;}
+-#search::placeholder{color:var(--text-dim);}
+-#search:focus{outline:none;border-color:var(--gold);}
+-.mode-hint{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--text-dim);
+-  white-space:nowrap;}
+-
+-.legend{display:flex;gap:12px;margin-top:9px;overflow-x:auto;white-space:nowrap;
+-  -webkit-overflow-scrolling:touch;scrollbar-width:none;}
+-.legend::-webkit-scrollbar{display:none;}
+-.lgitem{display:inline-flex;align-items:center;gap:5px;font-size:10.5px;color:var(--text-dim);
+-  font-family:'IBM Plex Mono',monospace;flex:0 0 auto;cursor:pointer;}
+-.lgitem .dot{width:8px;height:8px;border-radius:50%;flex:0 0 auto;}
+-.lgitem:hover{color:var(--text);}
+-
+-main{flex:1 1 auto;position:relative;overflow:hidden;}
+-svg{width:100%;height:100%;display:block;touch-action:none;cursor:grab;}
+-svg.panning{cursor:grabbing;}
+-
+-/* graph elements */
+-.domain-halo{transition:opacity .35s;}
+-/* L0 voice — serif, letterspaced; fill is the domain hue (set per-element in JS) */
+-.domain-label{font-family:'Spectral',serif;font-weight:600;letter-spacing:0.07em;
+-  text-anchor:middle;transition:opacity .35s;pointer-events:none;}
+-.domain-tag{font-family:'IBM Plex Mono',monospace;fill:var(--text-dim);
+-  text-anchor:middle;transition:opacity .35s;pointer-events:none;}
+-.domain-hit{fill:transparent;cursor:pointer;}
+-
+-.field-g{transition:opacity .35s;}
+-.field-circle{stroke-width:1.6;}
+-/* L1 voice — sans semibold, clearly bigger than topics, clearly unlike domains */
+-.field-label{font-family:'Inter',system-ui,sans-serif;font-size:17px;font-weight:600;
+-  pointer-events:none;text-anchor:middle;}
+-.field-hit{fill:transparent;cursor:pointer;}
+-
+-.edge{fill:none;transition:opacity .35s, stroke-width .2s;pointer-events:none;}
+-.edge-hit{fill:none;stroke:transparent;stroke-width:16;cursor:pointer;pointer-events:stroke;}
+-.edge-sig{stroke-dasharray:none;}
+-.edge-pre{}
+-/* zoomed-out ribbons: wide soft hue→hue currents between domains, not wires */
+-.agg-edge{fill:none;stroke-width:7;stroke-linecap:round;opacity:0.22;
+-  transition:opacity .35s;pointer-events:none;}
+-/* bridge voice — mono italic lowercase: a sentence between fields, not a label */
+-.via-label{font-family:'IBM Plex Mono',monospace;font-size:9.5px;font-style:italic;
+-  fill:var(--gold);text-anchor:middle;pointer-events:none;transition:opacity .35s;}
+-
+-.dimmed{opacity:0.12 !important;}
+-
+-/* zoom controls */
+-.zoomctl{position:absolute;right:12px;bottom:14px;display:flex;flex-direction:column;gap:6px;z-index:5;}
+-.zbtn{width:38px;height:38px;border-radius:10px;border:1px solid var(--line);
+-  background:rgba(14,17,23,0.85);color:var(--text);font-size:17px;display:flex;
+-  align-items:center;justify-content:center;cursor:pointer;backdrop-filter:blur(4px);user-select:none;}
+-.zbtn:active{background:rgba(255,255,255,0.12);}
+-.zbtn.small{font-size:11px;font-family:'IBM Plex Mono',monospace;}
+-
+-/* detail panel: bottom sheet (mobile) / right panel (desktop) */
+-#scrim{position:fixed;inset:0;background:rgba(0,0,0,0.35);opacity:0;pointer-events:none;
+-  transition:opacity .25s;z-index:9;}
+-#scrim.open{opacity:1;pointer-events:auto;}
+-
+-#panel{position:fixed;background:var(--paper);color:var(--ink);z-index:10;
+-  display:flex;flex-direction:column;
+-  left:0;right:0;bottom:0;border-radius:16px 16px 0 0;max-height:70vh;
+-  transform:translateY(105%);transition:transform .28s cubic-bezier(.2,.8,.3,1);
+-  box-shadow:0 -8px 30px rgba(0,0,0,0.45);}
+-#panel.open{transform:translateY(0);}
+-@media(min-width:900px){
+-  #panel{left:auto;top:0;bottom:0;right:0;width:420px;max-height:none;
+-    border-radius:0;transform:translateX(105%);box-shadow:-8px 0 30px rgba(0,0,0,0.35);}
+-  #panel.open{transform:translateX(0);}
+-  #scrim{display:none;}
+-}
+-.panel-handle{width:36px;height:4px;background:#d8d2c2;border-radius:3px;margin:10px auto 2px;}
+-@media(min-width:900px){.panel-handle{display:none;}}
+-.panel-scroll{overflow-y:auto;padding:12px 22px 28px;}
+-.p-eyebrow{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:0.6px;
+-  text-transform:uppercase;display:flex;align-items:center;gap:7px;margin-bottom:5px;color:var(--ink-soft);}
+-.p-eyebrow .dot{width:9px;height:9px;border-radius:50%;}
+-#panel h2{font-family:'Spectral',serif;font-size:23px;font-weight:600;margin:2px 0 10px;line-height:1.2;}
+-#panel p.def{font-size:14.5px;line-height:1.55;margin:0 0 14px;color:#2c2820;}
+-.section-label{font-family:'IBM Plex Mono',monospace;font-size:10px;text-transform:uppercase;
+-  color:var(--ink-soft);letter-spacing:0.6px;margin:14px 0 6px;}
+-ul.theorems{margin:0;padding-left:18px;font-size:13.5px;line-height:1.6;color:#33302a;}
+-.book{font-size:13px;color:#4a4438;font-style:italic;}
+-.chips{display:flex;flex-wrap:wrap;gap:6px;}
+-.chip{background:rgba(0,0,0,0.05);border:1px solid rgba(0,0,0,0.14);border-radius:999px;
+-  padding:5px 11px;font-size:12.5px;cursor:pointer;font-family:'Inter',sans-serif;color:var(--ink);}
+-.chip:active,.chip:hover{background:rgba(0,0,0,0.12);}
+-.chip.stub{cursor:default;opacity:0.75;border-style:dashed;}
+-.via-box{background:#f1e2b8;border-left:3px solid var(--gold);border-radius:0 8px 8px 0;
+-  padding:10px 13px;font-size:13.5px;line-height:1.5;margin:6px 0 14px;color:#3a2f14;}
+-.via-box b{font-family:'IBM Plex Mono',monospace;font-size:10.5px;text-transform:uppercase;
+-  display:block;margin-bottom:4px;color:#7a5a10;letter-spacing:0.5px;}
+-.edge-title{display:flex;align-items:center;gap:8px;font-family:'Spectral',serif;
+-  font-size:19px;font-weight:600;margin:2px 0 10px;flex-wrap:wrap;}
+-.edge-title .arrow{color:var(--gold);font-size:16px;}
+-.closebtn{position:absolute;top:12px;right:14px;width:30px;height:30px;border-radius:50%;
+-  border:none;background:rgba(0,0,0,0.06);color:var(--ink);font-size:15px;cursor:pointer;z-index:2;}
+-
+-/* intro overlay */
+-#intro{position:absolute;left:50%;top:46%;transform:translate(-50%,-50%);
+-  text-align:center;pointer-events:none;z-index:4;transition:opacity .5s;max-width:82%;}
+-#intro.gone{opacity:0;}
+-#intro .big{font-family:'Spectral',serif;font-size:15px;color:var(--text-dim);font-style:italic;}
+-
+-/* ---------- L3 topics (Part 3) ---------- */
+-#layer-topics{opacity:0;pointer-events:none;}
+-.topic-spoke{stroke-opacity:0.28;stroke-width:0.8;}
+-.topic-dot{}
+-/* L2 voice — small sans regular, muted: legible up close, recessive by design */
+-.topic-label{font-family:'Inter',system-ui,sans-serif;font-size:10.5px;font-weight:400;
+-  fill:#a9b2c4;opacity:0.72;
+-  paint-order:stroke;stroke:#0e1117;stroke-width:2px;stroke-linejoin:round;}
+-.label-hidden{display:none;}
+-.topic-hit{fill:transparent;cursor:pointer;}
+-.topic-g:active .topic-dot{stroke-width:2.4;}
+-
+-/* Schuller companion line */
+-.schuller{font-size:12.5px;font-family:'IBM Plex Mono',monospace;color:#3a4356;
+-  background:#e7ecf5;border-left:3px solid #5b9ce0;border-radius:0 8px 8px 0;
+-  padding:8px 11px;margin:2px 0 10px;}
+-
+-/* atom (interactive) button */
+-.atom-btn{display:block;text-decoration:none;font-size:13px;font-weight:600;
+-  color:#1c2a16;background:linear-gradient(180deg,#dff0d0,#cfe6bd);
+-  border:1px solid #a9c98f;border-radius:10px;padding:10px 12px;margin:10px 0 4px;}
+-.atom-btn:active{filter:brightness(0.95);}
+-
+-/* ============================================================
+-   PART 4 — VISUAL OVERHAUL: deep-space, glow, motion
+-   ============================================================ */
+-body{background:radial-gradient(1200px 800px at 30% 10%, #141a26 0%, #0b0e15 55%, #07090e 100%);}
+-#svg{background:transparent;}
+-
+-/* animated title shimmer */
+-header h1{background:linear-gradient(90deg,#e9e6dc 0%,#ffd98a 45%,#e9e6dc 60%);
+-  background-size:220% 100%;-webkit-background-clip:text;background-clip:text;
+-  -webkit-text-fill-color:transparent;animation:shimmer 7s linear infinite;}
+-header h1 em{-webkit-text-fill-color:var(--gold);}
+-@keyframes shimmer{to{background-position:-220% 0;}}
+-#search:focus{box-shadow:0 0 0 3px rgba(217,164,65,0.18),0 0 18px rgba(217,164,65,0.25);}
+-
+-/* starfield */
+-.star{fill:#fff;opacity:0.1;animation:twinkle 3s ease-in-out infinite;}
+-@keyframes twinkle{0%,100%{opacity:0.06}50%{opacity:0.55}}
+-
+-/* domains: nebula + slow-spinning dashed ring + glowing core */
+-.domain-nebula{pointer-events:none;transition:opacity .4s;}
+-.domain-ring{fill:none;stroke-width:1.2;stroke-dasharray:3 12;opacity:0.55;
+-  transform-box:fill-box;transform-origin:center;animation:spin 80s linear infinite;
+-  pointer-events:none;transition:opacity .4s;}
+-@keyframes spin{to{transform:rotate(360deg)}}
+-.domain-halo{stroke-dasharray:none;}
+-.domain-core{transition:opacity .4s;}
+-.domain-g:hover .domain-ring{opacity:0.95;animation-duration:24s;}
+-
+-/* fields: springy entry + breathing pulse ring + glow orb */
+-.enter{transform-box:fill-box;transform-origin:center;
+-  animation:enter .8s cubic-bezier(.18,.9,.28,1.35) both;}
+-@keyframes enter{from{opacity:0;transform:scale(0.2)}to{opacity:1;transform:scale(1)}}
+-.field-pulse{fill:none;opacity:0;transform-box:fill-box;transform-origin:center;
+-  animation:pulse 3s ease-out infinite;}
+-.field-g:nth-child(3n) .field-pulse{animation-delay:.9s;}
+-.field-g:nth-child(3n+1) .field-pulse{animation-delay:1.8s;}
+-@keyframes pulse{0%{transform:scale(.7);opacity:.85;stroke-width:2}
+-  70%{transform:scale(2.1);opacity:0;stroke-width:.5}100%{opacity:0}}
+-.field-g{cursor:pointer;}
+-.field-g:hover .field-orb,.field-g:active .field-orb{r:12;}
+-.field-orb{transition:r .18s ease;}
+-.field-label{paint-order:stroke;stroke:#0b0e15;stroke-width:3px;stroke-linejoin:round;}
+-
+-/* bridges: golden energy flowing along the arc */
+-.edge-sig{stroke-dasharray:7 12;animation:flow 1.1s linear infinite;filter:url(#glowE);}
+-@keyframes flow{to{stroke-dashoffset:-19}}
+-.edge-pre{stroke-opacity:0.3;}
+-.via-label{paint-order:stroke;stroke:#0b0e15;stroke-width:3px;stroke-linejoin:round;}
+-
+-/* topic dots stay flat — glow is reserved for navigable levels (211 dots
+-   with filters was the pan-stutter culprit) */
+-.topic-g{cursor:pointer;}
+-
+-/* glass panel replaces paper */
+-#panel{background:rgba(15,18,27,0.92);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+-  color:var(--text);border-top:1px solid rgba(217,164,65,0.4);
+-  box-shadow:0 -12px 50px rgba(0,0,0,0.6),0 0 40px rgba(217,164,65,0.06);}
+-.panel-handle{background:rgba(255,255,255,0.22);}
+-#panel h2{color:#f4e9cf;text-shadow:0 0 22px rgba(217,164,65,0.35);}
+-#panel p.def{color:#cfd3dc;}
+-.p-eyebrow{color:var(--text-dim);}
+-.section-label{color:#8f95a3;border-color:rgba(255,255,255,0.12);}
+-.book{color:#b9ac89;}
+-.chips .chip{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.14);color:#dfe3ea;}
+-.chips .chip:hover,.chips .chip:active{background:rgba(217,164,65,0.18);border-color:rgba(217,164,65,0.5);}
+-.chip.stub{opacity:0.55;}
+-.via-box{background:rgba(217,164,65,0.1);border-left:3px solid var(--gold);color:#e8dcbd;}
+-.via-box b{color:var(--gold);}
+-.schuller{background:rgba(91,156,224,0.1);border-left:3px solid #5b9ce0;color:#bcd3ee;}
+-.atom-btn{background:linear-gradient(180deg,rgba(87,171,121,0.25),rgba(87,171,121,0.12));
+-  border:1px solid rgba(87,171,121,0.55);color:#c9ecd4;text-shadow:0 0 12px rgba(87,171,121,0.4);
+-  box-shadow:0 0 18px rgba(87,171,121,0.15);}
+-.zbtn{backdrop-filter:blur(8px);background:rgba(15,18,27,0.7);}
+-.zbtn:hover{border-color:var(--gold);color:var(--gold);box-shadow:0 0 14px rgba(217,164,65,0.25);}
+-#closepanel{background:rgba(255,255,255,0.08);color:var(--text);}
+-
+-/* ---------- Part 5: bridge story card, browse index, toolbar button ---------- */
+-.tbtn{background:linear-gradient(180deg,rgba(217,164,65,0.22),rgba(217,164,65,0.1));
+-  border:1px solid rgba(217,164,65,0.5);color:#f0e2bd;font-family:'Inter',sans-serif;
+-  font-size:12.5px;font-weight:600;padding:9px 14px;border-radius:999px;cursor:pointer;
+-  white-space:nowrap;text-shadow:0 0 12px rgba(217,164,65,0.35);transition:all .18s;}
+-.tbtn:hover{background:rgba(217,164,65,0.32);box-shadow:0 0 18px rgba(217,164,65,0.3);transform:translateY(-1px);}
+-
+-.who-box{display:flex;flex-direction:column;gap:2px;margin:2px 0 12px;padding:11px 14px;
+-  background:linear-gradient(135deg,rgba(217,164,65,0.16),rgba(217,164,65,0.05));
+-  border:1px solid rgba(217,164,65,0.35);border-radius:10px;box-shadow:0 0 22px rgba(217,164,65,0.08);}
+-.who-eyebrow{font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:.14em;
+-  text-transform:uppercase;color:var(--gold);opacity:.85;}
+-.who-name{font-family:'Spectral',serif;font-size:17px;font-weight:600;color:#f6ead0;line-height:1.25;}
+-
+-.story-box{font-family:'Spectral',serif;font-size:15px;line-height:1.62;color:#e6e2d6;
+-  margin:2px 0 14px;padding-left:2px;}
+-.story-box::first-letter{font-size:150%;color:var(--gold);font-weight:600;}
+-
+-.bridge-row{padding:10px 12px;margin:6px 0;border-radius:9px;cursor:pointer;
+-  background:rgba(255,255,255,0.035);border:1px solid rgba(255,255,255,0.08);transition:all .15s;}
+-.bridge-row:hover{background:rgba(217,164,65,0.12);border-color:rgba(217,164,65,0.4);transform:translateX(3px);}
+-.bridge-row-t{font-family:'Spectral',serif;font-size:14.5px;color:#eee7d6;line-height:1.3;}
+-.bridge-row-t .arrow{color:var(--gold);}
+-.bridge-row-w{font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:#9aa0ad;margin-top:3px;}
+-.bridge-row-w i{color:#c7b483;font-style:normal;}
