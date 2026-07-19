@@ -13,7 +13,7 @@ window.MATH_DATA = {
   {
    "id": "foundations",
    "label": "Foundations",
-   "color": "#8f97a6",
+   "color": "#aab9cf",
    "x": 350,
    "y": 820,
    "tag": "logic · sets · categories",
@@ -22,7 +22,7 @@ window.MATH_DATA = {
   {
    "id": "algebra",
    "label": "Algebra",
-   "color": "#c5624c",
+   "color": "#ec6a4f",
    "x": 1050,
    "y": 360,
    "tag": "structure · symmetry",
@@ -31,7 +31,7 @@ window.MATH_DATA = {
   {
    "id": "analysis",
    "label": "Analysis",
-   "color": "#4f80bd",
+   "color": "#549bee",
    "x": 1050,
    "y": 1280,
    "tag": "limits · the infinite",
@@ -40,7 +40,7 @@ window.MATH_DATA = {
   {
    "id": "geometry",
    "label": "Geometry & Topology",
-   "color": "#3f9a76",
+   "color": "#4cc596",
    "x": 1760,
    "y": 860,
    "tag": "shape · space · curvature",
@@ -49,7 +49,7 @@ window.MATH_DATA = {
   {
    "id": "number",
    "label": "Number Theory",
-   "color": "#c39433",
+   "color": "#f0b23e",
    "x": 1830,
    "y": 300,
    "tag": "integers · primes",
@@ -58,7 +58,7 @@ window.MATH_DATA = {
   {
    "id": "discrete",
    "label": "Discrete & Combinatorics",
-   "color": "#a85f8c",
+   "color": "#d873b8",
    "x": 430,
    "y": 280,
    "tag": "counting · graphs",
@@ -67,7 +67,7 @@ window.MATH_DATA = {
   {
    "id": "probability",
    "label": "Probability",
-   "color": "#7f74bf",
+   "color": "#9f8cf2",
    "x": 1760,
    "y": 1400,
    "tag": "rigorous randomness",
@@ -76,7 +76,7 @@ window.MATH_DATA = {
   {
    "id": "order",
    "label": "Order & Universal Algebra",
-   "color": "#6ea79b",
+   "color": "#56c4b0",
    "x": 380,
    "y": 1400,
    "tag": "lattices · posets",

@@ -421,3 +421,29 @@ svg.interacting .domain-halo,
 svg.interacting .field-bloom,
 svg.interacting .domain-bloom,
 svg.interacting .agg-edge{transition:none !important;}
+
+/* ============================================================
+   WAVE 2.5 — VIBRANCY PASS
+   The codex palette read too dull against the dark ground. The
+   8 pigments in data.js are re-tuned brighter and more saturated
+   (same hue families), the painted blooms in app.js are stronger
+   and wider, and the LOD floors are raised there. This block
+   carries the CSS side: brighter gilt, higher opacity floors on
+   lines and topic text. Still zero SVG filter elements — all glow
+   is painted radial gradients.
+   ============================================================ */
+:root{
+  --gold:#d9ad4f;
+  --gilt:#d9ad4f;
+  --gilt-bright:#f0d080;
+}
+header h1{-webkit-text-fill-color:#e5cb90 !important;color:#e5cb90;}
+header h1 .thin{-webkit-text-fill-color:#c9ad72 !important;color:#c9ad72;}
+
+/* line-work floors: connections stay readable at every zoom */
+.edge-pre{stroke-opacity:.42 !important;}
+.agg-edge{opacity:.45 !important;}
+.topic-spoke{stroke-opacity:.38;}
+
+/* topic voice, brightened: same recessive size, no longer murky */
+.topic-label{fill:#d3c7a8 !important;opacity:.85;}

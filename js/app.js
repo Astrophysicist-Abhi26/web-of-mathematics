@@ -74,14 +74,14 @@ const defs = el('defs',{},svg);
     const og = el('radialGradient',{id:'orb-'+d.id},defs);
     el('stop',{offset:'0%','stop-color':'#ffffff','stop-opacity':'0.95'},og);
     el('stop',{offset:'30%','stop-color':d.color,'stop-opacity':'1'},og);
-    el('stop',{offset:'100%','stop-color':d.color,'stop-opacity':'0.15'},og);
+    el('stop',{offset:'100%','stop-color':d.color,'stop-opacity':'0.35'},og);
     const ng = el('radialGradient',{id:'nebula-'+d.id},defs);
-    el('stop',{offset:'0%','stop-color':d.color,'stop-opacity':'0.20'},ng);
-    el('stop',{offset:'55%','stop-color':d.color,'stop-opacity':'0.08'},ng);
+    el('stop',{offset:'0%','stop-color':d.color,'stop-opacity':'0.30'},ng);
+    el('stop',{offset:'55%','stop-color':d.color,'stop-opacity':'0.12'},ng);
     el('stop',{offset:'100%','stop-color':d.color,'stop-opacity':'0'},ng);
     const bg = el('radialGradient',{id:'bloom-'+d.id},defs);
-    el('stop',{offset:'0%','stop-color':d.color,'stop-opacity':'0.55'},bg);
-    el('stop',{offset:'45%','stop-color':d.color,'stop-opacity':'0.16'},bg);
+    el('stop',{offset:'0%','stop-color':d.color,'stop-opacity':'0.8'},bg);
+    el('stop',{offset:'40%','stop-color':d.color,'stop-opacity':'0.26'},bg);
     el('stop',{offset:'100%','stop-color':d.color,'stop-opacity':'0'},bg);
   });
 })();
@@ -129,7 +129,7 @@ D.domains.forEach(d=>{
   d._ring = el('circle',{cx:d.x,cy:d.y,r:d.R,'class':'domain-ring',stroke:d.color},g);
   d._halo = el('circle',{cx:d.x,cy:d.y,r:d.R,'class':'domain-halo',
     fill:d.color+'14', stroke:d.color+'55','stroke-width':1.5},g);
-  d._bloom = el('circle',{cx:d.x,cy:d.y,r:46,'class':'domain-bloom',
+  d._bloom = el('circle',{cx:d.x,cy:d.y,r:68,'class':'domain-bloom',
     fill:'url(#bloom-'+d.id+')'},g);
   d._core = el('circle',{cx:d.x,cy:d.y,r:18,'class':'domain-core',
     fill:'url(#orb-'+d.id+')',opacity:0.95},g);
@@ -173,7 +173,7 @@ D.fields.forEach(f=>{
   g.style.animationDelay=(window.__fi=(window.__fi||0)+1)*28+'ms';
   f._g = g;
   el('circle',{cx:f.x,cy:f.y,r:10,'class':'field-pulse',stroke:c},g);
-  el('circle',{cx:f.x,cy:f.y,r:23,'class':'field-bloom',fill:'url(#bloom-'+f.domain+')'},g);
+  el('circle',{cx:f.x,cy:f.y,r:32,'class':'field-bloom',fill:'url(#bloom-'+f.domain+')'},g);
   el('circle',{cx:f.x,cy:f.y,r:9,'class':'field-orb',fill:'url(#orb-'+f.domain+')'},g);
   const words = f.label.split(' ');
   let lines=[]; let cur='';
@@ -480,16 +480,19 @@ function applyLOD(){
   const chromeSig = Math.round(s*80);
   if(chromeSig !== lastChromeSig){
     lastChromeSig = chromeSig;
+    /* opacity floors raised (wave 2.5): the domain presence bottoms out at
+       0.32 instead of 0.12 so the pigment never washes to near-black at
+       topic zoom — you should always know whose region you're in */
     let dom;
     if(s<1.0)       dom=1;
-    else if(s<1.35) dom=1   -0.40*ramp(s,1.0,1.35);
-    else if(s<2.1)  dom=0.60-0.25*ramp(s,1.35,2.1);
-    else if(s<2.8)  dom=0.35-0.15*ramp(s,2.1,2.8);
-    else            dom=Math.max(0.12, 0.20-0.08*ramp(s,2.8,3.4));
+    else if(s<1.35) dom=1   -0.30*ramp(s,1.0,1.35);
+    else if(s<2.1)  dom=0.70-0.22*ramp(s,1.35,2.1);
+    else if(s<2.8)  dom=0.48-0.12*ramp(s,2.1,2.8);
+    else            dom=Math.max(0.32, 0.36-0.04*ramp(s,2.8,3.4));
     const dfs = Math.round(Math.max(30, Math.min(44, 27/s+10)));
-    const haloFill = s>FIELD_ZOOM ? '0a' : '14';
+    const haloFill = s>FIELD_ZOOM ? '12' : '1a';
     const domS = dom.toFixed(3), chromeS = (chrome*0.95).toFixed(3),
-          ringS = (chrome*0.7).toFixed(3), nebS = (0.15+0.85*dom).toFixed(3);
+          ringS = (chrome*0.7).toFixed(3), nebS = (0.34+0.66*dom).toFixed(3);
     D.domains.forEach(d=>{
       sset(d._label,'opacity', domS);
       aset(d._label,'font-size', dfs);
