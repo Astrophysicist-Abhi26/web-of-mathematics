@@ -51,6 +51,25 @@ the two-state weather chain's stationary (5/6, 1/6), and Itô's d(B²) = 2B dB +
 Prior 6 domains verified identical to HEAD. Spot-check: **Independence**,
 **Central limit theorem**, **Itô calculus**.
 
+### Domain 8/8 — Order & Universal Algebra ✅ (10/10)
+Posets & Lattices 4, Boolean Algebras 3, Universal Algebra 3. Checkable
+examples include Dilworth on the divisors of 12 (width 2, two chains), the
+M₃/N₅ forbidden-sublattice test for distributivity, Knaster–Tarski least
+fixed points (and CSB via a fixed point), the finite-Boolean-algebra 2ⁿ count,
+Stone duality (finite BA with n atoms ↔ n discrete points), and Birkhoff HSP
+(fields fail closure under products: (1,0)·(0,1)=(0,0)). Prior 7 domains
+verified identical to HEAD. Spot-check: **Fixed points**, **Stone duality**,
+**Varieties**.
+
+### 🎉 WAVE 3 COMPLETE — all 211/211 topics carry long-form detail
+All eight domains done to the fixed standard, each committed+pushed
+individually (never batched). No taste-call flags arose — every topic had a
+clear canonical set of key objects, a checkable example, and a significance
+paragraph. One self-caught math slip along the way (Rogers–Ramanujan n=7
+recount), fixed before commit. Renderer and all other files unchanged
+throughout; `def` never touched. Final suite: 22/22 (+1 expected skip now that
+no topic is left without detail).
+
 ## Session 5 — Wave 3, domain 3: Foundations
 
 - ✅ **22/22 Foundations topics** across all 5 fields — Logic 5, Set Theory 5,
