@@ -447,3 +447,14 @@ header h1 .thin{-webkit-text-fill-color:#c9ad72 !important;color:#c9ad72;}
 
 /* topic voice, brightened: same recessive size, no longer murky */
 .topic-label{fill:#d3c7a8 !important;opacity:.85;}
+
+/* ============================================================
+   WAVE 3 — CONTENT DEPTH
+   Long-form topic entries (the "detail" field in data.js) render
+   as manuscript reading text on the parchment panel: serif, book
+   measure, an illuminated initial on the first paragraph.
+   ============================================================ */
+.detail-p{font-family:'Spectral',serif;font-size:14.5px;line-height:1.66;
+  color:#2f2718;margin:0 0 12px;text-align:left;hyphens:auto;}
+.detail-p:first-of-type::first-letter{font-size:165%;line-height:1;
+  color:var(--gilt-deep);font-weight:600;padding-right:1px;}

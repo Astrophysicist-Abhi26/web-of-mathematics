@@ -1,0 +1,67 @@
+# PROGRESS
+
+*Running log, newest first. Companion file: `NOTES.md` (design reasoning).*
+
+---
+
+## Session 3 — color fix + Wave 3 (Geometry & Topology)
+
+### TL;DR
+- ✅ **Color fix (Wave 2.5)**: palette re-saturated and brightened, real
+  painted-gradient bloom on domain + field nodes (no SVG filters — the
+  pan-stutter fix is untouched), LOD opacity floors raised so deep zoom keeps
+  its color. Before/after comparison delivered in chat.
+- ✅ **Wave 3, Geometry & Topology only**: all **44/44** topics now carry a
+  long-form `detail` field (2–3 paragraphs each: key objects → worked
+  example → why it matters). `def` untouched (stays the short map lede).
+  Renderer shows it as an "In depth" section on the parchment panel;
+  search indexes it. **No other domain touched**, per your instruction.
+- ✅ Housekeeping: deleted stale root `app.js`/`style.css` (unreferenced
+  pre-Wave-1 copies that survived the diff apply — the same files that caused
+  the Session-1 confusion).
+- ✅ All **20/20** headless checks pass (nav, zoom LOD, panels, search,
+  bridge index/story, tap-click fix, header collapse, detail rendering,
+  non-geometry topics unaffected).
+
+### How the color fix was calibrated
+Cloned your reference `web-of-computation` (github.io is blocked from this
+sandbox; used the repo) and read its glow recipe: radial-gradient cores at
+`hsl(H 85% 72%)` fading through 55%-lightness mids — i.e. saturation ~80%,
+high luminance, strong core opacity. The codex pigments were sitting at ~45%
+saturation. New values keep the manuscript hue families at reference-level
+energy; full list and knobs in `NOTES.md`.
+
+### Wave 3 content notes
+- Each `detail` was written fresh for this project's voice (direct, concrete,
+  unicode math, no formula walls) at roughly advanced-undergrad register,
+  connecting back to the map's bridges and atoms where genuine (hyperbolic
+  atom, parallel-transport atom, covering-spaces↔Galois bridge).
+- Worked examples chosen to be checkable: tricolorability of the trefoil,
+  height-function Morse cells on the torus, cup products separating T² from
+  S¹∨S¹∨S², Girard's octant triangle, U(1) Chern number = monopole
+  quantization, etc.
+- **For your review**: spot-check a few entries (e.g. Morse theory,
+  Schemes, 4-manifold strangeness) for level and tone. If approved, say
+  "next domain" and I'll match the treatment.
+
+### Verification
+Headless Playwright + bundled Chromium against `file://` (fonts are CDN-blocked
+in the sandbox, so screenshots show fallback type; colors/layout/motion are
+faithful). Suite now also asserts: geometry topic → ≥2 detail paragraphs
+rendered; non-geometry topic → clean panel, zero detail elements; no console
+or page errors throughout.
+
+---
+
+## Session 2 — Wave 2 landed (your commits)
+You applied the Wave-2 diff to `main` (23bb16d), removed leftover delivery
+artifacts (967c5cd), and fixed node clicks being swallowed by pointer capture
+(9bca6de) — tap now replays a click at the real target. This session builds on
+those.
+
+## Session 1 — overnight (Wave 1 rescue + Wave 2 build)
+Found Wave 1 committed to files `index.html` never loaded; promoted it into the
+live paths. Built Wave 2 "Iron-Gall Codex" (palette, ground, gold-leaf
+bridges, parchment panel, reduced motion, collapsible header). Push was blocked
+(read-only integration) — delivered as git bundle, which you landed. Full
+design rationale preserved in `NOTES.md`.

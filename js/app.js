@@ -818,6 +818,16 @@ function openTopic(tp){
   P('p-def').textContent=tp.def
     || 'Topic stub — the full entry arrives as Part 3 content fills in, domain by domain. Add it yourself in data/data.js by turning this string into {label, def}.';
   const body=P('p-body'); body.innerHTML='';
+  /* Wave 3: def is the short map-side lede; detail carries the long-form
+     entry (2–3 paragraphs, \n\n-separated) and renders as reading text */
+  if(tp.detail){
+    const lab0=document.createElement('div');lab0.className='section-label';lab0.textContent='In depth';
+    body.appendChild(lab0);
+    tp.detail.split(/\n\n+/).forEach(par=>{
+      const p=document.createElement('p');p.className='detail-p';p.textContent=par;
+      body.appendChild(p);
+    });
+  }
   const lab=document.createElement('div');lab.className='section-label';lab.textContent='Nearby';
   const row=document.createElement('div');row.className='chips';
   row.appendChild(chip('↩ '+f.label,()=>openField(f)));
@@ -933,7 +943,7 @@ searchBox.addEventListener('input',()=>{
   if(!q){clearFocus();return;}
   if(scale<FIELD_ZOOM){ zoomTo(centerVB().x,centerVB().y,1.6,true); }
   D.fields.forEach(f=>{
-    const kids=(f.children||[]).map(c=>typeof c==='string'?c:(c.label+' '+(c.def||''))).join(' ');
+    const kids=(f.children||[]).map(c=>typeof c==='string'?c:(c.label+' '+(c.def||'')+' '+(c.detail||''))).join(' ');
     const hay=(f.label+' '+f.def+' '+(f.theorems||[]).join(' ')+' '+kids).toLowerCase();
     f._g.classList.toggle('dimmed', !hay.includes(q));
   });
