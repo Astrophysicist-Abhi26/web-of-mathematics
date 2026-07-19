@@ -42,6 +42,15 @@ earlier draft had miscounted; the committed text is correct.) Prior 5 domains
 verified identical to HEAD. Spot-check: **Ramsey numbers**, **Spectral graph
 theory**, **Rogers–Ramanujan**.
 
+### Domain 7/8 — Probability ✅ (12/12)
+Probability Spaces 4, Limit Theorems 4, Stochastic Processes 4. Checkable
+examples include Kolmogorov's axioms on a fair die, X uniform on {−1,0,1}
+uncorrelated-but-dependent with X², Borel–Cantelli via the infinite monkey,
+the √n scaling in the CLT, the fair-coin large-deviation rate I(0.9) ≈ 0.368,
+the two-state weather chain's stationary (5/6, 1/6), and Itô's d(B²) = 2B dB + dt.
+Prior 6 domains verified identical to HEAD. Spot-check: **Independence**,
+**Central limit theorem**, **Itô calculus**.
+
 ## Session 5 — Wave 3, domain 3: Foundations
 
 - ✅ **22/22 Foundations topics** across all 5 fields — Logic 5, Set Theory 5,
