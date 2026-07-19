@@ -4,6 +4,24 @@
 
 ---
 
+## Session 5 — Wave 3, domain 3: Foundations
+
+- ✅ **22/22 Foundations topics** across all 5 fields — Logic 5, Set Theory 5,
+  Category Theory 5, Model Theory 3, Computability 4 — now carry long-form
+  `detail`, written to the fixed standard (key objects → checkable worked
+  example → why it matters). `def` untouched.
+- ✅ **Geometry & Topology AND Algebra verified untouched**: subtree hashes
+  asserted unchanged in the apply script, and both subtrees compared
+  byte-identical against git HEAD after the write.
+- ✅ **22/22 headless checks** (suite grew by one): all nav/panel/search/
+  click/header checks, plus geometry detail (Morse theory), algebra detail
+  (Sylow), foundations detail (Set Theory), and an untouched-domain topic
+  (Real Analysis) still clean.
+- Spot-check suggestions: **Incompleteness** (Gödel via the diagonal lemma),
+  **Cardinals & CH** (Cantor diagonal → independence), **Halting problem**
+  (the D(D) contradiction).
+- Remaining domains: Analysis, Number Theory, Discrete, Probability, Order.
+
 ## Session 4 — Wave 3, domain 2: Algebra
 
 - ✅ **38/38 Algebra topics** across all 8 fields (Linear Algebra 7, Group
