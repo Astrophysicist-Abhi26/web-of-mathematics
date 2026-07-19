@@ -22,6 +22,15 @@ Prior domains (geometry, algebra, foundations) verified identical to HEAD.
 Spot-check: **Residues**, **Convergence theorems**, **Chaos & Lyapunov
 exponents**.
 
+### Domain 5/8 — Number Theory ✅ (24/24)
+Elementary NT 6, Analytic NT 5, Algebraic NT 5, Modular Forms & Elliptic
+Curves 5, Diophantine & Transcendence 3. Checkable examples include the
+Euclidean algorithm on gcd(48,18) with Bézout 6 = 3·18 − 48, Euclid's prime
+proof, 6 = 2·3 = (1+√−5)(1−√−5) failing UFD (class number 2), 5 splitting in
+ℤ[i], p(100) vs Hardy–Ramanujan, and π transcendental ⇒ no squaring the circle.
+Prior 4 domains verified identical to HEAD. Spot-check: **Quadratic
+reciprocity**, **Prime number theorem**, **Modularity → FLT**.
+
 ## Session 5 — Wave 3, domain 3: Foundations
 
 - ✅ **22/22 Foundations topics** across all 5 fields — Logic 5, Set Theory 5,
