@@ -546,10 +546,16 @@ function applyLOD(){
 const pointers = new Map();
 let mode = null, panRef = null, pinchRef = null;
 let lastMove = {u:0, v:0, t:0};
+let tapStart = null;
 
 svg.addEventListener('pointerdown', e=>{
   svg.setPointerCapture(e.pointerId);
   pointers.set(e.pointerId, {x:e.clientX, y:e.clientY});
+  /* setPointerCapture retargets the click that follows pointerup to the
+     svg itself, so a tap on a node never reaches that node's own click
+     listener. Remember where the tap started; endPtr uses this to tell a
+     tap from a drag and, for a tap, replays a click at the real point. */
+  tapStart = {x:e.clientX, y:e.clientY, id:e.pointerId, t:performance.now()};
   anim = null; gliding = false; vel.x = vel.y = 0;
   beginInteract();
   if(pointers.size === 1){
@@ -601,6 +607,20 @@ window.addEventListener('pointermove', e=>{
 function endPtr(e){
   if(!pointers.delete(e.pointerId)) return;
   svg.classList.remove('panning');
+  /* tap vs drag: if this pointer barely moved and didn't linger, the browser's
+     own click (retargeted to svg by pointer capture, see pointerdown) never
+     reaches the node underneath — so find that node ourselves and click it. */
+  if(tapStart && tapStart.id === e.pointerId){
+    const dx = e.clientX - tapStart.x, dy = e.clientY - tapStart.y;
+    const dt = performance.now() - tapStart.t;
+    if(Math.hypot(dx, dy) < 8 && dt < 500){
+      const real = document.elementFromPoint(e.clientX, e.clientY);
+      if(real && real !== svg){
+        real.dispatchEvent(new MouseEvent('click', {bubbles:true, cancelable:true, view:window}));
+      }
+    }
+    tapStart = null;
+  }
   if(pointers.size === 1){
     const [only] = [...pointers.values()];
     mode = 'pan';
