@@ -4,6 +4,26 @@
 
 ---
 
+## Session 4 — Wave 3, domain 2: Algebra
+
+- ✅ **38/38 Algebra topics** across all 8 fields (Linear Algebra 7, Group
+  Theory 6, Rings & Modules 5, Fields & Galois 5, Commutative Algebra 4,
+  Lie Theory 4, Representation Theory 3, Homological Algebra 4) now carry
+  long-form `detail`, written to the Geometry standard: key objects →
+  checkable worked example → why it matters. `def` untouched.
+- ✅ **Geometry & Topology verified untouched** two ways: subtree hash
+  asserted unchanged inside the apply script, and the working `data.js`
+  geometry subtree compared byte-identical against git HEAD.
+- ✅ **21/21 headless checks** (suite grew by one): all prior nav/panel/
+  search/click/header checks, geometry detail still renders (Morse theory),
+  algebra detail renders (Sylow theory), untouched-domain topic (Real
+  Analysis) still clean with zero detail elements.
+- Spot-check suggestions: **Sylow theory** (order-15 squeeze), **Solvability
+  by radicals** (x⁵−4x+2 ⇒ S₅), **Characters** (S₃ table built by
+  orthogonality alone).
+- Remaining domains: Foundations, Analysis, Number Theory, Discrete,
+  Probability, Order — say "next domain" to continue.
+
 ## Session 3 — color fix + Wave 3 (Geometry & Topology)
 
 ### TL;DR
