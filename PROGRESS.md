@@ -4,6 +4,24 @@
 
 ---
 
+## Session 6 — Wave 3, remaining domains (autonomous run)
+
+Working through Analysis → Number Theory → Discrete → Probability → Order,
+one commit+push per domain. Same fixed standard; `def` untouched; every
+previously-completed domain verified byte-identical to HEAD before each commit.
+Test harness is now data-driven (auto-detects which domains carry detail), so
+one suite covers every stage. No taste-call flags so far.
+
+### Domain 4/8 — Analysis ✅ (45/45)
+Real Analysis 7, Measure Theory 5, Complex Analysis 7, Functional Analysis 6,
+Harmonic Analysis 4, ODEs 4, PDEs 4, Calculus of Variations 4, Dynamical
+Systems & Ergodic Theory 4. Checkable examples include √2 as a Dedekind cut,
+∮dz/z = 2πi, residue of 1/(1+x²) at i giving π, the escaping-bump failure of
+DCT, y′=√y non-uniqueness, and the doubling map's entropy = Lyapunov = ln 2.
+Prior domains (geometry, algebra, foundations) verified identical to HEAD.
+Spot-check: **Residues**, **Convergence theorems**, **Chaos & Lyapunov
+exponents**.
+
 ## Session 5 — Wave 3, domain 3: Foundations
 
 - ✅ **22/22 Foundations topics** across all 5 fields — Logic 5, Set Theory 5,
