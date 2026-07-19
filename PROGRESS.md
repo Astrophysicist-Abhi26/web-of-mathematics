@@ -31,6 +31,17 @@ proof, 6 = 2·3 = (1+√−5)(1−√−5) failing UFD (class number 2), 5 split
 Prior 4 domains verified identical to HEAD. Spot-check: **Quadratic
 reciprocity**, **Prime number theorem**, **Modularity → FLT**.
 
+### Domain 6/8 — Discrete & Combinatorics ✅ (16/16)
+Enumerative Combinatorics 4, Graph Theory 5, Ramsey & Extremal Theory 3,
+Partition Theory 4. Checkable examples include Pascal's rule via a fixed
+element, C₃ = 5 pentagon triangulations, K₅ non-planar by Euler (10 > 3·5−6),
+R(3,3) = 6 by pigeonhole, Mantel's ⌊n²/4⌋ triangle-free bound, the
+probabilistic R(k,k) > 2^{k/2}, and the pentagonal recurrence p(6) = 7+5−1 = 11.
+(I recomputed the Rogers–Ramanujan n=7 lists to 3 partitions each — an
+earlier draft had miscounted; the committed text is correct.) Prior 5 domains
+verified identical to HEAD. Spot-check: **Ramsey numbers**, **Spectral graph
+theory**, **Rogers–Ramanujan**.
+
 ## Session 5 — Wave 3, domain 3: Foundations
 
 - ✅ **22/22 Foundations topics** across all 5 fields — Logic 5, Set Theory 5,
