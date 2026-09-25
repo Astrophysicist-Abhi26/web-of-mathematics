@@ -133,6 +133,7 @@ const KIT_CSS = `
   #panel .gk-topics .topic{padding:.55rem 0}
   #panel .gk-topics .topic h3{font-size:.86rem}
   #panel .it-timeline.gk-tl{grid-template-columns:repeat(var(--n,5),1fr)}
+  #panel .it-moment span{overflow-wrap:anywhere;hyphens:auto}
 `;
 
 function ensureStyles(extra, id) {
@@ -171,6 +172,7 @@ function chapterMarkup(c, i) {
   </details>`;
 }
 function sourceMarkup(s) {
+  if (!s.url) return `<div class="it-source"><small>${s.type}</small><strong>${s.title}</strong><span>${s.note}</span></div>`;
   return `<a class="it-source" href="${s.url}" target="_blank" rel="noopener">
     <small>${s.type}</small><strong>${s.title}</strong><span>${s.note}</span><i aria-hidden="true">↗</i></a>`;
 }
@@ -196,7 +198,7 @@ function register(fieldId, spec) {
     const body = document.getElementById("panel-body");
     if (!body) return;
     if (body.querySelector(".it-module")) return;           // already built for this open
-    body.querySelectorAll(":scope > .topic").forEach(t => t.remove());
+    body.querySelectorAll(":scope > .topic, :scope > h3.it-section-title").forEach(t => t.remove());
     const f = fieldById(fieldId);
     const mod = document.createElement("section");
     mod.className = "it-module";
@@ -210,7 +212,7 @@ function register(fieldId, spec) {
       ${spec.labs.map(labMarkup).join("")}
       <h3 class="it-section-title">The story, in ${["zero","one","two","three","four","five","six","seven","eight"][spec.chapters.length] || spec.chapters.length} movements</h3>
       ${spec.chapters.map(chapterMarkup).join("")}
-      <div class="it-challenges"><b>${spec.challenges.length === 3 ? "Three" : spec.challenges.length === 4 ? "Four" : spec.challenges.length === 5 ? "Five" : "Six"} things to try</b><ol>
+      <div class="it-challenges"><b>${["No", "One", "Two", "Three", "Four", "Five", "Six", "Seven"][spec.challenges.length] || spec.challenges.length} things to try</b><ol>
         ${spec.challenges.map(c => `<li>${c}</li>`).join("")}
       </ol></div>
       ${topicsMarkup(f)}
