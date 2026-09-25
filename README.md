@@ -77,11 +77,17 @@ All content lives in data files — no code changes needed:
 
 ## Playable atoms
 
-Open via **⚛ playable atoms**, or from the gold "⚛ play" buttons inside the matching fields'
-panels. Atoms register themselves with `registerAtom({...})` in `atoms.js`.
+Open via **⚛ playable atoms** (grouped by domain), or from the gold "⚛ play" buttons inside the
+matching fields' panels. 28 atoms; each registers itself with `registerAtom({...})`
+(`atoms.js` has the recipe), in one file per continent:
 
-- **Poincaré disk** (Classical Geometry) — geodesics, angle defect, infinitely many parallels.
-- **Structure ladder** (Point-Set & Differential Topology) — a bare set gains topology,
-  smoothness, metric, angles, volume.
-- **Torus · Möbius · Klein** (Low-Dimensional Topology) — orientability in motion.
-- **Parallel transport** (Differential Geometry, Fiber Bundles) — holonomy = enclosed curvature.
+| Domain | Atoms |
+|---|---|
+| Foundations (`atoms-foundations.js`) | **Hilbert's Hotel & Cantor's diagonal** — one new guest, a bus, infinitely many buses; why ℝ is uncountable · **Truth tables** — type any formula, get tautology / contradiction / satisfiable |
+| Algebra (`atoms-algebra.js`) | **Symmetries of a polygon** — the dihedral group with a live Cayley table · **Linear maps** — determinant as area, eigenvectors as fixed directions · **Times-table circles** — multiplication mod n draws cardioids |
+| Analysis (`atoms-analysis.js`) | **ε–δ game** · **Riemann vs Lebesgue** (and the Dirichlet function) · **Fourier epicycles** (draw your own) · **Domain colouring** of complex functions · **Brachistochrone race** & tautochrone · **Phase portraits** (pendulum, Van der Pol, Lotka–Volterra, Lorenz) · **Logistic map** (bifurcation + cobweb + Lyapunov) · **Mandelbrot & Julia** (zoom, pick c) |
+| Geometry (`atoms/*.html`) | **Poincaré disk** · **Structure ladder** · **Torus · Möbius · Klein** · **Parallel transport** |
+| Number Theory (`atoms-number.js`) | **Primes** — Eratosthenes' sieve, Ulam spiral, π(x) vs x/ln x vs Li(x) · **Euclid's algorithm** as squares cut from a rectangle, with Bézout · **Elliptic curve group law** over ℝ and over 𝔽ₚ (Hasse bound) |
+| Discrete (`atoms-discrete.js`) | **Königsberg bridges** — walk it yourself, Euler paths · **Ramsey party** — R(3,3) = 6 · **Pascal mod m** — Sierpiński appears · **Partitions** as Young diagrams, distinct = odd |
+| Probability (`atoms-probability.js`) | **Chance lab** — Galton board, sums of dice, law of large numbers, Monty Hall · **Random walks** — √t spreading, Pólya · **Buffon's needle** — π from sticks |
+| Order (`atoms-foundations.js`) | **Lattices** — divisors (gcd/lcm), subsets, M₃ and N₅, distributivity check |

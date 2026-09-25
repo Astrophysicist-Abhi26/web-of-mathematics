@@ -29,9 +29,23 @@ const ATOM_STOPS = {};
 const ATOM_WIDE = new Set();
 let ATOM_CUR = null;
 
+// the tab bar groups atoms by domain: a row of domain chips, then that domain's atoms
+const atomDoms = document.createElement("div");
+atomDoms.className = "atom-doms";
+atomsBox.insertBefore(atomDoms, atomTabs);
+let ATOM_DOM = null;
+function paintDoms() {
+  const doms = DOMAINS.filter(d => ATOM_LIST.some(a => a.domain === d.id));
+  atomDoms.innerHTML = doms.map(d => `<button class="atom-dom${d.id === ATOM_DOM ? " on" : ""}" data-dom="${d.id}" style="--h:${d.hue}"><i></i>${d.name.split(" ")[0]} <b>${ATOM_LIST.filter(a => a.domain === d.id).length}</b></button>`).join("");
+  atomDoms.querySelectorAll("button").forEach(b => b.addEventListener("click", () => {
+    const first = ATOM_LIST.find(a => a.domain === b.dataset.dom); if (first) showAtom(first.id);
+  }));
+  atomTabs.querySelectorAll(".atom-tab").forEach(t => t.hidden = ATOM_DOM && t.dataset.dom !== ATOM_DOM);
+}
 function registerAtom(a) {
+  a.domain = a.domain || "geometry";
   const tab = document.createElement("button");
-  tab.className = "atom-tab"; tab.dataset.atom = a.id; tab.textContent = a.name;
+  tab.className = "atom-tab"; tab.dataset.atom = a.id; tab.dataset.dom = a.domain; tab.textContent = a.name;
   tab.addEventListener("click", () => showAtom(a.id));
   atomTabs.appendChild(tab);
   const pane = document.createElement("section");
@@ -51,6 +65,8 @@ function openAtom(id) { atomsEl.hidden = false; showAtom(id || (ATOM_LIST[0] && 
 function closeAtoms() { atomsEl.hidden = true; stopAll(); ATOM_CUR = null; }
 function showAtom(id) {
   if (!INIT[id]) return;
+  const at = ATOM_LIST.find(a => a.id === id);
+  ATOM_DOM = at ? at.domain : null; paintDoms();
   document.querySelectorAll(".atom-tab").forEach(b => b.classList.toggle("on", b.dataset.atom === id));
   document.querySelectorAll(".atom-pane").forEach(p => p.hidden = p.id !== "atom-" + id);
   atomsBox.classList.toggle("wide", ATOM_WIDE.has(id));
@@ -90,7 +106,7 @@ window.AtomKit = AtomKit;
 /* ---------- the four hand-built atom pages, embedded ---------- */
 // Each is a standalone page in atoms/ (they also work on their own).
 [
-  { id:"hyperbolic", name:"Poincaré disk", fields:["classical-geometry"], src:"atoms/hyperbolic-disk.html",
+  { id:"hyperbolic", name:"Poincaré disk", domain:"geometry", fields:["classical-geometry"], src:"atoms/hyperbolic-disk.html",
     title:"The Poincaré disk — a whole infinite plane, seen at once",
     hint:"Geodesics are arcs meeting the rim at right angles. Drag the points: a triangle's angles add up to less than π, and through a point off a line pass infinitely many parallels." },
   { id:"ladder", name:"Structure ladder", fields:["point-set-topology","differential-topology"], src:"atoms/structure-ladder.html",
@@ -103,7 +119,7 @@ window.AtomKit = AtomKit;
     title:"Parallel transport — carry a vector around a loop; the rotation is the curvature",
     hint:"On the plane the vector comes home unchanged. On the sphere it returns rotated by exactly the curvature it enclosed." }
 ].forEach(a => registerAtom({
-  id: a.id, name: a.name, fields: a.fields, cls: "atom-framed",
+  id: a.id, name: a.name, domain: "geometry", fields: a.fields, cls: "atom-framed",
   html: `<h3>${a.title}</h3><p class="ahint">${a.hint}</p>
     <div class="atom-frame-wrap"><iframe class="atom-frame" title="${a.title}" data-src="${a.src}" loading="lazy"></iframe></div>
     <p class="astatus"><a class="atom-pop" href="${a.src}" target="_blank" rel="noopener">open full screen ↗</a></p>`,
@@ -115,7 +131,15 @@ window.AtomKit = AtomKit;
   st.textContent = `
 #atoms-box { transition: width .25s ease; }
 #atoms-box.wide { width: min(1060px, 96vw); }
-.atom-tabs { max-height: 5.6rem; overflow-y: auto; scrollbar-width: thin; }
+.atom-doms { display: flex; flex-wrap: wrap; gap: .35rem; margin: 0 3.2rem .55rem 0; }
+.atom-dom { font-family: "IBM Plex Mono", monospace; font-size: .64rem; color: var(--dim); background: rgba(255,255,255,.03);
+  border: 1px solid rgba(255,255,255,.12); border-radius: 999px; padding: .28rem .65rem; cursor: pointer; display: inline-flex; gap: .35rem; align-items: center; }
+.atom-dom i { width: 7px; height: 7px; border-radius: 50%; background: hsl(var(--h) 80% 62%); }
+.atom-dom b { font-weight: 500; color: #6e6789; }
+.atom-dom.on { color: var(--ink); border-color: hsl(var(--h) 75% 62%); background: hsl(var(--h) 60% 50% / .14); }
+.atom-tabs { margin-right: 0 !important; }
+.atom-tab[hidden] { display: none; }
+.atom-pane [hidden], #atoms [hidden] { display: none !important; }
 .atom-frame-wrap { position: relative; width: 100%; height: min(62vh, 560px); border: 1px solid rgba(255,255,255,.12);
   border-radius: 12px; overflow: hidden; background: #0e0618; }
 .atom-frame { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
