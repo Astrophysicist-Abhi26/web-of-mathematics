@@ -45,6 +45,8 @@ function dates(p) {
   if (p.born < 0 && p.died < 0) return `${-p.born}–${-p.died} BCE`;
   return `${fmtY(p.born)}–${fmtY(p.died)}`;
 }
+// living = no death year and a known birth year (ancient figures have neither)
+const isLiving = p => p.died == null && p.born != null;
 function hueOf(p) { const d = DOMAINS.find(d => d.id === p.dom[0]); return d ? d.hue : 45; }
 // A credits entry wins; otherwise portraits/<id>.jpg is used if it exists.
 const FOUND = {};
@@ -60,9 +62,16 @@ function fieldById(id) {
 let UID = 0;
 function portraitMarkup(p, cx, cy, R) {
   const id = "pc" + (++UID), pic = portrait(p), g = R / 40;
+  const em = !pic && window.EMBLEMS && window.EMBLEMS[p.id];
   const inner = pic
     ? `<circle cx="${cx}" cy="${cy}" r="${R}" fill="#1a1230"/>
        <image href="${esc(pic.file)}" x="${cx - R}" y="${cy - R}" width="${2 * R}" height="${2 * R}" preserveAspectRatio="xMidYMin slice" image-rendering="optimizeQuality" decoding="sync"/>`
+    : em
+    // emblems.js: a gold line-art emblem of the person's signature idea
+    ? `<circle cx="${cx}" cy="${cy}" r="${R}" fill="url(#woc-medal)"/>
+       <circle cx="${cx}" cy="${cy}" r="${(R * .9).toFixed(1)}" fill="none" stroke="rgba(245,196,81,.18)" stroke-width="${.8 * g}"/>
+       <g transform="translate(${(cx - R).toFixed(2)} ${(cy - R).toFixed(2)}) scale(${(2 * R / 100).toFixed(4)})" fill="none" stroke="#ecdcae"
+         stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" color="#f0dfae" opacity=".9">${em}</g>`
     : `<circle cx="${cx}" cy="${cy}" r="${R}" fill="url(#woc-medal)"/>
        <circle cx="${cx}" cy="${cy}" r="${(R * .84).toFixed(1)}" fill="none" stroke="rgba(245,196,81,.22)" stroke-width="${.8 * g}"/>
        <text x="${cx}" y="${cy}" dy=".36em" text-anchor="middle" font-family="Fraunces, Georgia, serif" font-weight="400"
@@ -116,14 +125,14 @@ const TWELVE = ["euclid","khwarizmi","newton","euler","gauss","galois","riemann"
   "cantor","noether","ramanujan","godel","mirzakhani"];
 // who sits beside which domain, and which way the group faces (degrees, 0 = right)
 const HOMES = {
-  order:       { ids:["boole","birkhoff"], dir:-150 },
-  discrete:    { ids:["euler","erdos"], dir:-95 },
-  foundations: { ids:["cantor","godel","turing"], dir:190 },
+  order:       { ids:["boole","birkhoff","stone"], dir:-150 },
+  discrete:    { ids:["euler","erdos","conway"], dir:-95 },
+  foundations: { ids:["cantor","godel","turing"], dir:-100 },
   geometry:    { ids:["euclid","riemann","perelman"], dir:-125 },
   algebra:     { ids:["khwarizmi","galois","noether"], dir:-40 },
-  number:      { ids:["fermat","gauss","ramanujan"], dir:8 },
+  number:      { ids:["fermat","gauss","ramanujan"], dir:-20 },
   analysis:    { ids:["newton","leibniz","cauchy"], dir:200 },
-  probability: { ids:["pascal","kolmogorov"], dir:-35 },
+  probability: { ids:["pascal","kolmogorov","ito"], dir:12 },
 };
 // real links between people, drawn in the constellation layout
 const LINKS = [
@@ -301,7 +310,7 @@ function creditText(pic) {
 }
 function creditHTML(p) {
   const pic = portrait(p);
-  if (!pic) return `<figcaption>Photo not added yet</figcaption>`;
+  if (!pic) return `<figcaption>${window.EMBLEMS && EMBLEMS[p.id] ? "An emblem of their work · no photo added yet" : "Photo not added yet"}</figcaption>`;
   if (!pic.artist && !pic.license && !pic.note) return `<figcaption>Photo credit not recorded yet (portraits/credits.js)</figcaption>`;
   return `<figcaption>${creditText(pic)}</figcaption>`;
 }
@@ -322,7 +331,7 @@ function openPioneer(id) {
   }).join("");
   const works = (p.works || []).map(([y, t, u]) =>
     `<li><span class="y">${fmtY(y)}</span>${u ? `<a href="${esc(u)}" target="_blank" rel="noopener">${esc(t)}</a>` : esc(t)}</li>`).join("");
-  const status = p.died == null ? `<span class="pio-alive">living</span>` : "";
+  const status = isLiving(p) ? `<span class="pio-alive">living</span>` : "";
   $("panel-body").innerHTML = `
     <article class="pio">
       <figure class="pio-hero" data-pid="${p.id}">${portraitHTML(p, 76)}${creditHTML(p)}</figure>
@@ -398,7 +407,7 @@ gal.querySelector(".pg-credlink").addEventListener("click", e => {
 });
 
 function matches(p, q) {
-  if (filt === "living" && p.died != null) return false;
+  if (filt === "living" && !isLiving(p)) return false;
   if (filt !== "all" && filt !== "living" && !p.dom.includes(filt)) return false;
   if (!q) return true;
   const hay = [p.name, p.role, p.epitaph, p.legacy, ...p.life.map(l => l[1] + " " + l[2])].join(" ").toLowerCase();
@@ -422,7 +431,7 @@ function renderGallery() {
         <span class="pg-pic">${portraitHTML(p, 32)}</span>
         <span class="pg-txt">
           <b>${esc(p.name)}${FEATURED.includes(p.id) ? ' <span class="pg-star" title="In the sky">✦</span>' : ""}</b>
-          <span class="pg-dates">${esc([dates(p), p.died == null ? "living" : ""].filter(Boolean).join(" · "))}</span>
+          <span class="pg-dates">${esc([dates(p), isLiving(p) ? "living" : ""].filter(Boolean).join(" · "))}</span>
           <span class="pg-ep">${esc(p.epitaph)}</span>
           <span class="pg-dots"><span class="pg-y">${fmtY(p.y)}</span>${dots}</span>
         </span>

@@ -505,5 +505,858 @@ const PEOPLE = [
   works:[
     [2007,"Simple geodesics and Weil–Petersson volumes of moduli spaces of bordered Riemann surfaces","https://doi.org/10.1007/s00222-006-0013-2"]
   ]},
+// ================================================================
+// more pioneers, by era (the gallery and constellation sort by y)
+// ================================================================
+
+// ---------------- the ancient world ----------------
+{ id:"diophantus", name:"Diophantus of Alexandria", born:null, died:null, dates:"fl. c. 250 CE", y:250,
+  dom:["number","algebra"], fields:["diophantine","elementary-nt"],
+  role:"Greek mathematician in Alexandria",
+  epitaph:"Solved equations in whole and rational numbers — and began writing them in symbols.",
+  legacy:"His Arithmetica, of which six of thirteen books survive in Greek and four more in Arabic, inspired Fermat, whose margin note in a 1621 Latin edition became Fermat's Last Theorem. A 'Diophantine equation' now means any polynomial equation to be solved in integers.",
+  life:[
+    [250,"Arithmetica","Some 130 problems solved in positive rational numbers, with an abbreviated notation for the unknown and its powers — a step from words towards algebraic symbols."],
+    [250,"His age as a riddle","A later epigram says his boyhood lasted a sixth of his life, his beard grew after a twelfth more, … — which gives 84 years."],
+    [1621,"Bachet's Latin edition","The edition in which Fermat wrote his famous note."],
+    [1968,"Lost books found","Four more books are identified in an Arabic manuscript in Mashhad."]
+  ],
+  works:[[250,"Arithmetica",null]]},
+
+{ id:"hypatia", name:"Hypatia of Alexandria", born:355, died:415, dates:"c. 355–415", y:400,
+  dom:["geometry","number"], fields:["classical-geometry","diophantine"],
+  role:"Greek mathematician, astronomer and philosopher in Alexandria",
+  epitaph:"The first woman mathematician whose life is well recorded.",
+  legacy:"None of her writings survives under her name, but she is believed to have edited her father Theon's commentary on Ptolemy's Almagest and written commentaries on Diophantus's Arithmetica and Apollonius's Conics. For many later writers her murder marked the end of classical Alexandria.",
+  life:[
+    [355,"Born in Alexandria (c. 355)","Taught by her father, the mathematician Theon."],
+    [390,"Teacher","Heads the city's Neoplatonist school; students travel from across the Mediterranean to hear her."],
+    [400,"Commentaries","On Diophantus and Apollonius, and work with Theon on Ptolemy's astronomical tables."],
+    [415,"Murdered","Killed by a Christian mob during a political struggle in the city."]
+  ],
+  works:[]},
+
+// ---------------- the medieval flowering ----------------
+{ id:"brahmagupta", name:"Brahmagupta", born:598, died:668, dates:"598 – c. 668", y:628,
+  dom:["number","algebra"], fields:["elementary-nt","diophantine","ring-theory"],
+  role:"Indian mathematician and astronomer",
+  epitaph:"Wrote down the rules of arithmetic with zero and negative numbers.",
+  legacy:"His Brāhmasphuṭasiddhānta treats zero as a number and gives rules for 'fortunes' and 'debts' — positive and negative numbers. His composition rule for Pell's equation x² − Ny² = 1 grew, in Bhāskara II's hands (1150), into a complete method; Europe found it again with Fermat, Euler and Lagrange.",
+  life:[
+    [598,"Born","Probably in Bhillamala, Rajasthan."],
+    [628,"Brāhmasphuṭasiddhānta","Rules for zero (a + 0 = a, a × 0 = 0) and for negatives ('a debt times a debt is a fortune'), quadratic equations, and the area of a cyclic quadrilateral."],
+    [628,"Pell's equation","A composition law that builds new solutions of x² − Ny² = 1 from old ones."],
+    [665,"Khaṇḍakhādyaka","A practical handbook of astronomy."],
+    [668,"Dies c. 668",""]
+  ],
+  works:[[628,"Brāhmasphuṭasiddhānta",null]]},
+
+{ id:"khayyam", name:"Omar Khayyam", born:1048, died:1131, y:1070,
+  dom:["algebra","geometry"], fields:["galois-theory","classical-geometry"],
+  role:"Persian mathematician, astronomer and poet",
+  epitaph:"Solved cubic equations by intersecting conic sections — and wrote the Rubáiyát.",
+  legacy:"His Treatise on the Demonstration of Problems of Algebra (c. 1070) classified equations up to degree three and solved every cubic as an intersection of conics. His Jalali calendar (1079) was more accurate than the Gregorian calendar adopted five centuries later. In the West he is best known for the quatrains translated by Edward FitzGerald.",
+  life:[
+    [1048,"Born in Nishapur",""],
+    [1070,"Treatise on algebra","Classifies cubics and solves them geometrically, hoping someone will one day find an algebraic solution."],
+    [1077,"Euclid's parallel postulate","A commentary on its difficulties, using the quadrilaterals later studied by Saccheri."],
+    [1079,"The Jalali calendar","Leads the observatory at Isfahan."],
+    [1131,"Dies in Nishapur",""]
+  ],
+  works:[[1070,"Treatise on the Demonstration of Problems of Algebra and Muqabala",null]]},
+
+{ id:"fibonacci", name:"Leonardo of Pisa (Fibonacci)", born:1170, died:1250, dates:"c. 1170 – c. 1250", y:1202,
+  dom:["number","discrete"], fields:["enumerative","elementary-nt"],
+  role:"Italian mathematician from Pisa",
+  epitaph:"Brought Hindu–Arabic numerals to Europe — and a rabbit problem that never stopped breeding.",
+  legacy:"Liber Abaci (1202) persuaded European merchants to adopt decimal place value. Its rabbit problem gives 1, 1, 2, 3, 5, 8, 13, …, the Fibonacci numbers, whose ratios approach the golden ratio φ.",
+  life:[
+    [1170,"Born in Pisa (c. 1170)","Leonardo, son of Guglielmo Bonacci, a merchant."],
+    [1185,"Bugia, North Africa","Learns Hindu–Arabic numerals while his father runs a trading post."],
+    [1202,"Liber Abaci","Arithmetic, bookkeeping, and the rabbit problem."],
+    [1225,"Liber Quadratorum","The Book of Squares, dedicated to Emperor Frederick II."],
+    [1240,"Honoured by Pisa","The republic grants him a salary for his services to the city."],
+    [1250,"Dies c. 1250",""]
+  ],
+  works:[[1202,"Liber Abaci",null]]},
+
+{ id:"madhava", name:"Mādhava of Saṅgamagrāma", born:1340, died:1425, dates:"c. 1340 – c. 1425", y:1400,
+  dom:["analysis"], fields:["real-analysis","harmonic-analysis"],
+  role:"Indian mathematician and astronomer, founder of the Kerala school",
+  epitaph:"Found infinite series for π, sine and cosine two centuries before Europe.",
+  legacy:"Mādhava's series π/4 = 1 − 1/3 + 1/5 − …, and the power series for sine, cosine and arctangent, survive through later Kerala texts such as Jyeṣṭhadeva's Yuktibhāṣā (c. 1530). Europe rediscovered them with Gregory, Newton and Leibniz in the 1660s–70s.",
+  life:[
+    [1340,"Born in Saṅgamagrāma, Kerala (c. 1340)",""],
+    [1400,"Infinite series","π/4 = 1 − 1/3 + 1/5 − 1/7 + …, with correction terms that make it converge fast; series for sine, cosine and arctangent."],
+    [1400,"π to 11 decimals","Using an accelerated series."],
+    [1425,"Dies c. 1425",""],
+    [1530,"Yuktibhāṣā","Jyeṣṭhadeva writes down proofs of the Kerala series in Malayalam."]
+  ],
+  works:[]},
+
+// ---------------- renaissance & the new algebra ----------------
+{ id:"cardano", name:"Gerolamo Cardano", born:1501, died:1576, y:1545,
+  dom:["algebra","probability"], fields:["galois-theory","prob-spaces"],
+  role:"Italian physician, mathematician and gambler",
+  epitaph:"Published the solution of the cubic — and met the square root of a negative number.",
+  legacy:"Ars Magna (1545) gave the first printed solutions of cubic and quartic equations, crediting del Ferro, Tartaglia and his student Ferrari. His Book on Games of Chance, published in 1663, is the first systematic treatment of probability.",
+  life:[
+    [1501,"Born in Pavia",""],
+    [1539,"Tartaglia's secret","Persuades Niccolò Tartaglia to reveal his solution of the cubic, under an oath of secrecy."],
+    [1545,"Ars Magna","Publishes it anyway, having seen del Ferro's earlier solution, with Ferrari's solution of the quartic. Meets √−15 and calls it 'as subtle as it is useless'."],
+    [1564,"On games of chance","Probability as favourable cases over all cases (published 1663)."],
+    [1570,"Imprisoned","By the Inquisition, for casting the horoscope of Jesus."],
+    [1576,"Dies in Rome",""]
+  ],
+  works:[[1545,"Ars Magna",null]]},
+
+{ id:"descartes", name:"René Descartes", born:1596, died:1650, y:1637,
+  dom:["geometry","algebra"], fields:["algebraic-geometry","classical-geometry"],
+  role:"French philosopher and mathematician",
+  epitaph:"Married algebra to geometry: a curve is an equation.",
+  legacy:"La Géométrie, an appendix to his Discourse on Method (1637), introduced coordinates, the use of x, y, z for unknowns and a, b, c for constants, and exponent notation x². It made calculus possible a generation later.",
+  life:[
+    [1596,"Born in La Haye, Touraine",""],
+    [1619,"Three dreams","On 10 November, near Ulm, dreams that set him searching for a universal method."],
+    [1628,"The Dutch Republic","Lives there for twenty years."],
+    [1637,"La Géométrie","Geometry by algebra, and the rule of signs for counting positive roots."],
+    [1649,"Stockholm","Invited to tutor Queen Christina — at five in the morning."],
+    [1650,"Dies in Stockholm","Of pneumonia."]
+  ],
+  works:[[1637,"La Géométrie (appendix to the Discours de la méthode)",null]]},
+
+// ---------------- the age of calculus ----------------
+{ id:"bernoulli", name:"Jacob Bernoulli", born:1655, died:1705, y:1713,
+  dom:["probability","analysis"], fields:["limit-theorems","variations","enumerative"],
+  role:"Swiss mathematician in Basel",
+  epitaph:"Proved the first law of large numbers: frequencies settle down.",
+  legacy:"Ars Conjectandi (1713) founded probability as mathematics, with Bernoulli trials, Bernoulli numbers and the law of large numbers. The Bernoulli family produced eight notable mathematicians; Jacob's feud with his brother Johann was as famous as their work.",
+  life:[
+    [1655,"Born in Basel",""],
+    [1683,"Compound interest","Studying continuous compounding, meets the number e = lim (1 + 1/n)ⁿ."],
+    [1687,"Professor at Basel","Teaches his younger brother Johann."],
+    [1690,"The word 'integral'","First used in print, in his solution of the isochrone problem."],
+    [1697,"The brachistochrone rivalry","Solves his brother's problem and poses harder ones: the calculus of variations begins."],
+    [1705,"Dies in Basel","He asked for a logarithmic spiral on his tombstone, with 'Eadem mutata resurgo'; the mason carved an Archimedean one."],
+    [1713,"Ars Conjectandi","Published after his death: the law of large numbers."]
+  ],
+  works:[[1713,"Ars Conjectandi",null]]},
+
+{ id:"lagrange", name:"Joseph-Louis Lagrange", born:1736, died:1813, y:1788,
+  dom:["analysis","algebra","number"], fields:["variations","group-theory","elementary-nt","odes"],
+  role:"Italian-French mathematician, born in Turin",
+  epitaph:"Rewrote mechanics without a single diagram.",
+  legacy:"Mécanique analytique (1788) turned mechanics into the calculus of variations; its preface boasts that no figures will be found in it. His 1770–71 study of why equations of degree five resist solution prepared the ground for Galois, and he led the commission that created the metric system.",
+  life:[
+    [1736,"Born in Turin",""],
+    [1755,"The δ-method","At 19 sends Euler his method for the calculus of variations; Euler adopts it."],
+    [1766,"Berlin","Succeeds Euler at Frederick the Great's academy."],
+    [1770,"Four squares; roots of equations","Proves every positive integer is a sum of four squares, and studies permutations of the roots of equations."],
+    [1788,"Mécanique analytique","Mechanics from the principle of least action."],
+    [1794,"École Polytechnique","First professor of analysis at the new school."],
+    [1813,"Dies in Paris","Buried in the Panthéon."]
+  ],
+  works:[[1788,"Mécanique analytique",null]]},
+
+{ id:"laplace", name:"Pierre-Simon Laplace", born:1749, died:1827, y:1812,
+  dom:["probability","analysis"], fields:["prob-spaces","limit-theorems","pdes"],
+  role:"French mathematician and astronomer",
+  epitaph:"Turned probability into a calculus for reasoning under uncertainty.",
+  legacy:"Théorie analytique des probabilités (1812) proved a general central limit theorem and developed Bayesian inference; the Laplace transform and Laplace's equation Δu = 0 run through physics. Asked by Napoleon why his Mécanique céleste never mentions God, he is said to have replied: 'I had no need of that hypothesis.'",
+  life:[
+    [1749,"Born in Beaumont-en-Auge",""],
+    [1774,"Inverse probability","Rediscovers Bayes's rule and uses it to reason from effects to causes."],
+    [1785,"Laplace's equation","Potential theory: Δu = 0."],
+    [1799,"Mécanique céleste","Five volumes (1799–1825) on the stability of the solar system."],
+    [1810,"The central limit theorem","The normal law for sums of many independent errors."],
+    [1812,"Théorie analytique des probabilités",""],
+    [1827,"Dies in Paris",""]
+  ],
+  works:[[1812,"Théorie analytique des probabilités",null]]},
+
+{ id:"fourier", name:"Joseph Fourier", born:1768, died:1830, y:1807,
+  dom:["analysis"], fields:["harmonic-analysis","pdes"],
+  role:"French mathematician and physicist",
+  epitaph:"Claimed any function is a sum of sines — and was nearly right.",
+  legacy:"His heat equation and his trigonometric series (1807) forced mathematicians to ask what a function is and when a series converges, driving the rigour of Dirichlet, Riemann and Cantor. The Fourier transform now runs through signal processing, quantum mechanics and every JPEG.",
+  life:[
+    [1768,"Born in Auxerre","Orphaned at nine."],
+    [1798,"Egypt","Scientific adviser on Napoleon's expedition."],
+    [1807,"On the propagation of heat in solid bodies","Trigonometric series presented to the Academy; Lagrange objects."],
+    [1811,"Prize essay","Wins the Academy's prize, though the jury complains of a lack of rigour."],
+    [1822,"Théorie analytique de la chaleur","The book that made Fourier series famous."],
+    [1824,"The greenhouse effect","Argues the atmosphere keeps the Earth warmer than it would otherwise be."],
+    [1830,"Dies in Paris",""]
+  ],
+  works:[[1822,"Théorie analytique de la chaleur",null]]},
+
+// ---------------- the age of rigour ----------------
+{ id:"germain", name:"Sophie Germain", born:1776, died:1831, y:1816,
+  dom:["number","analysis"], fields:["diophantine","elementary-nt","pdes"],
+  role:"French mathematician",
+  epitaph:"Taught herself mathematics against her family's wishes, and made the first big attack on Fermat's Last Theorem.",
+  legacy:"Sophie Germain primes (p with 2p + 1 also prime) come from her attack on Fermat: her theorem settled the 'first case' for every prime exponent below 100. Her prize-winning work on vibrating elastic plates helped found elasticity theory. Gauss recommended her for an honorary degree at Göttingen, but she died before it could be awarded.",
+  life:[
+    [1776,"Born in Paris",""],
+    [1789,"The death of Archimedes","Reading how Archimedes was killed while absorbed in geometry, she decides to study mathematics — by candlelight, against her parents' wishes."],
+    [1794,"Monsieur Le Blanc","Obtains lecture notes from the École Polytechnique, closed to women, and submits work under a male student's name."],
+    [1804,"Letters to Gauss","Writes to Gauss under the same pseudonym; he learns who she is in 1806 and praises her courage."],
+    [1816,"The Academy's prize","For the theory of vibrating elastic plates — the first woman to win it."],
+    [1825,"Fermat's Last Theorem","Legendre publishes her theorem on the first case."],
+    [1831,"Dies in Paris",""]
+  ],
+  works:[]},
+
+{ id:"lobachevsky", name:"Nikolai Lobachevsky", born:1792, died:1856, y:1829,
+  dom:["geometry"], fields:["classical-geometry","differential-geometry"],
+  role:"Russian mathematician at Kazan",
+  epitaph:"Published the first non-Euclidean geometry — and was ignored for the rest of his life.",
+  legacy:"His 'imaginary geometry', in which infinitely many parallels pass through a point, was mocked in Russia and barely read abroad. Beltrami's models (1868) showed it is exactly as consistent as Euclid's. Gauss, who had reached the same ideas privately, praised it in letters but never in print.",
+  life:[
+    [1792,"Born in Nizhny Novgorod",""],
+    [1807,"Kazan University","Student, then professor for forty years."],
+    [1826,"The lecture","Presents his new geometry to the Kazan faculty (the manuscript is lost)."],
+    [1827,"Rector","Of Kazan University for nineteen years; fights the 1830 cholera epidemic."],
+    [1829,"On the principles of geometry","Published in the Kazan Messenger."],
+    [1840,"Geometrische Untersuchungen","A German summary, which Gauss reads."],
+    [1855,"Pangeometry","Dictated after he has gone blind."],
+    [1856,"Dies in Kazan",""]
+  ],
+  works:[[1829,"On the Principles of Geometry",null]]},
+
+{ id:"abel", name:"Niels Henrik Abel", born:1802, died:1829, y:1824,
+  dom:["algebra","analysis"], fields:["galois-theory","complex-analysis","group-theory"],
+  role:"Norwegian mathematician",
+  epitaph:"Proved the quintic cannot be solved by radicals, and died in poverty at 26.",
+  legacy:"Commutative groups are called abelian in his honour, and the Abel Prize, awarded since 2003, is mathematics' highest lifetime award. His work on elliptic integrals founded the theory of elliptic and abelian functions.",
+  life:[
+    [1802,"Born near Stavanger","Son of a pastor."],
+    [1824,"The quintic","In a six-page pamphlet printed at his own expense, proves the general equation of degree five cannot be solved by radicals."],
+    [1826,"Berlin and Paris","Crelle publishes him in the first volume of his new journal; the memoir he submits in Paris is mislaid."],
+    [1827,"Elliptic functions","Inverts elliptic integrals, in a race with Jacobi."],
+    [1829,"Dies at 26","Of tuberculosis, at Froland. Two days later a letter arrives offering him a professorship in Berlin."],
+    [2003,"The Abel Prize","First awarded, to Jean-Pierre Serre."]
+  ],
+  works:[]},
+
+{ id:"hamilton", name:"William Rowan Hamilton", born:1805, died:1865, y:1843,
+  dom:["algebra","analysis","geometry"], fields:["linear-algebra","variations","differential-geometry"],
+  role:"Irish mathematician, physicist and astronomer",
+  epitaph:"Carved the rules of the quaternions into a Dublin bridge.",
+  legacy:"Quaternions were the first number system to give up commutativity, opening the door to modern algebra; they now rotate objects in video games and spacecraft. Hamiltonian mechanics, from his 1834 reformulation, became the language of quantum mechanics and symplectic geometry.",
+  life:[
+    [1805,"Born in Dublin","A prodigy in languages as well as mathematics."],
+    [1827,"Royal Astronomer of Ireland","Appointed while still an undergraduate at Trinity College Dublin."],
+    [1834,"Hamiltonian mechanics","Dynamics from a single function and his equations of motion."],
+    [1843,"Quaternions","On 16 October, walking by the Royal Canal, finds i² = j² = k² = ijk = −1 and carves it into Broom Bridge."],
+    [1853,"Lectures on Quaternions",""],
+    [1865,"Dies in Dublin",""]
+  ],
+  works:[]},
+
+{ id:"weierstrass", name:"Karl Weierstrass", born:1815, died:1897, y:1861,
+  dom:["analysis"], fields:["real-analysis","complex-analysis"],
+  role:"German mathematician in Berlin",
+  epitaph:"The father of modern analysis: made ε and δ the rules of the game.",
+  legacy:"Weierstrass's Berlin lectures set the standard of rigour for analysis: ε–δ definitions, uniform convergence, and a continuous function that is nowhere differentiable (1872). His students included Sofia Kovalevskaya, Georg Cantor and Hermann Schwarz.",
+  life:[
+    [1815,"Born in Ostenfelde, Westphalia",""],
+    [1838,"Leaves Bonn without a degree","After four years of fencing and drinking."],
+    [1841,"Schoolteacher","Teaches in provincial schools, doing research at night."],
+    [1854,"Abelian functions","A paper in Crelle's journal makes him famous overnight."],
+    [1856,"Berlin",""],
+    [1861,"ε–δ lectures","His Berlin course gives analysis its rigorous form."],
+    [1872,"A monster","A continuous function that is nowhere differentiable."],
+    [1897,"Dies in Berlin",""]
+  ],
+  works:[]},
+
+{ id:"kronecker", name:"Leopold Kronecker", born:1823, died:1891, y:1853,
+  dom:["number","algebra"], fields:["algebraic-nt","galois-theory"],
+  role:"German mathematician in Berlin",
+  epitaph:"'God made the integers; all else is the work of man.'",
+  legacy:"Kronecker's theorem that abelian extensions of ℚ lie in cyclotomic fields (the Kronecker–Weber theorem), and his 'dearest dream of youth' about imaginary quadratic fields, became Hilbert's twelfth problem and class field theory. His insistence on finite constructions made him Cantor's fiercest critic and a forerunner of constructive mathematics.",
+  life:[
+    [1823,"Born in Liegnitz",""],
+    [1845,"Doctorate in Berlin","Then years running the family's estate and business."],
+    [1853,"Abelian equations","Every abelian extension of ℚ lies inside a cyclotomic field."],
+    [1861,"Berlin Academy","Lectures at the University as an Academy member."],
+    [1882,"Divisor theory","An arithmetic theory of algebraic quantities."],
+    [1887,"Splitting fields","Builds field extensions as quotients of polynomial rings."],
+    [1891,"Dies in Berlin",""]
+  ],
+  works:[]},
+
+{ id:"dedekind", name:"Richard Dedekind", born:1831, died:1916, y:1872,
+  dom:["algebra","number","analysis","order"], fields:["ring-theory","algebraic-nt","real-analysis","lattices"],
+  role:"German mathematician in Brunswick",
+  epitaph:"Built the real numbers from cuts, and gave algebra its ideals.",
+  legacy:"Dedekind cuts (1872), ideals (1871), axioms for the natural numbers (1888) and early lattice theory (1897): much of the conceptual vocabulary of modern algebra is his. He was a close friend and correspondent of Cantor.",
+  life:[
+    [1831,"Born in Brunswick",""],
+    [1852,"Doctorate under Gauss","Gauss's last doctoral student."],
+    [1858,"Zürich","Teaching calculus, decides the real numbers need a proper foundation."],
+    [1871,"Ideals","In his supplements to Dirichlet's lectures on number theory."],
+    [1872,"Continuity and Irrational Numbers","Dedekind cuts."],
+    [1888,"What are numbers and what should they be?","Axioms for the natural numbers and a definition of infinite sets."],
+    [1897,"Dual groups","Lattices, under another name."],
+    [1916,"Dies in Brunswick",""]
+  ],
+  works:[[1872,"Stetigkeit und irrationale Zahlen (Continuity and Irrational Numbers)",null]]},
+
+{ id:"kovalevskaya", name:"Sofia Kovalevskaya", born:1850, died:1891, y:1874,
+  dom:["analysis"], fields:["pdes","odes"],
+  role:"Russian mathematician in Stockholm",
+  epitaph:"The first woman in modern Europe to earn a doctorate in mathematics, and to hold a full professorship.",
+  legacy:"The Cauchy–Kovalevskaya theorem guarantees analytic solutions of analytic PDEs; the Kovalevskaya top (1888) is one of the few integrable cases of a spinning rigid body. She also wrote novels and a memoir of her childhood.",
+  life:[
+    [1850,"Born in Moscow","As a child, studies the calculus lecture notes papering one wall of her room."],
+    [1868,"A marriage of convenience","Marries Vladimir Kovalevsky so that she can study abroad."],
+    [1870,"Berlin","Barred from the university, is taught privately by Weierstrass."],
+    [1874,"Doctorate from Göttingen","Awarded in absentia, for three papers including the Cauchy–Kovalevskaya theorem."],
+    [1884,"Stockholm","Lecturer, then (1889) full professor."],
+    [1888,"The Prix Bordin","The Paris Academy's prize, raised because of the quality of her work on the rotating top."],
+    [1891,"Dies at 41","Of pneumonia, in Stockholm."]
+  ],
+  works:[]},
+
+{ id:"lie", name:"Sophus Lie", born:1842, died:1899, y:1873,
+  dom:["algebra","geometry"], fields:["lie-theory","odes","differential-geometry"],
+  role:"Norwegian mathematician",
+  epitaph:"Turned continuous symmetry into algebra: Lie groups and Lie algebras.",
+  legacy:"Lie wanted a Galois theory for differential equations. What he found — continuous groups of transformations and their infinitesimal generators — became Lie groups and Lie algebras, the mathematics of symmetry in modern physics.",
+  life:[
+    [1842,"Born in Nordfjordeid",""],
+    [1870,"Paris with Klein","Arrested as a spy at the start of the Franco-Prussian war; his mathematical notes are taken for a code."],
+    [1872,"Professor in Christiania (Oslo)",""],
+    [1873,"Continuous groups","Transformation groups and their infinitesimal generators."],
+    [1886,"Leipzig","Succeeds Klein."],
+    [1888,"Theorie der Transformationsgruppen","Three volumes (1888–93) with Friedrich Engel."],
+    [1899,"Dies in Christiania",""]
+  ],
+  works:[]},
+
+{ id:"klein", name:"Felix Klein", born:1849, died:1925, y:1872,
+  dom:["geometry","algebra"], fields:["classical-geometry","group-theory","low-dim-topology","modular-forms"],
+  role:"German mathematician at Göttingen",
+  epitaph:"A geometry is what a group of symmetries leaves unchanged.",
+  legacy:"Klein's Erlangen programme (1872) organised geometry by symmetry groups. He built models of non-Euclidean geometry, described the Klein bottle (1882), studied modular functions, and made Göttingen a world centre of mathematics and of teaching reform. He also fought for women's admission to German universities.",
+  life:[
+    [1849,"Born in Düsseldorf",""],
+    [1871,"Models of non-Euclidean geometry","Hyperbolic geometry lives inside projective geometry."],
+    [1872,"The Erlangen programme","Published on his appointment at Erlangen, aged 23."],
+    [1882,"The Klein bottle","A closed surface with no inside."],
+    [1884,"Lectures on the icosahedron","Symmetry and the quintic equation."],
+    [1886,"Göttingen","With Hilbert, builds the world's leading mathematics department."],
+    [1925,"Dies in Göttingen",""]
+  ],
+  works:[]},
+
+{ id:"poincare", name:"Henri Poincaré", born:1854, died:1912, y:1895,
+  dom:["geometry","analysis"], fields:["algebraic-topology","dynamical-systems","odes","low-dim-topology","complex-analysis"],
+  role:"French mathematician, physicist and philosopher",
+  epitaph:"Founded topology and discovered chaos.",
+  legacy:"Analysis Situs (1895) created algebraic topology — homology and the fundamental group — and led to the Poincaré conjecture, solved by Perelman in 2003. His work on the three-body problem found chaotic motion. He was one of the last mathematicians to master the whole subject.",
+  life:[
+    [1854,"Born in Nancy",""],
+    [1881,"Qualitative theory of ODEs","Curves defined by differential equations, studied geometrically."],
+    [1882,"Fuchsian functions","Realises, stepping onto a bus, that they come from non-Euclidean geometry."],
+    [1889,"The three-body prize","Wins King Oscar's prize; an error found before printing leads him to chaotic orbits."],
+    [1895,"Analysis Situs","Homology and the fundamental group; the Poincaré conjecture follows in 1904."],
+    [1905,"Relativity","On the dynamics of the electron, weeks after Einstein."],
+    [1912,"Dies in Paris",""]
+  ],
+  works:[]},
+
+// ---------------- the foundational crisis ----------------
+{ id:"frege", name:"Gottlob Frege", born:1848, died:1925, y:1879,
+  dom:["foundations"], fields:["logic"],
+  role:"German logician and philosopher in Jena",
+  epitaph:"Invented modern logic, and saw his life's work shaken by one letter.",
+  legacy:"Frege's Begriffsschrift (1879) introduced quantifiers and a fully formal language for proof. His plan to derive arithmetic from logic collapsed when Russell found a paradox in his axioms (1902), but his logic and his philosophy of language founded analytic philosophy.",
+  life:[
+    [1848,"Born in Wismar",""],
+    [1879,"Begriffsschrift","Predicate logic with quantifiers."],
+    [1884,"The Foundations of Arithmetic","Numbers as classes of equinumerous concepts."],
+    [1893,"Basic Laws of Arithmetic, volume I",""],
+    [1902,"Russell's letter","Arrives as volume II is in press: Basic Law V is contradictory. 'Arithmetic totters.'"],
+    [1925,"Dies in Bad Kleinen",""]
+  ],
+  works:[]},
+
+{ id:"russell", name:"Bertrand Russell", born:1872, died:1970, y:1901,
+  dom:["foundations"], fields:["logic","set-theory"],
+  role:"British philosopher, logician and campaigner",
+  epitaph:"Found the paradox at the heart of naive set theory: the set of all sets that do not contain themselves.",
+  legacy:"Russell's paradox (1901) triggered the foundational crisis. His theory of types, and Principia Mathematica (1910–13) with Whitehead, tried to rebuild mathematics on logic; the proposition from which 1 + 1 = 2 follows appears on page 379 of volume I. He won the Nobel Prize in Literature in 1950.",
+  life:[
+    [1872,"Born in Trellech, Wales","Grandson of a prime minister."],
+    [1901,"The paradox","Let R be the set of all sets that are not members of themselves. Is R a member of R?"],
+    [1902,"Letter to Frege",""],
+    [1908,"The theory of types","Sets stratified by level to block the paradox."],
+    [1910,"Principia Mathematica","Three volumes (1910–13) with A. N. Whitehead."],
+    [1950,"Nobel Prize in Literature",""],
+    [1970,"Dies in Wales","Aged 97."]
+  ],
+  works:[]},
+
+{ id:"zermelo", name:"Ernst Zermelo", born:1871, died:1953, y:1908,
+  dom:["foundations"], fields:["set-theory"],
+  role:"German mathematician",
+  epitaph:"Wrote the axioms of set theory — and made the Axiom of Choice explicit.",
+  legacy:"Zermelo's 1904 proof that every set can be well-ordered made the Axiom of Choice explicit and controversial. His 1908 axioms, extended by Fraenkel and Skolem, became ZFC, the standard foundation of mathematics. He also proved an early theorem of game theory (1913): chess is determined.",
+  life:[
+    [1871,"Born in Berlin",""],
+    [1904,"The well-ordering theorem","Every set can be well-ordered, using the Axiom of Choice."],
+    [1908,"Axioms for set theory","Designed to avoid Russell's paradox."],
+    [1913,"Chess","Either White can force a win, or Black can, or either side can force a draw."],
+    [1930,"Models of set theory","The cumulative hierarchy."],
+    [1935,"Forced out","Refuses to give the Hitler salute and loses his Freiburg post."],
+    [1953,"Dies in Freiburg",""]
+  ],
+  works:[]},
+
+{ id:"hausdorff", name:"Felix Hausdorff", born:1868, died:1942, y:1914,
+  dom:["geometry","foundations","analysis"], fields:["point-set-topology","set-theory","measure-theory"],
+  role:"German mathematician — and, as Paul Mongré, a poet and playwright",
+  epitaph:"Wrote the axioms for topological spaces.",
+  legacy:"Grundzüge der Mengenlehre (1914) defined topological and metric spaces as we use them today; Hausdorff spaces, Hausdorff dimension (1918) and the Hausdorff paradox carry his name. Facing deportation by the Nazis, he, his wife and her sister took their own lives in 1942.",
+  life:[
+    [1868,"Born in Breslau",""],
+    [1897,"Paul Mongré","Publishes philosophy, poetry and later a play under a pseudonym."],
+    [1914,"Grundzüge der Mengenlehre","Topological spaces from neighbourhood axioms."],
+    [1914,"The Hausdorff paradox","A sphere, minus a countable set, split into pieces that make two copies — the ancestor of Banach–Tarski."],
+    [1918,"Hausdorff dimension","A dimension that can be a fraction."],
+    [1935,"Forced to retire","Under the Nazi racial laws."],
+    [1942,"Dies in Bonn","With his wife and her sister, the night before their deportation."]
+  ],
+  works:[]},
+
+{ id:"lebesgue", name:"Henri Lebesgue", born:1875, died:1941, y:1902,
+  dom:["analysis"], fields:["measure-theory","real-analysis"],
+  role:"French mathematician",
+  epitaph:"Reinvented the integral: count the coins by value, not in the order they come out of your pocket.",
+  legacy:"Lebesgue's integral (1902) measures how much of the domain sends f into each range of values, instead of chopping the domain into intervals. It handles limits gracefully — the dominated convergence theorem — and underlies Fourier analysis, probability and quantum mechanics.",
+  life:[
+    [1875,"Born in Beauvais",""],
+    [1902,"Intégrale, longueur, aire","Doctoral thesis: Lebesgue measure and integral."],
+    [1904,"Lessons on integration",""],
+    [1905,"A doubter of choice","With Borel and Baire, questions Zermelo's Axiom of Choice."],
+    [1910,"The Sorbonne",""],
+    [1922,"Academy of Sciences",""],
+    [1941,"Dies in Paris",""]
+  ],
+  works:[]},
+
+{ id:"hardy", name:"G. H. Hardy", born:1877, died:1947, y:1918,
+  dom:["number","analysis"], fields:["analytic-nt","partitions","harmonic-analysis"],
+  role:"English mathematician at Cambridge and Oxford",
+  epitaph:"Recognised Ramanujan's genius from a letter — 'the one romantic incident in my life'.",
+  legacy:"With Littlewood, Hardy wrote nearly a hundred papers on analysis and number theory; with Ramanujan he created the circle method. His essay A Mathematician's Apology (1940) is the most famous defence of pure mathematics — though the 'useless' number theory he loved now secures the internet.",
+  life:[
+    [1877,"Born in Cranleigh, Surrey",""],
+    [1911,"Hardy and Littlewood","Begin one of the most productive partnerships in mathematics."],
+    [1913,"Ramanujan's letter","Recognises a genius and brings him to Cambridge."],
+    [1914,"Infinitely many zeros","Proves that infinitely many zeros of ζ lie on the critical line."],
+    [1918,"The circle method","With Ramanujan: the asymptotic formula for partitions."],
+    [1940,"A Mathematician's Apology",""],
+    [1947,"Dies in Cambridge",""]
+  ],
+  works:[[1940,"A Mathematician's Apology",null]]},
+
+{ id:"brouwer", name:"L. E. J. Brouwer", born:1881, died:1966, y:1912,
+  dom:["foundations","geometry"], fields:["logic","algebraic-topology"],
+  role:"Dutch mathematician and philosopher",
+  epitaph:"Proved the fixed-point theorem — then decided that proofs like it don't count.",
+  legacy:"Brouwer's topology — the fixed-point theorem and the invariance of dimension (1910–12) — is classical. His intuitionism, which rejects the law of excluded middle for infinite collections, split the foundations of mathematics and lives on in constructive logic and type theory.",
+  life:[
+    [1881,"Born in Overschie",""],
+    [1907,"On the foundations of mathematics","Doctoral thesis: mathematics as mental construction."],
+    [1910,"Topology","Invariance of dimension and the fixed-point theorem (1910–12): every continuous map of a disc to itself fixes a point."],
+    [1912,"Professor in Amsterdam",""],
+    [1918,"Intuitionistic analysis","Analysis rebuilt without the excluded middle."],
+    [1928,"The Annalen affair","Removed by Hilbert from the board of Mathematische Annalen."],
+    [1966,"Dies in Blaricum","Struck by a car."]
+  ],
+  works:[]},
+
+{ id:"banach", name:"Stefan Banach", born:1892, died:1945, y:1932,
+  dom:["analysis"], fields:["functional-analysis","measure-theory"],
+  role:"Polish mathematician in Lwów",
+  epitaph:"Founded functional analysis — much of it at a table in a café.",
+  legacy:"Banach's Théorie des opérations linéaires (1932) founded functional analysis; Banach spaces and the Hahn–Banach, Banach–Steinhaus and Banach fixed-point theorems are standard tools. The Lwów school recorded its problems in the 'Scottish Book' at the Scottish Café.",
+  life:[
+    [1892,"Born in Kraków",""],
+    [1916,"Discovered","Hugo Steinhaus overhears him discussing the Lebesgue integral on a park bench."],
+    [1920,"Doctorate","Complete normed spaces — Banach spaces (published 1922)."],
+    [1924,"Banach–Tarski","With Alfred Tarski: the paradoxical decomposition of the ball."],
+    [1932,"Théorie des opérations linéaires",""],
+    [1935,"The Scottish Book","Problems written in a notebook at the Scottish Café, with prizes such as a live goose."],
+    [1945,"Dies in Lwów","Having survived the occupation feeding lice for typhus research."]
+  ],
+  works:[]},
+
+{ id:"vonneumann", name:"John von Neumann", born:1903, died:1957, y:1929,
+  dom:["analysis","foundations","probability"], fields:["functional-analysis","set-theory","dynamical-systems"],
+  role:"Hungarian-American mathematician",
+  epitaph:"Gave quantum mechanics its mathematics, game theory its theorem, and the computer its architecture.",
+  legacy:"Von Neumann ordinals, von Neumann algebras, the minimax theorem (1928), the mean ergodic theorem (1932) and the stored-program computer design (1945) are all his. Few mathematicians have worked across so many fields.",
+  life:[
+    [1903,"Born in Budapest",""],
+    [1923,"Ordinals","Each ordinal is the set of all smaller ones."],
+    [1928,"The minimax theorem","The first theorem of game theory."],
+    [1929,"Hilbert space","Abstract Hilbert space and unbounded operators for quantum mechanics (the book follows in 1932)."],
+    [1932,"The mean ergodic theorem",""],
+    [1933,"Institute for Advanced Study","One of its first professors."],
+    [1945,"The EDVAC report","The stored-program computer."],
+    [1957,"Dies in Washington, DC",""]
+  ],
+  works:[]},
+
+// ---------------- the structural age ----------------
+{ id:"weil", name:"André Weil", born:1906, died:1998, y:1949,
+  dom:["number","geometry"], fields:["algebraic-geometry","modular-forms","algebraic-nt"],
+  role:"French mathematician",
+  epitaph:"Proved the Riemann Hypothesis for curves while in prison — and co-founded Bourbaki.",
+  legacy:"The Weil conjectures (1949) linked counting points over finite fields to topology and drove Grothendieck's rebuilding of algebraic geometry until Deligne finished them in 1974. As a founder of Bourbaki, Weil helped set the axiomatic style of 20th-century mathematics.",
+  life:[
+    [1906,"Born in Paris","Brother of the philosopher Simone Weil."],
+    [1928,"Mordell–Weil","Rational points on abelian varieties form a finitely generated group."],
+    [1935,"Bourbaki","Co-founds the collective that rewrites mathematics under a fictitious name."],
+    [1940,"Prison","Jailed in Rouen for failing to report for military service; works out the Riemann Hypothesis for curves over finite fields."],
+    [1949,"The Weil conjectures","For all varieties over finite fields."],
+    [1958,"Institute for Advanced Study",""],
+    [1998,"Dies in Princeton",""]
+  ],
+  works:[]},
+
+{ id:"eilenberg", name:"Samuel Eilenberg", born:1913, died:1998, y:1945,
+  dom:["foundations","algebra","geometry"], fields:["category-theory","homological-algebra","algebraic-topology"],
+  role:"Polish-American mathematician",
+  epitaph:"Invented category theory with Mac Lane, to say precisely what 'natural' means.",
+  legacy:"The 1945 paper defining categories, functors and natural transformations was meant as a clarification for topologists; it became a language for all of mathematics. Eilenberg also axiomatised homology (with Steenrod) and wrote Homological Algebra (1956) with Henri Cartan.",
+  life:[
+    [1913,"Born in Warsaw",""],
+    [1939,"America","Emigrates just before the war."],
+    [1942,"Ext","With Mac Lane: group extensions and cohomology."],
+    [1945,"General theory of natural equivalences","With Mac Lane: categories, functors, natural transformations."],
+    [1952,"Foundations of Algebraic Topology","With Norman Steenrod: the axioms for homology."],
+    [1956,"Homological Algebra","With Henri Cartan."],
+    [1998,"Dies in New York",""]
+  ],
+  works:[[1945,"General theory of natural equivalences (with S. Mac Lane)",null]]},
+
+{ id:"maclane", name:"Saunders Mac Lane", born:1909, died:2005, y:1945,
+  dom:["foundations","algebra","order"], fields:["category-theory","homological-algebra","universal-algebra"],
+  role:"American mathematician at Chicago",
+  epitaph:"Co-invented category theory, and wrote the book that teaches it.",
+  legacy:"Categories for the Working Mathematician (1971) is still the standard text. With Garrett Birkhoff he wrote A Survey of Modern Algebra (1941), and he championed categories as a foundation for mathematics.",
+  life:[
+    [1909,"Born in Taftville, Connecticut",""],
+    [1934,"Doctorate at Göttingen","Leaves as the Nazis tear the department apart."],
+    [1941,"A Survey of Modern Algebra","With Garrett Birkhoff."],
+    [1945,"Categories","With Samuel Eilenberg."],
+    [1963,"Coherence","Mac Lane's coherence theorem for monoidal categories."],
+    [1971,"Categories for the Working Mathematician",""],
+    [2005,"Dies in San Francisco",""]
+  ],
+  works:[[1971,"Categories for the Working Mathematician",null]]},
+
+{ id:"chern", name:"Shiing-Shen Chern", born:1911, died:2004, y:1946,
+  dom:["geometry"], fields:["fiber-bundles","differential-geometry"],
+  role:"Chinese-American mathematician",
+  epitaph:"Found the intrinsic proof of Gauss–Bonnet — and the Chern classes that measure how bundles twist.",
+  legacy:"Chern classes are the basic invariants of complex vector bundles, used across geometry, topology and physics (Chern–Simons theory). Chern founded the Mathematical Sciences Research Institute in Berkeley (1982) and the Nankai Institute of Mathematics in China (1985).",
+  life:[
+    [1911,"Born in Jiaxing",""],
+    [1936,"Doctorate in Hamburg","Under Wilhelm Blaschke; then a year with Élie Cartan in Paris."],
+    [1944,"Gauss–Bonnet","An intrinsic proof for closed manifolds of any even dimension."],
+    [1946,"Chern classes","Characteristic classes of complex vector bundles."],
+    [1974,"Chern–Simons forms","With James Simons."],
+    [1982,"MSRI","Founding director in Berkeley."],
+    [2004,"Dies in Tianjin",""]
+  ],
+  works:[]},
+
+{ id:"stone", name:"Marshall Stone", born:1903, died:1989, y:1936,
+  dom:["order","analysis","geometry"], fields:["boolean","functional-analysis","point-set-topology"],
+  role:"American mathematician",
+  epitaph:"'One must always topologize.'",
+  legacy:"Stone's representation theorem for Boolean algebras (1936), the Stone–Weierstrass theorem (1937) and the Stone–von Neumann theorem of quantum mechanics carry his name. As chair at Chicago (1946–52) he built one of the world's great mathematics departments.",
+  life:[
+    [1903,"Born in New York","Son of Harlan Fiske Stone, later Chief Justice of the United States."],
+    [1926,"Doctorate at Harvard",""],
+    [1932,"Linear Transformations in Hilbert Space","And Stone's theorem on one-parameter unitary groups."],
+    [1936,"Stone duality","Boolean algebras as spaces."],
+    [1937,"Stone–Weierstrass",""],
+    [1946,"Chicago","Builds its department."],
+    [1989,"Dies in Madras","While travelling in India."]
+  ],
+  works:[]},
+
+{ id:"ito", name:"Kiyosi Itô", born:1915, died:2008, y:1944,
+  dom:["probability","analysis"], fields:["stochastic-processes","pdes"],
+  role:"Japanese mathematician",
+  epitaph:"Made calculus work along random paths.",
+  legacy:"Itô's stochastic integral and Itô's formula (1944–51) let mathematicians integrate and differentiate along Brownian motion, where ordinary calculus fails. The Black–Scholes formula of finance, stochastic control and much of mathematical physics rest on them. He received the first Gauss Prize (2006).",
+  life:[
+    [1915,"Born in Hokusei, Mie Prefecture",""],
+    [1938,"Cabinet Statistics Bureau","A government statistician, studying Lévy's work."],
+    [1942,"Stochastic differential equations","First published in Japanese, in a mimeographed journal."],
+    [1944,"The Itô integral","Integrals with respect to Brownian motion."],
+    [1951,"Itô's formula","The chain rule of stochastic calculus."],
+    [2006,"Gauss Prize","The first."],
+    [2008,"Dies in Kyoto",""]
+  ],
+  works:[]},
+
+{ id:"nash", name:"John Nash", born:1928, died:2015, y:1950,
+  dom:["analysis","geometry"], fields:["pdes","differential-geometry"],
+  role:"American mathematician",
+  epitaph:"An equilibrium in game theory, an embedding theorem in geometry, and regularity for PDEs.",
+  legacy:"Nash's 28-page thesis on non-cooperative games (1950) earned the 1994 Nobel Prize in Economics; his embedding theorems showed every Riemannian manifold fits isometrically inside Euclidean space; his 1958 work on parabolic PDEs paralleled De Giorgi's. He recovered from decades of schizophrenia, a story told in A Beautiful Mind.",
+  life:[
+    [1928,"Born in Bluefield, West Virginia",""],
+    [1950,"Non-cooperative games","Doctoral thesis at Princeton: the Nash equilibrium."],
+    [1954,"Embedding theorems","C¹ (1954) and smooth (1956) isometric embeddings."],
+    [1958,"Parabolic regularity","Hölder continuity for elliptic and parabolic equations (De Giorgi–Nash)."],
+    [1959,"Illness","Schizophrenia takes hold for three decades."],
+    [1994,"Nobel Prize in Economics",""],
+    [2015,"Abel Prize","He and his wife Alicia die in a taxi crash days after the ceremony."]
+  ],
+  works:[]},
+
+{ id:"arobinson", name:"Abraham Robinson", born:1918, died:1974, y:1961,
+  dom:["foundations","analysis"], fields:["model-theory","real-analysis"],
+  role:"German-born mathematician, working in Britain, Canada, Israel and the US",
+  epitaph:"Made Leibniz's infinitesimals rigorous, 290 years late.",
+  legacy:"Nonstandard analysis (1961) gives calculus with genuine infinitesimals, built with model theory. Robinson also founded model-theoretic algebra (model completeness) and worked on aircraft wing design in wartime Britain.",
+  life:[
+    [1918,"Born in Waldenburg",""],
+    [1933,"Palestine","Emigrates with his family."],
+    [1940,"Britain","Escapes France; joins the Free French air force, then works on aerodynamics at the Royal Aircraft Establishment."],
+    [1949,"Doctorate in London","Model theory and algebra."],
+    [1961,"Nonstandard analysis",""],
+    [1966,"Non-standard Analysis (the book)",""],
+    [1974,"Dies in New Haven",""]
+  ],
+  works:[]},
+
+{ id:"juliarobinson", name:"Julia Robinson", born:1919, died:1985, y:1961,
+  dom:["foundations","number"], fields:["computability","diophantine"],
+  role:"American mathematician at Berkeley",
+  epitaph:"Did the decisive groundwork on Hilbert's tenth problem.",
+  legacy:"Robinson's hypothesis — that some Diophantine relation grows exponentially — was the key Matiyasevich supplied in 1970. She was the first woman elected to the mathematics section of the US National Academy of Sciences (1976) and the first woman president of the American Mathematical Society (1983).",
+  life:[
+    [1919,"Born in St Louis",""],
+    [1948,"Doctorate at Berkeley","Under Alfred Tarski: the arithmetic of the rationals is undecidable."],
+    [1950,"The exponential hypothesis","If one Diophantine relation grows exponentially, exponentiation itself is Diophantine."],
+    [1961,"Davis–Putnam–Robinson","Exponential Diophantine equations are undecidable."],
+    [1970,"The last step","Matiyasevich completes the proof."],
+    [1976,"National Academy of Sciences",""],
+    [1983,"President of the AMS",""],
+    [1985,"Dies in Oakland",""]
+  ],
+  works:[]},
+
+{ id:"serre", name:"Jean-Pierre Serre", born:1926, died:null, y:1955,
+  dom:["geometry","algebra","number"], fields:["algebraic-geometry","algebraic-topology","modular-forms","homological-algebra"],
+  role:"French mathematician",
+  epitaph:"The youngest Fields medallist, and the first Abel laureate.",
+  legacy:"Serre computed homotopy groups of spheres with spectral sequences (1951), brought sheaf cohomology to algebraic geometry (1955), and made the modularity conjectures that underlie Wiles's proof. His books, from A Course in Arithmetic to Linear Representations of Finite Groups, are models of clarity.",
+  life:[
+    [1926,"Born in Bages",""],
+    [1951,"Thesis","Spectral sequences and homotopy groups of spheres."],
+    [1954,"Fields Medal","At 27 — still the youngest ever."],
+    [1955,"Faisceaux algébriques cohérents","Sheaves come to algebraic geometry."],
+    [1956,"GAGA","Algebraic and analytic geometry agree on projective varieties."],
+    [1987,"Serre's conjecture","On modular Galois representations; proved by Khare and Wintenberger (2008)."],
+    [2003,"Abel Prize","The first."]
+  ],
+  works:[]},
+
+{ id:"atiyah", name:"Michael Atiyah", born:1929, died:2019, y:1963,
+  dom:["geometry","analysis"], fields:["fiber-bundles","algebraic-topology","pdes","differential-geometry"],
+  role:"British-Lebanese mathematician",
+  epitaph:"The index theorem: counting solutions of equations with topology.",
+  legacy:"The Atiyah–Singer index theorem (1963) says the analytic index of an elliptic operator equals a topological formula — unifying Gauss–Bonnet, Riemann–Roch and more. Atiyah's K-theory and his work with physicists on gauge theory made him a bridge between mathematics and physics.",
+  life:[
+    [1929,"Born in London","Grows up in Sudan and Egypt."],
+    [1961,"K-theory","With Friedrich Hirzebruch."],
+    [1963,"The index theorem","With Isadore Singer."],
+    [1966,"Fields Medal",""],
+    [1978,"Instantons","The ADHM construction of Yang–Mills instantons."],
+    [2004,"Abel Prize","With Singer."],
+    [2019,"Dies in Edinburgh",""]
+  ],
+  works:[]},
+
+{ id:"langlands", name:"Robert Langlands", born:1936, died:null, y:1967,
+  dom:["number","algebra"], fields:["modular-forms","representation-theory","algebraic-nt"],
+  role:"Canadian mathematician at the Institute for Advanced Study",
+  epitaph:"Wrote a letter that became a grand unified theory of mathematics.",
+  legacy:"In a 17-page letter to André Weil (1967), Langlands proposed deep correspondences between Galois representations in number theory and automorphic forms in harmonic analysis. The Langlands programme now spans number theory, representation theory, geometry and physics; a proof of the geometric Langlands conjecture was announced in 2024 by a team led by Dennis Gaitsgory and Sam Raskin.",
+  life:[
+    [1936,"Born in New Westminster, British Columbia",""],
+    [1960,"Doctorate at Yale",""],
+    [1967,"The letter to Weil","'If you are willing to read it as pure speculation I would appreciate that…'"],
+    [1970,"Problems in the theory of automorphic forms","The programme in print."],
+    [1972,"Institute for Advanced Study","Later in Einstein's old office."],
+    [2018,"Abel Prize",""]
+  ],
+  works:[]},
+
+{ id:"cohen", name:"Paul Cohen", born:1934, died:2007, y:1963,
+  dom:["foundations"], fields:["set-theory","logic"],
+  role:"American mathematician at Stanford",
+  epitaph:"Proved the continuum hypothesis can be neither proved nor disproved from the usual axioms.",
+  legacy:"Cohen's forcing (1963) showed that the continuum hypothesis and the Axiom of Choice are independent of the other axioms of set theory, completing what Gödel began in 1938. Forcing became the central tool of set theory, and his remains the only Fields Medal awarded for work in logic.",
+  life:[
+    [1934,"Born in Long Branch, New Jersey",""],
+    [1958,"Doctorate at Chicago","In harmonic analysis, not logic."],
+    [1963,"Forcing","A method for building new models of set theory: the continuum hypothesis is independent of ZFC."],
+    [1966,"Fields Medal",""],
+    [2007,"Dies in Stanford",""]
+  ],
+  works:[[1963,"The independence of the continuum hypothesis (PNAS)","https://doi.org/10.1073/pnas.50.6.1143"]]},
+
+{ id:"conway", name:"John Horton Conway", born:1937, died:2020, y:1970,
+  dom:["discrete","algebra","geometry"], fields:["group-theory","low-dim-topology","enumerative"],
+  role:"English mathematician at Cambridge and Princeton",
+  epitaph:"Invented the Game of Life and found sporadic groups — and loved them equally.",
+  legacy:"Conway found three sporadic simple groups (1968), invented surreal numbers, the Game of Life (1970), knot notation and the 'Doomsday' calendar rule, and co-wrote the ATLAS of Finite Groups. He died of COVID-19 in 2020.",
+  life:[
+    [1937,"Born in Liverpool",""],
+    [1968,"Conway groups","Three sporadic simple groups from the symmetries of the Leech lattice."],
+    [1970,"The Game of Life","A cellular automaton that turns out to be a universal computer."],
+    [1974,"Surreal numbers","Numbers built from games; Knuth writes a novel about them."],
+    [1985,"ATLAS of Finite Groups","With Curtis, Norton, Parker and Wilson."],
+    [1987,"Princeton",""],
+    [2020,"Dies in New Brunswick, New Jersey","Of COVID-19."]
+  ],
+  works:[]},
+
+// ---------------- the modern frontier ----------------
+{ id:"matiyasevich", name:"Yuri Matiyasevich", born:1947, died:null, y:1970,
+  dom:["foundations","number"], fields:["computability","diophantine"],
+  role:"Russian mathematician in St Petersburg",
+  epitaph:"At 22, finished Hilbert's tenth problem: no algorithm can decide Diophantine equations.",
+  legacy:"Matiyasevich showed (1970) that the exponential growth of the Fibonacci numbers can be captured by a Diophantine equation, completing the Davis–Putnam–Robinson programme. One consequence: there is a polynomial whose positive values, as its variables run over the natural numbers, are exactly the primes.",
+  life:[
+    [1947,"Born in Leningrad",""],
+    [1970,"Hilbert's tenth problem","Computably enumerable sets are Diophantine."],
+    [1976,"A prime-producing polynomial","Jones, Sato, Wada and Wiens write one down, in 26 variables."],
+    [1993,"Hilbert's Tenth Problem","His book on the whole story."]
+  ],
+  works:[]},
+
+{ id:"thurston", name:"William Thurston", born:1946, died:2012, y:1982,
+  dom:["geometry"], fields:["low-dim-topology","differential-geometry"],
+  role:"American mathematician",
+  epitaph:"Saw that most three-dimensional spaces are hyperbolic.",
+  legacy:"Thurston's geometrization conjecture (1982) said every 3-manifold splits into pieces carrying one of eight geometries; he proved it for Haken manifolds, and Perelman finished it in 2003. His essay On Proof and Progress in Mathematics (1994) is one of the best descriptions of how mathematicians actually think.",
+  life:[
+    [1946,"Born in Washington, DC",""],
+    [1972,"Doctorate at Berkeley","On foliations."],
+    [1976,"Hyperbolic 3-manifolds","The Princeton lectures that became The Geometry and Topology of Three-Manifolds."],
+    [1982,"The geometrization conjecture","And a Fields Medal."],
+    [1994,"On Proof and Progress in Mathematics",""],
+    [2012,"Dies in Rochester, New York",""]
+  ],
+  works:[[1994,"On proof and progress in mathematics","https://arxiv.org/abs/math/9404236"]]},
+
+{ id:"mandelbrot", name:"Benoit Mandelbrot", born:1924, died:2010, y:1980,
+  dom:["analysis","geometry"], fields:["dynamical-systems","measure-theory"],
+  role:"Polish-born French-American mathematician",
+  epitaph:"Named the fractals and made them visible.",
+  legacy:"The Fractal Geometry of Nature (1982) showed that coastlines, clouds and markets have fractional dimension. The Mandelbrot set, plotted by computer around 1980, became an icon of chaos theory and of mathematics itself.",
+  life:[
+    [1924,"Born in Warsaw",""],
+    [1958,"IBM","Joins IBM Research for 35 years."],
+    [1967,"How long is the coast of Britain?","Self-similarity and fractional dimension, in Science."],
+    [1975,"'Fractal'","Coins the word, from the Latin fractus, broken."],
+    [1980,"The Mandelbrot set","The c for which z ↦ z² + c stays bounded."],
+    [1982,"The Fractal Geometry of Nature",""],
+    [2010,"Dies in Cambridge, Massachusetts",""]
+  ],
+  works:[]},
+
+{ id:"uhlenbeck", name:"Karen Uhlenbeck", born:1942, died:null, y:1982,
+  dom:["analysis","geometry"], fields:["pdes","variations","fiber-bundles","differential-geometry"],
+  role:"American mathematician",
+  epitaph:"A founder of geometric analysis, and the first woman to win the Abel Prize.",
+  legacy:"Uhlenbeck's analysis of harmonic maps (with Sacks, 1981) and of Yang–Mills connections (1982) — how solutions can concentrate and 'bubble' — became basic tools of geometric analysis and underpinned Donaldson's work on 4-manifolds. She co-founded programmes to support women in mathematics.",
+  life:[
+    [1942,"Born in Cleveland, Ohio",""],
+    [1968,"Doctorate at Brandeis",""],
+    [1981,"Bubbling","With Jonathan Sacks: minimal spheres and the bubbling phenomenon."],
+    [1982,"Yang–Mills","Removable singularities and compactness for gauge fields."],
+    [1990,"ICM plenary lecture","The second woman to give one, after Emmy Noether in 1932."],
+    [2019,"Abel Prize","The first woman to receive it."]
+  ],
+  works:[]},
+
+{ id:"wiles", name:"Andrew Wiles", born:1953, died:null, y:1994,
+  dom:["number","geometry"], fields:["modular-forms","diophantine","algebraic-geometry"],
+  role:"English mathematician at Princeton and Oxford",
+  epitaph:"Proved Fermat's Last Theorem after seven years of work in secret.",
+  legacy:"Wiles read about Fermat's Last Theorem at ten. His proof of the modularity of semistable elliptic curves (1994–95) settled it and opened the modern era of modularity. He received the Abel Prize in 2016.",
+  life:[
+    [1953,"Born in Cambridge",""],
+    [1963,"A library book","Reads about Fermat's Last Theorem and decides to solve it."],
+    [1986,"Ribet's theorem","Modularity would imply Fermat; he begins seven years of secret work."],
+    [1993,"The announcement","Cambridge, June; in September a gap is found."],
+    [1994,"The repair","On 19 September, with Richard Taylor's help, sees how to fix it."],
+    [1995,"Published","Annals of Mathematics."],
+    [2016,"Abel Prize",""]
+  ],
+  works:[[1995,"Modular elliptic curves and Fermat's Last Theorem","https://doi.org/10.2307/2118559"]]},
+
+{ id:"tao", name:"Terence Tao", born:1975, died:null, y:2004,
+  dom:["analysis","number","discrete"], fields:["harmonic-analysis","analytic-nt","ramsey","pdes"],
+  role:"Australian-American mathematician at UCLA",
+  epitaph:"Proved, with Ben Green, that the primes contain arithmetic progressions of every length.",
+  legacy:"Tao works across harmonic analysis, PDE, combinatorics and number theory. The Green–Tao theorem (2004), compressed sensing and his widely read blog made him the public face of modern mathematics; he is also a leading advocate of proof assistants and AI tools in research.",
+  life:[
+    [1975,"Born in Adelaide",""],
+    [1988,"Olympiad gold","At 13, the youngest gold medallist ever."],
+    [1996,"Doctorate at Princeton","Under Elias Stein."],
+    [2004,"The Green–Tao theorem","Arbitrarily long arithmetic progressions of primes."],
+    [2006,"Fields Medal",""],
+    [2015,"The Erdős discrepancy problem","Solves a question Erdős asked in the 1930s."],
+    [2023,"Formalisation","Leads a community formalisation in Lean of the polynomial Freiman–Ruzsa conjecture's proof within weeks."]
+  ],
+  works:[[2004,"The primes contain arbitrarily long arithmetic progressions (with B. Green)","https://arxiv.org/abs/math/0404188"]]},
+
+{ id:"scholze", name:"Peter Scholze", born:1987, died:null, y:2012,
+  dom:["geometry","number"], fields:["algebraic-nt","algebraic-geometry"],
+  role:"German mathematician in Bonn",
+  epitaph:"Perfectoid spaces: arithmetic geometry rebuilt at 24.",
+  legacy:"Scholze's perfectoid spaces (2012) move problems between p-adic and characteristic-p worlds, reshaping arithmetic geometry. With Dustin Clausen he is developing condensed mathematics, a new way to combine topology and algebra; one of its key theorems was checked in the Lean proof assistant (the Liquid Tensor Experiment, 2021–22).",
+  life:[
+    [1987,"Born in Dresden",""],
+    [2004,"Olympiad medals","A silver, then three golds (2005–07)."],
+    [2012,"Perfectoid spaces","Doctoral thesis at Bonn."],
+    [2012,"Professor at Bonn","At 24, the youngest full professor in Germany."],
+    [2018,"Fields Medal",""],
+    [2019,"Condensed mathematics","With Dustin Clausen."],
+    [2022,"The Liquid Tensor Experiment","A key theorem verified in Lean by a community effort."]
+  ],
+  works:[[2012,"Perfectoid spaces","https://arxiv.org/abs/1111.4914"]]},
+
+{ id:"viazovska", name:"Maryna Viazovska", born:1984, died:null, y:2016,
+  dom:["geometry","number"], fields:["classical-geometry","modular-forms"],
+  role:"Ukrainian mathematician at EPFL",
+  epitaph:"Solved sphere packing in 8 and 24 dimensions with a magic modular form.",
+  legacy:"Viazovska proved (2016) that the E₈ lattice gives the densest packing of spheres in eight dimensions, and, with Cohn, Kumar, Miller and Radchenko, the Leech lattice in twenty-four. The key was a 'magic function' built from modular forms. In 2022 she became the second woman to receive the Fields Medal.",
+  life:[
+    [1984,"Born in Kyiv",""],
+    [2013,"Doctorate at Bonn",""],
+    [2016,"Dimension 8","The E₈ lattice is the densest sphere packing in eight dimensions."],
+    [2016,"Dimension 24","With Cohn, Kumar, Miller and Radchenko: the Leech lattice."],
+    [2017,"EPFL","Professor in Lausanne."],
+    [2022,"Fields Medal",""]
+  ],
+  works:[[2016,"The sphere packing problem in dimension 8","https://arxiv.org/abs/1603.04246"]]},
 
 ];
