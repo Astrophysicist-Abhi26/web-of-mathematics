@@ -201,6 +201,13 @@ const E = {
   viazovska: hexPack(),
   grothendieck: `<path d="M12 44 Q24 34 36 44 T60 44 T84 44 M12 58 Q24 48 36 58 T60 58 T84 58 M12 72 Q24 62 36 72 T60 72 T84 72"/>${M(50, 30, 11, "Spec")}`,
   perelman: `<path d="M30 30 C12 30 12 70 30 70 C40 70 44 56 50 56 C56 56 60 70 70 70 C88 70 88 30 70 30 C60 30 56 44 50 44 C44 44 40 30 30 30 Z"/><path d="M50 44 V56" stroke-dasharray="2 2"/>`,
+  bayes: `${T(50, 56, 20, "P(H|E)")}<path d="M22 68 H78" stroke-width="1.2" opacity=".6"/>`,
+  dyson: (() => { let s = `<path d="M18 70 A32 32 0 0 1 82 70" />`; for (let i = 0; i < 9; i++) { const x = 22 + i * 7, h = 30 * Math.sqrt(Math.max(0, 1 - ((x + 3.5 - 50) / 32) ** 2)); s += `<rect x="${x}" y="${(70 - h).toFixed(1)}" width="5.6" height="${h.toFixed(1)}" fill="currentColor" stroke="none" opacity=".45"/>`; } return s + `<path d="M14 70 H86" stroke-width="1.2"/>`; })(),
+  szemeredi: `${[0, 1, 2, 3, 4, 5, 6, 7].map(i => dot(18 + i * 9, 40, i % 3 === 0 ? 3.6 : 2)).join("")}${[0, 1, 2, 3, 4, 5, 6, 7].map(i => dot(18 + i * 9, 62, [1, 3, 5, 7].includes(i) ? 3.6 : 2)).join("")}<path d="M18 30 Q31 22 45 30 Q58 22 72 30" stroke-width="1.4"/>`,
+  gromov: `<path d="M22 74 Q46 54 50 22 Q54 54 78 74 Q50 60 22 74 Z"/>${T(50, 90, 11, "δ-thin")}`,
+  voevodsky: `${dot(26, 60, 3.6)}${dot(74, 60, 3.6)}<path d="M26 60 C38 30 62 30 74 60"/><path d="M26 60 C38 82 62 82 74 60"/><path d="M50 38 V76" stroke-dasharray="3 3" stroke-width="1.4"/>${T(50, 28, 13, "a = b")}`,
+  erdos: randomGraph(),
+  weil: (() => { let s = ""; const p = 7; for (let x = 0; x < p; x++) for (let y = 0; y < p; y++) { const on = (y * y) % p === (x * x * x + 2 * x + 3) % p; s += on ? dot(24 + x * 8.7, 76 - y * 8.7, 3.2) : `<circle cx="${(24 + x * 8.7).toFixed(1)}" cy="${(76 - y * 8.7).toFixed(1)}" r="1" fill="currentColor" stroke="none" opacity=".35"/>`; } return s + `<rect x="18" y="18" width="64" height="64" stroke-width="1" opacity=".4"/>`; })(),
   mirzakhani: `<path d="M24 50 C24 30 44 28 50 40 C56 28 76 30 76 50 C76 70 56 72 50 60 C44 72 24 70 24 50 Z"/><ellipse cx="37" cy="50" rx="6" ry="4"/><ellipse cx="63" cy="50" rx="6" ry="4"/><path d="M30 50 C30 36 46 36 50 50 C54 64 70 64 70 50" stroke-dasharray="3 2"/>`
 };
 window.EMBLEMS = E;

@@ -305,6 +305,17 @@ const EDGE_DETAIL = {
   today: "Algorithmic randomness is an active part of computability theory. Chaitin's Ω — the probability that a random program halts — is random and encodes the halting problem.",
   people: ["kolmogorov", "turing"] },
 
+"Roth 1953 → Gowers 2001: Fourier analysis finds progressions": {
+  flows: ["Harmonic analysis", "Additive combinatorics"],
+  story: "Roth (1953) proved that every set of integers with positive density contains a three-term arithmetic progression using the circle method: a set without progressions must correlate with a single frequency, and that correlation can be exploited to find a denser piece inside a shorter progression. Ordinary Fourier analysis cannot see longer progressions; Gowers (2001) invented the uniformity norms that could, giving a new, quantitative proof of Szemerédi's theorem and founding higher-order Fourier analysis.",
+  today: "Higher-order Fourier analysis, nilsequences (Green, Tao and Ziegler) and the Kelley–Meka bounds (2023) for sets without three-term progressions keep the two continents in close contact.",
+  people: ["szemeredi", "tao"] },
+"Least squares (1805) → random matrices (1955): linear algebra meets chance": {
+  flows: ["Linear algebra and spectra", "Statistics and probability"],
+  story: "Legendre and Gauss fitted data by orthogonal projection — least squares is linear algebra with an error model — and Wishart (1928) asked how the eigenvalues of a random sample covariance matrix behave. Wigner (1955) turned the question into physics and mathematics: the eigenvalues of large random symmetric matrices follow the semicircle law, repel each other, and fluctuate universally.",
+  today: "High-dimensional statistics, principal component analysis of noisy data and the theory of deep neural networks all lean on random matrix theory; the Marchenko–Pastur law tells you which eigenvalues of a data covariance matrix are just noise.",
+  people: ["gauss", "dyson"] },
+
 // ---------------- controversies ----------------
 "Kronecker vs Cantor, 1880s: is the actual infinite real?": {
   hot: true,

@@ -19,8 +19,10 @@ Or preview locally: `python3 -m http.server` then open http://localhost:8000
 
 - **8 domain nebulae** — Foundations, Algebra, Analysis, Geometry & Topology, Number Theory,
   Discrete & Combinatorics, Probability, Order & Universal Algebra. Click one to zoom into its
-  **fields**; click a field for its **topics** (discoverer · year · definition), its landmark
-  theorems, its canonical textbook and every bridge that touches it.
+  **52 fields**; click a field for its **240 topics** (discoverer · year · definition), its landmark
+  theorems, its canonical textbook and every bridge that touches it. New in this edition: Type
+  Theory & Formal Proof, Fractal Geometry, Geometric Group Theory, Computational Number Theory &
+  Cryptography, Additive Combinatorics, Statistics & Inference, and Random Matrix Theory.
 - **The time scrubber** (bottom): drag from 1800 BCE to 2026 or press ▶. The sky tints by era
   (Ancient World → Medieval Flowering → Renaissance → Age of Calculus → Age of Rigour →
   the ❄ Foundational Crisis of 1901–1931 → the Structural Age → the Modern Frontier), and every
@@ -30,11 +32,14 @@ Or preview locally: `python3 -m http.server` then open http://localhost:8000
   Riemann, Cantor, Gödel, Wiles, Perelman).
 - **Number shells** — ℕ ⊂ ℤ ⊂ ℚ ⊂ ℝ ⊂ ℂ drawn as nested orbits. Click a shell for the equation
   that forced it into being (x + 5 = 3, 2x = 1, x² = 2, x² = −1) and who built it.
-- **Pioneer constellation** (top): portraits of the people who built mathematics, in
-  chronological order. Click one for a biography; everyone is in the **▦ pioneer gallery**.
+- **Pioneer constellation** (top): 84 people who built mathematics, from Euclid and Brahmagupta
+  to Scholze and Viazovska, in chronological order. Click one for a biography (life, key works,
+  legacy, links to their fields); everyone is in the **▦ pioneer gallery**. Six layouts, as in
+  the Web of Computation. Until a photo is added, each medallion carries a gold emblem of the
+  person's signature idea (see `portraits/README.md` to fetch real portraits).
 - **Status weather** on every field and topic: 🏛 foundational · 🔥 frontier · ⚙️ workhorse ·
   🪦 closed chapter · 🧟 revived.
-- **Gold bridges** between domains, each carrying the field-level bridges it stands for —
+- **22 gold bridges** between domains, each carrying the field-level bridges it stands for (103 in all) —
   the mediating concept, who built it and when, and the theory of the bridge (Galois
   correspondence, Gauss–Bonnet, Ricci flow ⇒ Poincaré, Kolmogorov's axioms, Stone duality, …).
 - **Red lightning** for the great disputes: Newton vs Leibniz, Kronecker vs Cantor,

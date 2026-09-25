@@ -80,7 +80,7 @@ const PEOPLE = [
 
 // ---------------- renaissance & the new algebra ----------------
 { id:"fermat", name:"Pierre de Fermat", born:1601, died:1665, y:1637,
-  dom:["number","probability","analysis"], fields:["elementary-nt","diophantine","prob-spaces","variations"],
+  dom:["number","probability","analysis"], fields:["elementary-nt","diophantine","prob-spaces","variations","computational-nt"],
   role:"French lawyer and amateur mathematician",
   epitaph:"Wrote the most famous marginal note in history, and left the proof to others for 358 years.",
   legacy:"Fermat published almost nothing; his results survive in letters and margins. His Last Theorem was proved by Andrew Wiles in 1994, and his little theorem is the engine of RSA encryption.",
@@ -180,7 +180,7 @@ const PEOPLE = [
 
 // ---------------- the age of rigour ----------------
 { id:"gauss", name:"Carl Friedrich Gauss", born:1777, died:1855, y:1801,
-  dom:["number","geometry","analysis"], fields:["elementary-nt","algebraic-nt","differential-geometry","complex-analysis"],
+  dom:["number","geometry","analysis"], fields:["elementary-nt","algebraic-nt","differential-geometry","complex-analysis","statistics"],
   role:"German mathematician, astronomer and physicist",
   epitaph:"'Few, but ripe': the prince of mathematicians published only what was perfect.",
   legacy:"The Disquisitiones Arithmeticae (1801) made number theory a discipline. His diary and letters show that he found non-Euclidean geometry, elliptic functions and much else first, but kept them to himself. The normal distribution is often named after him.",
@@ -271,7 +271,7 @@ const PEOPLE = [
   ]},
 
 { id:"cantor", name:"Georg Cantor", born:1845, died:1918, y:1874,
-  dom:["foundations","analysis"], fields:["set-theory","real-analysis"],
+  dom:["foundations","analysis"], fields:["set-theory","real-analysis","fractals"],
   role:"German mathematician, born in St Petersburg",
   epitaph:"Proved that some infinities are bigger than others.",
   legacy:"Kronecker called him a 'corrupter of youth'; Hilbert declared that 'no one shall expel us from the paradise that Cantor has created'. Set theory became the foundation of mathematics — and its paradoxes set off the foundational crisis.",
@@ -409,7 +409,7 @@ const PEOPLE = [
   ]},
 
 { id:"turing", name:"Alan Turing", born:1912, died:1954, y:1936,
-  dom:["foundations"], fields:["computability","logic"],
+  dom:["foundations"], fields:["computability","logic","computational-nt"],
   role:"English mathematician and logician",
   epitaph:"Defined what an algorithm is — and proved there are problems no algorithm can solve.",
   legacy:"The Turing machine is the standard definition of computation. His codebreaking at Bletchley Park, his 1950 question 'Can machines think?' and his late work on morphogenesis each founded a field. Prosecuted for homosexuality in 1952, he died two years later; the UK government apologised in 2009. He is on the Bank of England £50 note.",
@@ -428,7 +428,7 @@ const PEOPLE = [
 
 // ---------------- the structural age ----------------
 { id:"erdos", name:"Paul Erdős", born:1913, died:1996, y:1947,
-  dom:["discrete","number","probability"], fields:["ramsey","graph-theory","analytic-nt","prob-spaces"],
+  dom:["discrete","number","probability"], fields:["ramsey","graph-theory","analytic-nt","prob-spaces","additive-combinatorics"],
   role:"Hungarian mathematician",
   epitaph:"Wrote about 1,500 papers with more than 500 co-authors, living out of a suitcase.",
   legacy:"The Erdős number — your collaboration distance to him — maps the social web of mathematics. The probabilistic method he pioneered is now a standard tool, and the cash prizes he offered for open problems still motivate research.",
@@ -659,7 +659,7 @@ const PEOPLE = [
   works:[[1788,"Mécanique analytique",null]]},
 
 { id:"laplace", name:"Pierre-Simon Laplace", born:1749, died:1827, y:1812,
-  dom:["probability","analysis"], fields:["prob-spaces","limit-theorems","pdes"],
+  dom:["probability","analysis"], fields:["prob-spaces","limit-theorems","pdes","statistics"],
   role:"French mathematician and astronomer",
   epitaph:"Turned probability into a calculus for reasoning under uncertainty.",
   legacy:"Théorie analytique des probabilités (1812) proved a general central limit theorem and developed Bayesian inference; the Laplace transform and Laplace's equation Δu = 0 run through physics. Asked by Napoleon why his Mécanique céleste never mentions God, he is said to have replied: 'I had no need of that hypothesis.'",
@@ -885,7 +885,7 @@ const PEOPLE = [
   works:[]},
 
 { id:"russell", name:"Bertrand Russell", born:1872, died:1970, y:1901,
-  dom:["foundations"], fields:["logic","set-theory"],
+  dom:["foundations"], fields:["logic","set-theory","type-theory"],
   role:"British philosopher, logician and campaigner",
   epitaph:"Found the paradox at the heart of naive set theory: the set of all sets that do not contain themselves.",
   legacy:"Russell's paradox (1901) triggered the foundational crisis. His theory of types, and Principia Mathematica (1910–13) with Whitehead, tried to rebuild mathematics on logic; the proposition from which 1 + 1 = 2 follows appears on page 379 of volume I. He won the Nobel Prize in Literature in 1950.",
@@ -917,7 +917,7 @@ const PEOPLE = [
   works:[]},
 
 { id:"hausdorff", name:"Felix Hausdorff", born:1868, died:1942, y:1914,
-  dom:["geometry","foundations","analysis"], fields:["point-set-topology","set-theory","measure-theory"],
+  dom:["geometry","foundations","analysis"], fields:["point-set-topology","set-theory","measure-theory","fractals"],
   role:"German mathematician — and, as Paul Mongré, a poet and playwright",
   epitaph:"Wrote the axioms for topological spaces.",
   legacy:"Grundzüge der Mengenlehre (1914) defined topological and metric spaces as we use them today; Hausdorff spaces, Hausdorff dimension (1918) and the Hausdorff paradox carry his name. Facing deportation by the Nazis, he, his wife and her sister took their own lives in 1942.",
@@ -1266,7 +1266,7 @@ const PEOPLE = [
   works:[[1994,"On proof and progress in mathematics","https://arxiv.org/abs/math/9404236"]]},
 
 { id:"mandelbrot", name:"Benoit Mandelbrot", born:1924, died:2010, y:1980,
-  dom:["analysis","geometry"], fields:["dynamical-systems","measure-theory"],
+  dom:["analysis","geometry"], fields:["dynamical-systems","measure-theory","fractals"],
   role:"Polish-born French-American mathematician",
   epitaph:"Named the fractals and made them visible.",
   legacy:"The Fractal Geometry of Nature (1982) showed that coastlines, clouds and markets have fractional dimension. The Mandelbrot set, plotted by computer around 1980, became an icon of chaos theory and of mathematics itself.",
@@ -1313,7 +1313,7 @@ const PEOPLE = [
   works:[[1995,"Modular elliptic curves and Fermat's Last Theorem","https://doi.org/10.2307/2118559"]]},
 
 { id:"tao", name:"Terence Tao", born:1975, died:null, y:2004,
-  dom:["analysis","number","discrete"], fields:["harmonic-analysis","analytic-nt","ramsey","pdes"],
+  dom:["analysis","number","discrete"], fields:["harmonic-analysis","analytic-nt","ramsey","pdes","additive-combinatorics"],
   role:"Australian-American mathematician at UCLA",
   epitaph:"Proved, with Ben Green, that the primes contain arithmetic progressions of every length.",
   legacy:"Tao works across harmonic analysis, PDE, combinatorics and number theory. The Green–Tao theorem (2004), compressed sensing and his widely read blog made him the public face of modern mathematics; he is also a leading advocate of proof assistants and AI tools in research.",
@@ -1358,5 +1358,81 @@ const PEOPLE = [
     [2022,"Fields Medal",""]
   ],
   works:[[2016,"The sphere packing problem in dimension 8","https://arxiv.org/abs/1603.04246"]]},
+{ id:"bayes", name:"Thomas Bayes", born:1701, died:1761, dates:"c. 1701–1761", y:1763,
+  dom:["probability"], fields:["statistics","prob-spaces"],
+  role:"English statistician and Presbyterian minister",
+  epitaph:"Showed how to update beliefs with evidence — in an essay he never published.",
+  legacy:"Richard Price found Bayes's essay among his papers and presented it to the Royal Society in 1763. Laplace developed the method independently; today 'Bayesian' names a whole school of statistics and much of machine learning.",
+  life:[
+    [1701,"Born in London (c. 1701)","Son of a Nonconformist minister."],
+    [1734,"Tunbridge Wells","Minister of the Presbyterian chapel there."],
+    [1736,"A defence of fluxions","Answers Bishop Berkeley's attack on the logic of Newton's calculus."],
+    [1742,"Fellow of the Royal Society",""],
+    [1761,"Dies in Tunbridge Wells",""],
+    [1763,"An Essay towards solving a Problem in the Doctrine of Chances","Published by Richard Price, two years after Bayes's death."]
+  ],
+  works:[[1763,"An Essay towards solving a Problem in the Doctrine of Chances","https://doi.org/10.1098/rstl.1763.0053"]]},
+
+{ id:"dyson", name:"Freeman Dyson", born:1923, died:2020, y:1962,
+  dom:["probability","number","discrete"], fields:["random-matrices","partitions","analytic-nt"],
+  role:"English-American theoretical physicist and mathematician",
+  epitaph:"Recognised the zeros of the zeta function as eigenvalues, over a cup of tea.",
+  legacy:"Dyson unified the quantum electrodynamics of Feynman, Schwinger and Tomonaga (1949), founded much of random matrix theory, and as a student defined the rank of a partition to explain two of Ramanujan's congruences. He never took a PhD.",
+  life:[
+    [1923,"Born in Crowthorne, England",""],
+    [1944,"The rank of a partition","As a Cambridge student, conjectures that the rank splits the partitions of 5n + 4 into five equal classes — proved by Atkin and Swinnerton-Dyer in 1954."],
+    [1949,"Quantum electrodynamics","Shows the theories of Feynman, Schwinger and Tomonaga are equivalent."],
+    [1953,"Institute for Advanced Study","Professor at Princeton for the rest of his career."],
+    [1962,"The threefold way","Classifies random matrix ensembles and introduces Dyson Brownian motion."],
+    [1972,"Tea with Montgomery","Recognises the pair correlation of zeta zeros as that of random unitary matrices."],
+    [2020,"Dies in Princeton",""]
+  ],
+  works:[]},
+
+{ id:"szemeredi", name:"Endre Szemerédi", born:1940, died:null, y:1975,
+  dom:["discrete","number"], fields:["additive-combinatorics","ramsey","graph-theory"],
+  role:"Hungarian mathematician",
+  epitaph:"Proved that every dense set of whole numbers contains arbitrarily long arithmetic progressions.",
+  legacy:"Szemerédi's theorem (1975), and the regularity lemma inside its proof, became central tools of combinatorics and inspired new proofs through ergodic theory, Fourier analysis and hypergraphs. He received the Abel Prize in 2012.",
+  life:[
+    [1940,"Born in Budapest","Studies medicine briefly and works in a factory before turning to mathematics."],
+    [1970,"Doctorate in Moscow","Under Israel Gelfand."],
+    [1975,"Szemerédi's theorem","Dense sets contain arbitrarily long progressions; the regularity lemma is born."],
+    [1983,"Szemerédi–Trotter","A sharp bound on how often points and lines can meet, with William Trotter."],
+    [2012,"Abel Prize",""]
+  ],
+  works:[]},
+
+{ id:"gromov", name:"Mikhail Gromov", born:1943, died:null, y:1987,
+  dom:["geometry","algebra"], fields:["geometric-group-theory","differential-geometry","group-theory"],
+  role:"Russian-French mathematician at the IHÉS",
+  epitaph:"Taught mathematicians to look at groups — and spaces — from very far away.",
+  legacy:"Gromov's h-principle, polynomial growth theorem (1981), pseudoholomorphic curves (1985), hyperbolic groups (1987) and his notion of convergence for metric spaces reshaped geometry, symplectic topology and group theory. He received the Abel Prize in 2009.",
+  life:[
+    [1943,"Born in Boksitogorsk, USSR",""],
+    [1969,"The h-principle","When a geometric problem has a formal solution, it often has a genuine one."],
+    [1974,"Emigrates","Leaves the Soviet Union; from 1982 a permanent professor at the IHÉS near Paris."],
+    [1981,"Polynomial growth","Groups of polynomial growth are virtually nilpotent."],
+    [1985,"Pseudoholomorphic curves","Founds modern symplectic topology, with the non-squeezing theorem."],
+    [1987,"Hyperbolic groups","The essay that created geometric group theory."],
+    [2009,"Abel Prize",""]
+  ],
+  works:[]},
+
+{ id:"voevodsky", name:"Vladimir Voevodsky", born:1966, died:2017, y:2009,
+  dom:["foundations","geometry"], fields:["type-theory","algebraic-geometry","homological-algebra"],
+  role:"Russian-American mathematician at the Institute for Advanced Study",
+  epitaph:"Won a Fields Medal for motivic cohomology — then rebuilt the foundations of mathematics so that computers could check them.",
+  legacy:"Voevodsky's motivic cohomology proved the Milnor conjecture and, with Markus Rost, the Bloch–Kato conjecture. Worried by errors in published proofs, including one of his own, he turned to foundations and proposed univalent foundations — homotopy type theory.",
+  life:[
+    [1966,"Born in Moscow",""],
+    [1992,"PhD at Harvard","Under David Kazhdan, admitted without an undergraduate degree."],
+    [1996,"The Milnor conjecture","Proved with motivic cohomology."],
+    [2002,"Fields Medal",""],
+    [2009,"The univalence axiom","A foundation in which equivalent structures are equal."],
+    [2013,"The HoTT Book","Written collectively during the special year at the Institute for Advanced Study."],
+    [2017,"Dies in Princeton",""]
+  ],
+  works:[]},
 
 ];

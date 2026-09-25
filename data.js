@@ -129,7 +129,9 @@ const BRIDGES = [
   { a: "discrete", b: "geometry", label: "Euler 1736: Königsberg's bridges start graphs and topology", y: 1736 },
   { a: "geometry", b: "probability", label: "Buffon's needle 1777: π from falling sticks", y: 1777 },
   { a: "foundations", b: "discrete", label: "Paris–Harrington 1977: a Ramsey truth beyond Peano arithmetic", y: 1977 },
-  { a: "foundations", b: "probability", label: "Martin-Löf 1966: randomness is incompressibility", y: 1966 }
+  { a: "foundations", b: "probability", label: "Martin-Löf 1966: randomness is incompressibility", y: 1966 },
+  { a: "analysis", b: "discrete", label: "Roth 1953 → Gowers 2001: Fourier analysis finds progressions", y: 1953 },
+  { a: "algebra", b: "probability", label: "Least squares (1805) → random matrices (1955): linear algebra meets chance", y: 1805 }
 ];
 
 // -------- CONTROVERSY EDGES (red lightning) --------
@@ -199,6 +201,17 @@ foundations: [
       {n:"Halting problem", y:1936, who:"Alan Turing (Alonzo Church, independently)", s:"found", d:"No algorithm decides whether an arbitrary program halts — the original diagonal impossibility, ancestor of every undecidability result."},
       {n:"Recursion theorem", y:1938, who:"Stephen Kleene", s:"found", d:"Kleene: programs may legitimately use their own source code. Self-reference made rigorous rather than paradoxical."},
       {n:"Turing degrees", y:1944, who:"Emil Post 1944; Kleene & Post 1954", s:"work", d:"Grading unsolvable problems by relative computability — an intricate infinite hierarchy above the halting problem."}
+    ]},
+  { id:"type-theory", name:"Type Theory & Formal Proof", short:"Type Theory & Formal Proof", y:1908, s:"fire",
+    d:"Types instead of sets: every object carries its type, and propositions are types whose inhabitants are proofs. Run on a computer, type theory becomes a proof assistant — software that checks every step of a proof.",
+    theorems:["Curry–Howard correspondence (proofs are programs)","Strong normalisation of typed λ-calculi (Tait 1967; Girard 1972)","Machine-checked proofs: Four Colour (2005), Feit–Thompson (2012), Kepler (2014)"],
+    book:"The HoTT Book — Homotopy Type Theory (2013); Avigad, Buzzard et al. — Mathematics in Lean",
+    topics:[
+      {n:"Simple types & the λ-calculus", y:1940, who:"Alonzo Church (1940); Bertrand Russell's types (1908)", s:"found", d:"Terms built from variables, functions λx.t and applications, each carrying a type such as A → B. Types forbid self-application — the engine of Russell's paradox — and make every computation terminate."},
+      {n:"Propositions as types", y:1969, who:"Haskell Curry (1934); William Howard (1969)", s:"found", d:"A proposition is a type and a proof is a program of that type (Curry–Howard). Implication is the function type, 'and' is a pair, and checking a proof becomes type-checking a program."},
+      {n:"Dependent types", y:1972, who:"Per Martin-Löf", s:"work", d:"Types that depend on values — 'lists of length n', 'proofs that n is prime' — expressive enough to state and prove all of mathematics inside the type system (Martin-Löf, 1972)."},
+      {n:"Homotopy type theory & univalence", y:2009, who:"Vladimir Voevodsky; Steve Awodey & Michael Warren", s:"fire", d:"Read types as spaces and proofs of equality as paths between points. Voevodsky's univalence axiom says equivalent types are equal — formalising the habit of identifying isomorphic structures."},
+      {n:"Proof assistants & formalised mathematics", y:1967, who:"N. G. de Bruijn (Automath, 1967); Coq (1989); Lean (2013)", s:"fire", d:"Programs that check every step of a proof. From de Bruijn's Automath (1967) to Coq, Isabelle and Lean, they have verified the four colour theorem, the Kepler conjecture and parts of current research mathematics."}
     ]},
 ],
 algebra: [
@@ -389,6 +402,16 @@ analysis: [
       {n:"Ergodicity & mixing", y:1931, who:"George Birkhoff & John von Neumann", s:"found", d:"When a single trajectory samples the whole space so that time averages equal space averages (Birkhoff). The rigorous foundation under statistical mechanics."},
       {n:"Entropy", y:1958, who:"Andrey Kolmogorov 1958; Yakov Sinai 1959", s:"work", d:"A single number measuring a system's rate of information production or orbit complexity — connecting dynamics to information theory and thermodynamics."}
     ]},
+  { id:"fractals", name:"Fractal Geometry", short:"Fractal Geometry", y:1918, s:"work",
+    d:"Sets too rough for calculus — coastlines, Cantor dust, Julia sets — measured by dimensions that can be fractions. Hausdorff (1918) supplied the measure; Mandelbrot (1975) supplied the name and the pictures.",
+    theorems:["Hutchinson's theorem: every contracting IFS has a unique attractor (1981)","Moran's equation Σ rᵢˢ = 1 for self-similar sets (1946)","Marstrand's projection theorem (1954)"],
+    book:"Kenneth Falconer — Fractal Geometry: Mathematical Foundations and Applications",
+    topics:[
+      {n:"Hausdorff dimension", y:1918, who:"Felix Hausdorff (1918); Abram Besicovitch (1930s)", s:"found", d:"Cover a set by small pieces of diameter δ and add up δˢ; the dimension is the exponent s where that total jumps from ∞ to 0. Lines get 1, planes 2, and the Cantor set log 2 / log 3 ≈ 0.631."},
+      {n:"Self-similar sets & iterated function systems", y:1981, who:"John Hutchinson (1981); P. A. P. Moran (1946); Michael Barnsley (1988)", s:"work", d:"Fix a few contracting maps of the plane; there is exactly one compact set that is the union of its own images under them. The Sierpiński triangle, Koch curve and Barnsley's fern all arise this way."},
+      {n:"The Cantor set & the Koch curve", y:1883, who:"Georg Cantor (1883); Helge von Koch (1904)", s:"found", d:"Two nineteenth-century 'monsters': the Cantor set (1883), uncountable but of length zero, and von Koch's snowflake (1904), a continuous curve with no tangent anywhere and infinite length around a finite area."},
+      {n:"Fractals in dynamics", y:1918, who:"Gaston Julia & Pierre Fatou (1918); Benoit Mandelbrot (1980)", s:"fire", d:"Iterate a simple map and the boundary between fates is fractal: Julia and Fatou's sets (1918), the Mandelbrot set (1980), and the strange attractors of chaotic flows."}
+    ]},
 ],
 geometry: [
   { id:"classical-geometry", name:"Classical & Non-Euclidean Geometry", short:"Classical Geometry", y:-300, s:"found",
@@ -483,6 +506,16 @@ geometry: [
       {n:"Connections & curvature", y:1950, who:"Charles Ehresmann; Yang & Mills (physics) 1954", s:"work", d:"A splitting of directions into horizontal and vertical lets you differentiate along the base; the failure of horizontal lifts to close up is curvature."},
       {n:"Chern & Pontryagin classes", y:1942, who:"Lev Pontryagin 1942; Shiing-Shen Chern 1946; Stiefel & Whitney 1935", s:"found", d:"Cohomology classes measuring a bundle's global twist, computable from curvature (Chern–Weil): topology extracted from geometry."}
     ]},
+  { id:"geometric-group-theory", name:"Geometric Group Theory", short:"Geometric Group Theory", y:1987, s:"fire",
+    d:"Groups studied as geometric objects: draw a group's Cayley graph and look at it from far away. Since Gromov (1987), coarse geometry — growth, hyperbolicity, ends — has been used to read off algebra.",
+    theorems:["Švarc–Milnor lemma (1955/1968)","Gromov's polynomial growth theorem (1981)","Stallings' theorem on ends of groups (1968)"],
+    book:"Clara Löh — Geometric Group Theory: An Introduction",
+    topics:[
+      {n:"Cayley graphs & word metrics", y:1878, who:"Arthur Cayley (1878); Max Dehn (1911)", s:"found", d:"Pick generators of a group; draw a vertex for each element and an edge for each multiplication by a generator. The group becomes a space, and the distance between elements is the length of the shortest word joining them."},
+      {n:"Quasi-isometry", y:1955, who:"Albert Švarc (1955); John Milnor (1968)", s:"work", d:"Maps that distort distances by at most a bounded factor plus a bounded error. Seen from far away, ℤ² and the plane ℝ² look the same — and the Švarc–Milnor lemma says a group acting nicely on a space looks like it."},
+      {n:"Growth of groups", y:1981, who:"John Milnor (1968); Mikhail Gromov (1981); Rostislav Grigorchuk (1984)", s:"work", d:"Count the elements within distance n of the identity. Abelian groups grow like a polynomial, free groups exponentially — and Gromov proved (1981) that polynomial growth forces the group to be nearly nilpotent."},
+      {n:"Hyperbolic groups", y:1987, who:"Mikhail Gromov (1987)", s:"fire", d:"Groups whose Cayley graphs look like trees from far away: every geodesic triangle is δ-thin. Introduced by Gromov (1987), they are 'most' groups, and their word problem can be solved in linear time."}
+    ]},
 ],
 number: [
   { id:"elementary-nt", name:"Elementary Number Theory", y:-300, s:"found",
@@ -539,6 +572,16 @@ number: [
       {n:"Diophantine approximation", y:1844, who:"Joseph Liouville 1844; Axel Thue 1909; Klaus Roth 1955", s:"work", d:"How closely irrationals can be approximated by rationals. Liouville's bound builds transcendentals; Roth's theorem gives the sharp exponent for algebraic numbers."},
       {n:"Transcendence of e and π", y:1873, who:"Charles Hermite (e) 1873; Ferdinand von Lindemann (π) 1882", s:"found", d:"Proofs that these constants satisfy no polynomial with rational coefficients (Hermite, Lindemann) — and Lindemann's result finally proved squaring the circle impossible."}
     ]},
+  { id:"computational-nt", name:"Computational Number Theory & Cryptography", short:"Computational NT & Cryptography", y:1977, s:"fire",
+    d:"How fast can we test whether a number is prime, factor it, or take a discrete logarithm? These questions turned number theory into the security of the internet: RSA (1977) is safe exactly as long as factoring stays hard.",
+    theorems:["Fermat's little theorem ⇒ RSA works","AKS: primality is decidable in polynomial time (2002)","Shor: a quantum computer factors in polynomial time (1994)"],
+    book:"Crandall & Pomerance — Prime Numbers: A Computational Perspective",
+    topics:[
+      {n:"Primality testing", y:1976, who:"Gary Miller (1976); Michael Rabin (1980); Agrawal, Kayal & Saxena (2002)", s:"work", d:"Deciding whether n is prime without factoring it. Fermat's test is fooled by Carmichael numbers; the Miller–Rabin test is fast and practically certain; AKS (2002) proved it can be done deterministically in polynomial time."},
+      {n:"Integer factorisation", y:1981, who:"Carl Pomerance (quadratic sieve, 1981); number field sieve (c. 1990); Peter Shor (1994)", s:"fire", d:"Splitting n into primes. Trial division is hopeless for 600-digit numbers; the best classical algorithm, the number field sieve (1990), is sub-exponential — and a large quantum computer running Shor's algorithm would be polynomial."},
+      {n:"Public-key cryptography (RSA)", y:1977, who:"Rivest, Shamir & Adleman (1977); Diffie & Hellman (1976); Clifford Cocks (1973, secret)", s:"work", d:"Publish a lock, keep the key. Diffie and Hellman (1976) proposed public-key cryptography; Rivest, Shamir and Adleman (1977) built it from Fermat's little theorem and the difficulty of factoring."},
+      {n:"Elliptic-curve cryptography", y:1985, who:"Neal Koblitz & Victor Miller (1985)", s:"work", d:"Replace multiplication mod p by the group law on an elliptic curve over a finite field. The discrete logarithm problem is much harder there, so keys can be far shorter (Koblitz and Miller, 1985)."}
+    ]},
 ],
 discrete: [
   { id:"enumerative", name:"Enumerative Combinatorics", y:-200, s:"work",
@@ -581,6 +624,16 @@ discrete: [
       {n:"Ramanujan congruences", y:1919, who:"Srinivasa Ramanujan 1919; Ken Ono 2000", s:"rev", d:"The stunning regularities p(5n+4)≡0 (mod 5), p(7n+5)≡0 (mod 7), p(11n+6)≡0 (mod 11) — discovered by Ramanujan, explained by modular forms."},
       {n:"Rogers–Ramanujan", y:1894, who:"L. J. Rogers 1894; Ramanujan 1913; Rodney Baxter 1980", s:"rev", d:"Two identities equating partitions with congruence restrictions to partitions with gap conditions — deep, surprising, and central to combinatorics and statistical mechanics."}
     ]},
+  { id:"additive-combinatorics", name:"Additive Combinatorics", short:"Additive Combinatorics", y:1927, s:"fire",
+    d:"How much additive structure is forced inside a large set of integers? Arithmetic progressions appear in every dense set (Szemerédi, 1975) and even in the primes (Green–Tao, 2004).",
+    theorems:["Van der Waerden's theorem (1927)","Roth's theorem (1953) and Szemerédi's theorem (1975)","Green–Tao theorem (2004)","Freiman's theorem on small doubling (1964–73)"],
+    book:"Terence Tao & Van Vu — Additive Combinatorics",
+    topics:[
+      {n:"Progressions: van der Waerden to Szemerédi", y:1927, who:"B. L. van der Waerden (1927); Klaus Roth (1953); Endre Szemerédi (1975)", s:"found", d:"Colour the integers with finitely many colours and one colour contains arbitrarily long arithmetic progressions (1927). Stronger: any set of positive density contains them (Szemerédi, 1975)."},
+      {n:"Sumsets & Freiman's theorem", y:1964, who:"Gregory Freiman (1964–73); Imre Ruzsa; Gowers, Green, Manners & Tao (2023)", s:"fire", d:"A + B = {a + b}. If A + A is not much bigger than A, then A must be very structured — essentially a large piece of a (generalised) arithmetic progression (Freiman, 1964–73)."},
+      {n:"Primes in arithmetic progression (Green–Tao)", y:2004, who:"Ben Green & Terence Tao (2004)", s:"fire", d:"The primes contain arithmetic progressions of every length — such as 5, 11, 17, 23, 29 — although they have density zero. Green and Tao (2004) transferred Szemerédi's theorem to the primes."},
+      {n:"The cap set problem & the polynomial method", y:2016, who:"Croot, Lev & Pach; Jordan Ellenberg & Dion Gijswijt (2016)", s:"fire", d:"How big can a set in (ℤ/3)ⁿ be with no three points on a line? Exponentially smaller than 3ⁿ: at most 2.756ⁿ, proved in 2016 with a three-page polynomial argument."}
+    ]},
 ],
 probability: [
   { id:"prob-spaces", name:"Probability Spaces", y:1654, s:"found",
@@ -612,6 +665,26 @@ probability: [
       {n:"Martingales", y:1939, who:"Jean Ville 1939; Joseph Doob 1953", s:"work", d:"Models of fair games where the expected future equals the present. Optional stopping and convergence theorems make them a razor-sharp analytical tool."},
       {n:"Brownian motion", y:1900, who:"Louis Bachelier 1900; Einstein 1905; Norbert Wiener 1923", s:"found", d:"The continuous scaling limit of random walks — a path continuous everywhere yet differentiable nowhere. The universal noise underlying diffusion and finance."},
       {n:"Itô calculus", y:1944, who:"Kiyosi Itô", s:"work", d:"Calculus along Brownian paths, where the chain rule gains a second-order correction (Itô's lemma). The language of stochastic differential equations."}
+    ]},
+  { id:"statistics", name:"Statistics & Inference", short:"Statistics & Inference", y:1763, s:"work",
+    d:"Probability run backwards: from data to the process that produced it. Estimation, hypothesis tests and Bayesian updating turn Kolmogorov's axioms into a method for learning from evidence.",
+    theorems:["Bayes' theorem (1763)","Gauss–Markov theorem: least squares is the best linear unbiased estimator (1821)","Cramér–Rao bound (1945)","Neyman–Pearson lemma (1933)"],
+    book:"George Casella & Roger Berger — Statistical Inference",
+    topics:[
+      {n:"Bayes' theorem & Bayesian inference", y:1763, who:"Thomas Bayes (1763, published by Richard Price); Pierre-Simon Laplace (1774)", s:"found", d:"P(H | E) = P(E | H) · P(H) / P(E): the rule for updating belief in a hypothesis H when evidence E arrives. Published by Richard Price from Bayes's papers in 1763 and made into a method by Laplace."},
+      {n:"Least squares & regression", y:1805, who:"Adrien-Marie Legendre (1805); Carl Friedrich Gauss (1809); Francis Galton (1886)", s:"work", d:"Fit a model to noisy data by minimising the sum of squared errors. Legendre published it in 1805, Gauss justified it with the normal distribution, and Galton gave 'regression' its name."},
+      {n:"Maximum likelihood & Fisher information", y:1922, who:"Ronald Fisher (1922); Harald Cramér & C. R. Rao (1945)", s:"work", d:"Choose the parameters under which the observed data are most probable. Fisher (1922) made this the central principle of estimation and measured the best achievable precision with Fisher information."},
+      {n:"Hypothesis testing & confidence intervals", y:1933, who:"Ronald Fisher (1925); Jerzy Neyman & Egon Pearson (1933)", s:"work", d:"How surprising are the data if nothing is going on? Fisher's p-values (1925) and Neyman and Pearson's tests with controlled error rates (1933) became the grammar of experimental science — and a source of its replication crisis."}
+    ]},
+  { id:"random-matrices", name:"Random Matrix Theory", short:"Random Matrix Theory", y:1955, s:"fire",
+    d:"Fill a large symmetric matrix with random numbers and its eigenvalues become strikingly regular: they follow a semicircle, repel each other, and fluctuate in universal ways — the same statistics as heavy atomic nuclei and the zeros of the Riemann zeta function.",
+    theorems:["Wigner's semicircle law (1955)","Tracy–Widom law for the largest eigenvalue (1994)","Universality of local eigenvalue statistics (Erdős–Schlein–Yau; Tao–Vu, 2009–11)"],
+    book:"Anderson, Guionnet & Zeitouni — An Introduction to Random Matrices",
+    topics:[
+      {n:"Wigner's semicircle law", y:1955, who:"Eugene Wigner (1955); John Wishart (1928)", s:"found", d:"The eigenvalues of a large random symmetric matrix, suitably scaled, spread out in a perfect semicircle — whatever the distribution of the entries (Wigner, 1955)."},
+      {n:"Level repulsion & the Gaussian ensembles", y:1962, who:"Freeman Dyson (1962); Madan Lal Mehta & Michel Gaudin (1960)", s:"work", d:"Eigenvalues of random matrices avoid each other: the chance of two being very close is small, unlike independent random points. Dyson (1962) classified the three symmetry types: orthogonal, unitary and symplectic."},
+      {n:"Tracy–Widom & universality", y:1994, who:"Craig Tracy & Harold Widom (1994); Erdős–Schlein–Yau and Tao–Vu (2009–11)", s:"fire", d:"The largest eigenvalue fluctuates according to the Tracy–Widom law (1994), and it has turned up far from matrices — in longest increasing subsequences, growing crystals and queues. Local eigenvalue statistics are universal."},
+      {n:"Zeta zeros & random matrices", y:1972, who:"Hugh Montgomery & Freeman Dyson (1972); Andrew Odlyzko (1987)", s:"fire", d:"The zeros of the Riemann zeta function, far up the critical line, are spaced exactly like the eigenvalues of a large random unitary matrix — a discovery made over tea at Princeton in 1972."}
     ]},
 ],
 order: [
@@ -898,7 +971,67 @@ const LINKS = [
     note:"P(cross) = (2/π)·(ℓ/d); average over the angle θ of (ℓ sin θ)/d." },
   { from:"stochastic-processes", to:"pdes", type:"sig", y:1944, via:"Brownian motion solves PDEs", who:"Albert Einstein (1905); Shizuo Kakutani (1944); Mark Kac (1949)",
     story:"Einstein showed that the density of Brownian particles obeys the heat equation. Kakutani proved that the solution of the Dirichlet problem at a point x is the average of the boundary values where a Brownian path started at x first leaves the domain: harmonic functions are expectations. Feynman–Kac extended this to potentials, making probability a way to solve, and to understand, partial differential equations.",
-    note:"u(x) = E[f(B_τ) | B₀ = x] solves Δu = 0 in D, u = f on ∂D; the generator of Brownian motion is ½Δ." }
+    note:"u(x) = E[f(B_τ) | B₀ = x] solves Δu = 0 in D, u = f on ∂D; the generator of Brownian motion is ½Δ." },
+  { from:"logic", to:"type-theory", type:"pre", y:1969, via:"Curry–Howard", who:"Haskell Curry (1934); William Howard (1969)",
+    story:"Natural deduction proofs are typed λ-terms: the introduction and elimination rules of each connective are the constructors and destructors of a type. Proof theory and type theory turned out to be one subject, and simplifying a proof is running a program.",
+    note:"A → B ↔ function type; A ∧ B ↔ product; A ∨ B ↔ sum; ⊥ ↔ empty type." },
+  { from:"computability", to:"type-theory", type:"pre", y:1940, via:"The λ-calculus, typed", who:"Alonzo Church (1936; simple types 1940)",
+    story:"Church's untyped λ-calculus was one of the three equivalent definitions of computability in 1936, but it could express paradoxes and non-terminating loops. Adding types (1940) removed both: every simply typed program halts — the price is that not every computable function can be typed.",
+    note:"Untyped λ: Turing-complete. Simply typed λ: strongly normalising." },
+  { from:"type-theory", to:"algebraic-topology", type:"sig", y:2009, via:"Univalence: types are spaces", who:"Vladimir Voevodsky (2009); Awodey & Warren (2009)",
+    story:"Identity types behave like path spaces, so Martin-Löf type theory is secretly a language for homotopy theory. Voevodsky's univalence axiom makes the match exact, and results such as π₁(S¹) = ℤ become machine-checked proofs in type theory — a new foundation built to fit topology.",
+    note:"a = b ↔ paths from a to b; (A ≃ B) ≃ (A = B) is univalence." },
+  { from:"measure-theory", to:"fractals", type:"pre", y:1918, via:"Hausdorff measure", who:"Felix Hausdorff (1918)",
+    story:"Carathéodory's construction of outer measures, applied with diameters raised to a power s, gives a whole family of measures, one for each dimension. The dimension of a set is where that family switches from infinite to zero — measure theory, extended to fractional dimension.",
+    note:"Hˢ(E) = lim_{δ→0} inf { Σ (diam Uᵢ)ˢ : E ⊂ ∪ Uᵢ, diam Uᵢ < δ }." },
+  { from:"dynamical-systems", to:"fractals", type:"sig", y:1980, via:"Julia sets & strange attractors", who:"Julia & Fatou (1918); Mandelbrot (1980); Lorenz (1963)",
+    story:"Chaotic dynamics leaves fractal fingerprints: the boundary between basins of attraction, the Julia set of a polynomial, and strange attractors like Lorenz's all have non-integer dimension. Computer pictures of these sets in the 1970s–80s made fractal geometry visible and popular.",
+    note:"The Hénon attractor has dimension ≈ 1.26; the Lorenz attractor ≈ 2.06." },
+  { from:"group-theory", to:"geometric-group-theory", type:"sig", y:1878, via:"Cayley graphs", who:"Arthur Cayley (1878); Max Dehn (1911); Mikhail Gromov (1987)",
+    story:"Draw a group with a chosen set of generators and it becomes a graph — a metric space the group acts on. Dehn used this geometry for the word problem in surface groups; Gromov showed the large-scale shape of the graph, independent of the generators, determines deep algebraic properties.",
+    note:"Changing generators is a quasi-isometry: coarse geometry is an invariant of the group." },
+  { from:"classical-geometry", to:"geometric-group-theory", type:"pre", y:1987, via:"Thin triangles", who:"Mikhail Gromov (1987)",
+    story:"In the hyperbolic plane every geodesic triangle is thin — each side stays close to the other two. Gromov turned this single property into a definition that applies to any metric space and any group, capturing the essence of negative curvature without any smoothness.",
+    note:"δ-hyperbolic: each side lies in the δ-neighbourhood of the other two sides." },
+  { from:"low-dim-topology", to:"geometric-group-theory", type:"pre", y:2012, via:"3-manifold groups", who:"Ian Agol (2012); Dani Wise (cube complexes)",
+    story:"Thurston's questions about hyperbolic 3-manifolds were answered through their fundamental groups: Wise's theory of special cube complexes and Agol's 2012 proof of the virtual Haken conjecture show every closed hyperbolic 3-manifold has a finite cover that fibres over the circle.",
+    note:"Virtual Haken & virtual fibring: consequences of cubulating hyperbolic 3-manifold groups." },
+  { from:"elementary-nt", to:"computational-nt", type:"pre", y:1977, via:"Fermat's little theorem → RSA", who:"Rivest, Shamir & Adleman (1977)",
+    story:"Fermat's 1640 theorem aᵖ⁻¹ ≡ 1 (mod p) and Euler's generalisation make exponentiation modulo n reversible for someone who knows n's factors. RSA turned this 300-year-old piece of pure number theory into the way the internet exchanges secrets.",
+    note:"c = mᵉ mod n, m = cᵈ mod n, with ed ≡ 1 (mod φ(n))." },
+  { from:"computability", to:"computational-nt", type:"sig", y:1994, via:"The complexity of factoring", who:"Agrawal, Kayal & Saxena (2002); Peter Shor (1994)",
+    story:"Complexity theory asks which arithmetic problems are feasible. Primality turned out to be in P (AKS, 2002), while factoring is believed hard for classical computers yet easy for quantum ones (Shor, 1994) — so the security of RSA depends on a question about physics as well as mathematics.",
+    note:"PRIMES ∈ P; FACTORING ∈ BQP; FACTORING ∈ P is open." },
+  { from:"modular-forms", to:"computational-nt", type:"pre", y:1985, via:"Elliptic curves as groups for cryptography", who:"Neal Koblitz & Victor Miller (1985)",
+    story:"The group law on an elliptic curve, the arithmetic heart of Wiles's proof, also makes a good home for the discrete logarithm problem. Over a finite field no sub-exponential attack is known for good curves, so keys can be much shorter than in RSA.",
+    note:"ECDLP: given P and kP on E(𝔽ₚ), find k." },
+  { from:"ramsey", to:"additive-combinatorics", type:"pre", y:1975, via:"Regularity & colouring", who:"B. L. van der Waerden (1927); Endre Szemerédi (1975)",
+    story:"Van der Waerden's theorem is a Ramsey-type result — any colouring forces a monochromatic progression — and Szemerédi's density version needed his regularity lemma, which says every large graph looks nearly random between a bounded number of pieces. The lemma became a basic tool of extremal graph theory.",
+    note:"Szemerédi's regularity lemma: every graph has an ε-regular partition into a bounded number of parts." },
+  { from:"analytic-nt", to:"additive-combinatorics", type:"sig", y:2004, via:"Primes contain progressions", who:"Ben Green & Terence Tao (2004)",
+    story:"Green and Tao combined Szemerédi's theorem with sieve theory: the primes are a dense subset of a pseudorandom set of 'almost primes', and Szemerédi's theorem survives the transfer. The result answered a question that goes back to Lagrange and Waring.",
+    note:"For every k there are k primes in arithmetic progression." },
+  { from:"harmonic-analysis", to:"additive-combinatorics", type:"sig", y:1953, via:"Fourier analysis finds progressions", who:"Klaus Roth (1953); Timothy Gowers (2001)",
+    story:"Roth proved that dense sets contain three-term progressions by the circle method: a set with no progressions must have a large Fourier coefficient, which lets one pass to a denser subset of a smaller progression. For longer progressions ordinary Fourier analysis is blind; Gowers's uniformity norms (2001) started higher-order Fourier analysis.",
+    note:"Roth's density-increment argument; Gowers norms ‖f‖_{Uᵏ} control k+1-term progressions." },
+  { from:"prob-spaces", to:"statistics", type:"pre", y:1763, via:"Bayes' theorem", who:"Thomas Bayes (1763); Pierre-Simon Laplace (1774)",
+    story:"Conditional probability, read backwards, becomes inference: from P(evidence | hypothesis) and a prior to P(hypothesis | evidence). The one-line theorem is the foundation of Bayesian statistics and of much of machine learning.",
+    note:"posterior ∝ likelihood × prior." },
+  { from:"limit-theorems", to:"statistics", type:"pre", y:1810, via:"The CLT justifies error bars", who:"Pierre-Simon Laplace (1810)",
+    story:"Laplace proved the central limit theorem in order to do statistics: averages of many errors are approximately normal whatever the individual errors, so confidence intervals of the form mean ± 1.96 σ/√n are valid almost everywhere. Every margin of error in a poll is an application of it.",
+    note:"x̄ ± 1.96 σ/√n covers the true mean about 95% of the time for large n." },
+  { from:"linear-algebra", to:"statistics", type:"pre", y:1805, via:"Least squares is projection", who:"Adrien-Marie Legendre (1805); Carl Friedrich Gauss (1809)",
+    story:"The least-squares fit is the orthogonal projection of the data onto the space of models, computed by solving the normal equations XᵀXβ = Xᵀy. Regression, principal component analysis and much of machine learning are linear algebra with an error model attached.",
+    note:"β̂ = (XᵀX)⁻¹Xᵀy; residuals are orthogonal to the column space of X." },
+  { from:"linear-algebra", to:"random-matrices", type:"sig", y:1955, via:"Eigenvalues of random matrices", who:"Eugene Wigner (1955); John Wishart (1928)",
+    story:"Spectral theory meets probability: fill a symmetric matrix with random entries and ask where its eigenvalues fall. Wigner's semicircle law, level repulsion and the Tracy–Widom edge are statements about eigenvalues of very large matrices, proved with traces, moments and combinatorics.",
+    note:"(1/n) E tr (H/√n)^{2k} → Catalan number C_k." },
+  { from:"analytic-nt", to:"random-matrices", type:"sig", y:1972, via:"Zeta zeros repel like eigenvalues", who:"Hugh Montgomery & Freeman Dyson (1972); Andrew Odlyzko (1987)",
+    story:"Montgomery's pair-correlation formula for the zeros of the zeta function turned out, as Dyson noticed over tea, to be the pair correlation of eigenvalues of random unitary matrices. Odlyzko's computations confirmed the match, and random matrix models now predict moments and other statistics of L-functions.",
+    note:"Pair correlation 1 − (sin πu/πu)² for both GUE eigenvalues and zeta zeros." },
+  { from:"stochastic-processes", to:"random-matrices", type:"pre", y:1962, via:"Dyson Brownian motion", who:"Freeman Dyson (1962)",
+    story:"Let the entries of a symmetric matrix perform independent Brownian motions; the eigenvalues then move as particles that repel with a force inversely proportional to their distance. This dynamical picture is the engine of the modern proofs of universality.",
+    note:"dλᵢ = √(2/βn) dBᵢ + (1/n) Σ_{j≠i} dt/(λᵢ − λⱼ)." }
 ];
 
 const TIMELINE_STARS = [-300,820,1637,1665,1736,1801,1832,1854,1874,1931,1994,2003];
