@@ -117,9 +117,12 @@ window.AtomKit = AtomKit;
     hint:"Rotating surfaces with their orientability facts: carry a little clock around the Möbius band and it comes back mirrored." },
   { id:"transport", name:"Parallel transport", fields:["differential-geometry","fiber-bundles"], src:"atoms/parallel-transport.html",
     title:"Parallel transport — carry a vector around a loop; the rotation is the curvature",
-    hint:"On the plane the vector comes home unchanged. On the sphere it returns rotated by exactly the curvature it enclosed." }
+    hint:"On the plane the vector comes home unchanged. On the sphere it returns rotated by exactly the curvature it enclosed." },
+  { id:"dglab", name:"Differential Geometry Lab", fields:["differential-geometry","differential-topology"], src:"atoms/dg-lab.html", wide:true, tall:true,
+    title:"The Differential Geometry Lab — a thirteen-module course on live surfaces",
+    hint:"From charts and tangent spaces through the metric, curvature, connections and geodesics to Gauss–Bonnet and the Klein bottle. Pick a module on the left; every surface shows its Gaussian-curvature heat map, a probe with E, F, G, K and H, and a numerically integrated geodesic. Ported from the Differential Geometry Lab v2." }
 ].forEach(a => registerAtom({
-  id: a.id, name: a.name, domain: "geometry", fields: a.fields, cls: "atom-framed",
+  id: a.id, name: a.name, domain: "geometry", fields: a.fields, cls: "atom-framed" + (a.tall ? " atom-tall" : ""), wide: a.wide,
   html: `<h3>${a.title}</h3><p class="ahint">${a.hint}</p>
     <div class="atom-frame-wrap"><iframe class="atom-frame" title="${a.title}" data-src="${a.src}" loading="lazy"></iframe></div>
     <p class="astatus"><a class="atom-pop" href="${a.src}" target="_blank" rel="noopener">open full screen ↗</a></p>`,
@@ -143,6 +146,7 @@ window.AtomKit = AtomKit;
 .atom-frame-wrap { position: relative; width: 100%; height: min(62vh, 560px); border: 1px solid rgba(255,255,255,.12);
   border-radius: 12px; overflow: hidden; background: #0e0618; }
 .atom-frame { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.atom-tall .atom-frame-wrap { height: min(78vh, 720px); }
 .atom-pop { font-family: "IBM Plex Mono", monospace; font-size: .72rem; color: var(--gold); }
 .atom-pane canvas.acv { display: block; width: 100%; border: 1px solid rgba(255,255,255,.12); border-radius: 10px;
   background: rgba(0,0,0,.25); touch-action: none; }
