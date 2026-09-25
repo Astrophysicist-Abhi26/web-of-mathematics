@@ -197,6 +197,8 @@ const E = {
   uhlenbeck: `<path d="M16 66 Q40 50 50 58 Q60 50 84 66"/><circle cx="50" cy="42" r="14"/>`,
   wiles: ellipticCurve(),
   tao: `<path d="M14 60 H86"/>${[18, 30, 42, 54, 66, 78].map(x => dot(x, 60, 3.4)).join("")}<path d="M18 50 Q24 40 30 50 M30 50 Q36 40 42 50 M42 50 Q48 40 54 50" stroke-width="1.4"/>${M(50, 82, 9, "5 11 17 23 29")}`,
+  drinfeld: `<path d="M28 26 C40 44 60 56 72 74 M50 22 C50 40 50 60 50 78 M72 26 C60 44 40 56 28 74" stroke-width="2"/>${dot(28, 26)}${dot(50, 22)}${dot(72, 26)}${M(50, 88, 7, "R₁₂R₁₃R₂₃")}`,
+  gaitsgory: `<rect x="16" y="36" width="26" height="26" rx="5"/><rect x="58" y="36" width="26" height="26" rx="5"/><path d="M44 46 H56 M44 52 H56" stroke-width="1.6"/>${M(29, 53, 8, "Bun")}${M(71, 53, 8, "Loc")}${M(50, 80, 8, "G ↔ Ǧ")}`,
   scholze: `${T(46, 62, 34, "K")}${T(68, 44, 20, "♭")}`,
   viazovska: hexPack(),
   grothendieck: `<path d="M12 44 Q24 34 36 44 T60 44 T84 44 M12 58 Q24 48 36 58 T60 58 T84 58 M12 72 Q24 62 36 72 T60 72 T84 72"/>${M(50, 30, 11, "Spec")}`,

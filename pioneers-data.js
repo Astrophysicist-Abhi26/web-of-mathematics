@@ -1206,6 +1206,38 @@ const PEOPLE = [
   ],
   works:[]},
 
+{ id:"drinfeld", name:"Vladimir Drinfeld", born:1954, died:null, y:1974,
+  dom:["number","algebra","geometry"], fields:["langlands","representation-theory","algebraic-geometry"],
+  role:"Ukrainian-American mathematician at the University of Chicago",
+  epitaph:"Proved the first big case of Langlands over function fields and invented quantum groups.",
+  legacy:"Drinfeld's 'elliptic modules' and shtukas (1974–80) proved the Langlands correspondence for GL₂ over function fields; he founded the geometric Langlands programme, co-invented the ADHM construction of instantons and introduced quantum groups. Fields Medal 1990.",
+  life:[
+    [1954,"Born in Kharkiv",""],
+    [1969,"International Mathematical Olympiad","Gold medal with a perfect score, aged 15."],
+    [1974,"Elliptic modules","Now called Drinfeld modules: function-field analogues of elliptic curves."],
+    [1978,"ADHM construction","With Atiyah, Hitchin and Manin: all instantons on the four-sphere, from linear algebra."],
+    [1980,"Langlands for GL₂ over function fields","Built from moduli of shtukas."],
+    [1986,"Quantum groups","His ICM address creates the subject."],
+    [1990,"Fields Medal",""],
+    [1998,"University of Chicago",""]
+  ],
+  works:[]},
+
+{ id:"gaitsgory", name:"Dennis Gaitsgory", born:1973, died:null, y:2024,
+  dom:["geometry","number","algebra"], fields:["langlands","algebraic-geometry","homological-algebra"],
+  role:"Mathematician, director at the Max Planck Institute for Mathematics in Bonn",
+  epitaph:"Led the proof of the geometric Langlands conjecture.",
+  legacy:"Over two decades Gaitsgory built the derived-algebraic-geometry machinery that geometric Langlands required. In 2024 he, Sam Raskin and seven collaborators announced a proof of the conjecture in five papers of about 800 pages; he received the 2025 Breakthrough Prize in Mathematics.",
+  life:[
+    [1973,"Born in Chișinău",""],
+    [1997,"Doctorate at Tel Aviv University","Under Joseph Bernstein."],
+    [2005,"Professor at Harvard",""],
+    [2021,"Max Planck Institute for Mathematics","Director, in Bonn."],
+    [2024,"Geometric Langlands proved","With Arinkin, Beraldo, Campbell, Chen, Faergeman, Lin, Raskin and Rozenblyum."],
+    [2025,"Breakthrough Prize in Mathematics",""]
+  ],
+  works:[]},
+
 { id:"cohen", name:"Paul Cohen", born:1934, died:2007, y:1963,
   dom:["foundations"], fields:["set-theory","logic"],
   role:"American mathematician at Stanford",
