@@ -4,21 +4,21 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <title>The Hyperbolic Disk</title>
-<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Spectral:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#0e1117;--text:#e9e6dc;--dim:#8f95a3;--gold:#d9a441;--teal:#57ab79;--blue:#5b9ce0;--line:rgba(255,255,255,0.09);}
+:root{--bg:#0e0618;--text:#e8e4f4;--dim:#9a93b8;--gold:#f5c451;--teal:#57ab79;--blue:#5b9ce0;--line:rgba(255,255,255,0.09);}
 *{box-sizing:border-box;}
-html,body{margin:0;height:100%;background:var(--bg);color:var(--text);
-  font-family:'Inter',system-ui,sans-serif;overflow:hidden;}
+html,body{margin:0;height:100%;background:radial-gradient(120% 100% at 50% 20%, #2a0f45, var(--bg) 70%);color:var(--text);
+  font-family:'Spectral',Georgia,serif;overflow:hidden;}
 #app{position:fixed;inset:0;display:flex;flex-direction:column;}
 header{padding:12px 16px 10px;border-bottom:1px solid var(--line);}
-h1{font-family:'Spectral',serif;font-size:18px;font-weight:600;margin:0;}
+h1{font-family:'Fraunces',Georgia,serif;font-size:18px;font-weight:600;margin:0;}
 h1 em{font-style:italic;color:var(--dim);font-weight:400;}
 .chips{display:flex;gap:6px;margin-top:9px;}
 .chip{flex:1;text-align:center;font-family:'IBM Plex Mono',monospace;font-size:10.5px;
   padding:7px 4px;border-radius:999px;border:1px solid var(--line);color:var(--dim);
   background:rgba(255,255,255,0.04);cursor:pointer;}
-.chip.on{border-color:var(--gold);color:var(--gold);background:rgba(217,164,65,0.12);}
+.chip.on{border-color:var(--gold);color:var(--gold);background:rgba(245,196,81,0.12);}
 main{flex:1;position:relative;min-height:0;}
 canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;}
 footer{border-top:1px solid var(--line);padding:12px 16px 16px;}
@@ -55,6 +55,7 @@ function resize(){
   cx=W/2;cy=H/2;Rd=Math.min(W,H)*0.44;
 }
 window.addEventListener('resize',resize);
+if(window.ResizeObserver)new ResizeObserver(()=>resize()).observe(cv);
 
 /* ---- disk math (unit disk, then scaled to screen) ---- */
 function toScreen(p){return {x:cx+p.x*Rd, y:cy+p.y*Rd};}
@@ -191,7 +192,7 @@ function drawDisk(){
     for(let i=0;i<N;i++){
       drawFullGeodesic(ring[i],ring[(i+1)%N],'rgba(87,171,121,0.55)',1.4);
       drawFullGeodesic(ring[i],ring[(i+2)%N],'rgba(91,156,224,0.4)',1.1);
-      drawFullGeodesic(ring[i],ring[(i+3)%N],'rgba(217,164,65,0.3)',1);
+      drawFullGeodesic(ring[i],ring[(i+3)%N],'rgba(245,196,81,0.3)',1);
     }
     ctx.globalAlpha=1;
     // inner heptagon of geodesics
@@ -207,18 +208,18 @@ function drawDisk(){
     // fan of geodesics through A that don't cross the line
     for(let k=-4;k<=4;k++){
       const target={x:0.1+0.001*k, y:0.55 - (k+4)/8*1.15};
-      drawFullGeodesic(A,target, k===-4||k===4?'rgba(217,164,65,0.9)':'rgba(91,156,224,0.35)', k===-4||k===4?2:1.2);
+      drawFullGeodesic(A,target, k===-4||k===4?'rgba(245,196,81,0.9)':'rgba(91,156,224,0.35)', k===-4||k===4?2:1.2);
     }
     const As=toScreen(A);
-    ctx.fillStyle='#d9a441';ctx.beginPath();ctx.arc(As.x,As.y,6,0,6.28);ctx.fill();
-    label('A',As.x+9,As.y+4,'#d9a441');
+    ctx.fillStyle='#f5c451';ctx.beginPath();ctx.arc(As.x,As.y,6,0,6.28);ctx.fill();
+    label('A',As.x+9,As.y+4,'#f5c451');
     return;
   }
 
   if(view===1){ // triangle
-    drawGeodesicSeg(A,B,'rgba(217,164,65,0.95)',2.5);
-    drawGeodesicSeg(B,Cp,'rgba(217,164,65,0.95)',2.5);
-    drawGeodesicSeg(Cp,A,'rgba(217,164,65,0.95)',2.5);
+    drawGeodesicSeg(A,B,'rgba(245,196,81,0.95)',2.5);
+    drawGeodesicSeg(B,Cp,'rgba(245,196,81,0.95)',2.5);
+    drawGeodesicSeg(Cp,A,'rgba(245,196,81,0.95)',2.5);
     // faint Euclidean triangle for contrast
     const As=toScreen(A),Bs=toScreen(B),Cs=toScreen(Cp);
     ctx.strokeStyle='rgba(91,156,224,0.3)';ctx.lineWidth=1;ctx.setLineDash([4,4]);
@@ -229,7 +230,7 @@ function drawDisk(){
   }
 
   // view 0: single geodesic
-  drawGeodesicSeg(A,B,'rgba(217,164,65,0.95)',2.5);
+  drawGeodesicSeg(A,B,'rgba(245,196,81,0.95)',2.5);
   const As=toScreen(A),Bs=toScreen(B);
   ctx.strokeStyle='rgba(91,156,224,0.3)';ctx.lineWidth=1;ctx.setLineDash([4,4]);
   ctx.beginPath();ctx.moveTo(As.x,As.y);ctx.lineTo(Bs.x,Bs.y);ctx.stroke();ctx.setLineDash([]);
@@ -239,9 +240,9 @@ function drawDisk(){
 function drawPts(list){
   list.forEach(([p,nm])=>{
     const s=toScreen(p);
-    ctx.fillStyle='#e9e6dc';ctx.strokeStyle='#0e1117';ctx.lineWidth=2;
+    ctx.fillStyle='#e8e4f4';ctx.strokeStyle='#0e0618';ctx.lineWidth=2;
     ctx.beginPath();ctx.arc(s.x,s.y,6,0,6.28);ctx.fill();ctx.stroke();
-    label(nm,s.x+9,s.y+4,'#e9e6dc');
+    label(nm,s.x+9,s.y+4,'#e8e4f4');
   });
 }
 function label(t,x,y,c){ctx.font='12px "IBM Plex Mono",monospace';ctx.fillStyle=c;ctx.fillText(t,x,y);}

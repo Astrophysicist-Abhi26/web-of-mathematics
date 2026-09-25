@@ -4,25 +4,25 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <title>The Structure Ladder</title>
-<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Spectral:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#0e1117;--text:#e9e6dc;--dim:#8f95a3;--gold:#d9a441;--line:rgba(255,255,255,0.09);}
+:root{--bg:#0e0618;--text:#e8e4f4;--dim:#9a93b8;--gold:#f5c451;--line:rgba(255,255,255,0.09);}
 *{box-sizing:border-box;}
-html,body{margin:0;height:100%;background:var(--bg);color:var(--text);
-  font-family:'Inter',system-ui,sans-serif;overflow:hidden;}
+html,body{margin:0;height:100%;background:radial-gradient(120% 100% at 50% 20%, #2a0f45, var(--bg) 70%);color:var(--text);
+  font-family:'Spectral',Georgia,serif;overflow:hidden;}
 #app{position:fixed;inset:0;display:flex;flex-direction:column;}
 header{padding:12px 16px 8px;border-bottom:1px solid var(--line);}
-h1{font-family:'Spectral',serif;font-size:18px;font-weight:600;margin:0;}
+h1{font-family:'Fraunces',Georgia,serif;font-size:18px;font-weight:600;margin:0;}
 h1 em{font-style:italic;color:var(--dim);font-weight:400;}
 .stages{display:flex;gap:6px;margin-top:9px;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:2px;}
 .stages::-webkit-scrollbar{display:none;}
 .stage-chip{flex:0 0 auto;font-family:'IBM Plex Mono',monospace;font-size:10.5px;
   padding:6px 10px;border-radius:999px;border:1px solid var(--line);color:var(--dim);
   background:rgba(255,255,255,0.04);cursor:pointer;white-space:nowrap;}
-.stage-chip.on{border-color:var(--gold);color:var(--gold);background:rgba(217,164,65,0.12);}
+.stage-chip.on{border-color:var(--gold);color:var(--gold);background:rgba(245,196,81,0.12);}
 main{flex:1;position:relative;min-height:0;}
 canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;}
-footer{border-top:1px solid var(--line);padding:12px 16px 16px;background:linear-gradient(180deg,rgba(10,12,18,0.6),var(--bg));}
+footer{border-top:1px solid var(--line);padding:12px 16px 16px;background:linear-gradient(180deg,rgba(16,12,34,0.6),var(--bg));}
 .f-title{font-family:'Spectral',serif;font-size:17px;font-weight:600;margin:0 0 4px;color:var(--gold);}
 .f-added{font-size:13px;line-height:1.45;margin:0 0 8px;}
 .f-q{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--dim);line-height:1.6;}
@@ -31,7 +31,7 @@ footer{border-top:1px solid var(--line);padding:12px 16px 16px;background:linear
 .nbtn{flex:1;padding:10px;border-radius:10px;border:1px solid var(--line);background:rgba(255,255,255,0.05);
   color:var(--text);font-size:13px;font-weight:600;cursor:pointer;text-align:center;}
 .nbtn:active{background:rgba(255,255,255,0.12);}
-.nbtn.primary{background:rgba(217,164,65,0.16);border-color:var(--gold);color:var(--gold);}
+.nbtn.primary{background:rgba(245,196,81,0.16);border-color:var(--gold);color:var(--gold);}
 </style>
 </head>
 <body>
@@ -84,6 +84,7 @@ function resize(){
   ctx.setTransform(DPR,0,0,DPR,0,0);
 }
 window.addEventListener('resize',resize);
+if(window.ResizeObserver)new ResizeObserver(()=>resize()).observe(cv);
 
 /* seeded points */
 function mulberry(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;}}
@@ -158,14 +159,14 @@ function draw(t){
   // stage 3: geodesic + distance + metric ball
   const pa=px(A), pb=px(B);
   if(a3>0){
-    ctx.strokeStyle=`rgba(217,164,65,${0.9*a3})`;ctx.lineWidth=2;
+    ctx.strokeStyle=`rgba(245,196,81,${0.9*a3})`;ctx.lineWidth=2;
     ctx.beginPath();ctx.moveTo(pa.x,pa.y);
     const mx=(pa.x+pb.x)/2, my=(pa.y+pb.y)/2-40;
     ctx.quadraticCurveTo(mx,my,pb.x,pb.y);ctx.stroke();
-    label('d(p,q) — along the geodesic',(pa.x+pb.x)/2-70,my-8,`rgba(217,164,65,${a3})`);
-    ctx.strokeStyle=`rgba(217,164,65,${0.45*a3})`;ctx.setLineDash([4,4]);
+    label('d(p,q) — along the geodesic',(pa.x+pb.x)/2-70,my-8,`rgba(245,196,81,${a3})`);
+    ctx.strokeStyle=`rgba(245,196,81,${0.45*a3})`;ctx.setLineDash([4,4]);
     ctx.beginPath();ctx.arc(pa.x,pa.y,56,0,6.28);ctx.stroke();ctx.setLineDash([]);
-    label('ball of radius r',pa.x-30,pa.y-62,`rgba(217,164,65,${0.8*a3})`);
+    label('ball of radius r',pa.x-30,pa.y-62,`rgba(245,196,81,${0.8*a3})`);
   }
 
   // stage 2: tangent vector at A
@@ -186,13 +187,13 @@ function draw(t){
   // stage 5: oriented parallelogram (signed area)
   if(a5>0){
     const ux=70,uy=-30, vx=22,vy=62;
-    ctx.fillStyle=`rgba(217,164,65,${0.18*a5})`;
-    ctx.strokeStyle=`rgba(217,164,65,${0.7*a5})`;ctx.lineWidth=1.5;
+    ctx.fillStyle=`rgba(245,196,81,${0.18*a5})`;
+    ctx.strokeStyle=`rgba(245,196,81,${0.7*a5})`;ctx.lineWidth=1.5;
     ctx.beginPath();
     ctx.moveTo(pa.x,pa.y);ctx.lineTo(pa.x+ux,pa.y+uy);
     ctx.lineTo(pa.x+ux+vx,pa.y+uy+vy);ctx.lineTo(pa.x+vx,pa.y+vy);
     ctx.closePath();ctx.fill();ctx.stroke();
-    label('signed area = u ∧ v',pa.x+56,pa.y+52,`rgba(217,164,65,${a5})`);
+    label('signed area = u ∧ v',pa.x+56,pa.y+52,`rgba(245,196,81,${a5})`);
     // orientation loop
     ctx.strokeStyle=`rgba(159,214,168,${0.9*a5})`;ctx.lineWidth=1.6;
     ctx.beginPath();ctx.arc(W*0.85,H*0.16,20,0.4,5.6);ctx.stroke();
@@ -204,14 +205,14 @@ function draw(t){
   // the points themselves — always
   PTS.forEach(p=>{
     const q=px(p);
-    ctx.fillStyle='#e9e6dc';
+    ctx.fillStyle='#e8e4f4';
     ctx.beginPath();ctx.arc(q.x,q.y,3,0,6.28);ctx.fill();
   });
   // marked points
   [[pa,'p'],[pb,'q']].forEach(([q,nm])=>{
-    ctx.fillStyle='#d9a441';
+    ctx.fillStyle='#f5c451';
     ctx.beginPath();ctx.arc(q.x,q.y,4.5,0,6.28);ctx.fill();
-    label(nm,q.x+7,q.y+4,'#d9a441');
+    label(nm,q.x+7,q.y+4,'#f5c451');
   });
 }
 

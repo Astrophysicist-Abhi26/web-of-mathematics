@@ -4,15 +4,15 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <title>Parallel Transport & Curvature</title>
-<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Spectral:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#0e1117;--text:#e9e6dc;--dim:#8f95a3;--gold:#d9a441;--teal:#57ab79;--blue:#5b9ce0;--line:rgba(255,255,255,0.09);}
+:root{--bg:#0e0618;--text:#e8e4f4;--dim:#9a93b8;--gold:#f5c451;--teal:#57ab79;--blue:#5b9ce0;--line:rgba(255,255,255,0.09);}
 *{box-sizing:border-box;}
-html,body{margin:0;height:100%;background:var(--bg);color:var(--text);
-  font-family:'Inter',system-ui,sans-serif;overflow:hidden;}
+html,body{margin:0;height:100%;background:radial-gradient(120% 100% at 50% 20%, #2a0f45, var(--bg) 70%);color:var(--text);
+  font-family:'Spectral',Georgia,serif;overflow:hidden;}
 #app{position:fixed;inset:0;display:flex;flex-direction:column;}
 header{padding:12px 16px 10px;border-bottom:1px solid var(--line);}
-h1{font-family:'Spectral',serif;font-size:18px;font-weight:600;margin:0;}
+h1{font-family:'Fraunces',Georgia,serif;font-size:18px;font-weight:600;margin:0;}
 h1 em{font-style:italic;color:var(--dim);font-weight:400;}
 main{flex:1;position:relative;min-height:0;}
 canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;}
@@ -27,7 +27,7 @@ input[type=range]{flex:1;accent-color:var(--gold);}
 .nav{display:flex;gap:8px;margin-top:10px;}
 .nbtn{flex:1;padding:9px;border-radius:10px;border:1px solid var(--line);background:rgba(255,255,255,0.05);
   color:var(--text);font-size:12.5px;font-weight:600;cursor:pointer;text-align:center;}
-.nbtn.on{background:rgba(217,164,65,0.16);border-color:var(--gold);color:var(--gold);}
+.nbtn.on{background:rgba(245,196,81,0.16);border-color:var(--gold);color:var(--gold);}
 .hint{font-size:10px;color:var(--dim);font-family:'IBM Plex Mono',monospace;margin-top:8px;}
 </style>
 </head>
@@ -62,6 +62,7 @@ function resize(){DPR=Math.min(2,window.devicePixelRatio||1);
   W=cv.clientWidth;H=cv.clientHeight;cv.width=W*DPR;cv.height=H*DPR;
   ctx.setTransform(DPR,0,0,DPR,0,0);}
 window.addEventListener('resize',resize);
+if(window.ResizeObserver)new ResizeObserver(()=>resize()).observe(cv);
 
 /* 3D helpers */
 let rotX=-0.5,rotY=0.6;
@@ -191,7 +192,7 @@ function draw(){
     for(let s=0;s<=300;s++){const p=proj(loopPoint(s/300*3));s?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y);}
     ctx.closePath();ctx.stroke();
     // traversed portion, brighter
-    ctx.strokeStyle='rgba(217,164,65,0.95)';ctx.lineWidth=3;
+    ctx.strokeStyle='rgba(245,196,81,0.95)';ctx.lineWidth=3;
     ctx.beginPath();
     for(let s=0;s<=300;s++){const uu=s/300*u;const p=proj(loopPoint(uu));s?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y);}
     ctx.stroke();
@@ -201,10 +202,10 @@ function draw(){
     drawArrow3(loopPoint(0),start.vec,'rgba(91,156,224,0.5)',0.42);
     // current transported arrow
     const cur=transportVec(Math.max(0.0001,u));
-    drawArrow3(cur.p,cur.vec,'#d9a441',0.42);
+    drawArrow3(cur.p,cur.vec,'#f5c451',0.42);
 
     // vertices
-    [P_top,P_a,P_b].forEach(P=>{const s=proj(P);ctx.fillStyle='#e9e6dc';ctx.beginPath();ctx.arc(s.x,s.y,4,0,6.28);ctx.fill();});
+    [P_top,P_a,P_b].forEach(P=>{const s=proj(P);ctx.fillStyle='#e8e4f4';ctx.beginPath();ctx.arc(s.x,s.y,4,0,6.28);ctx.fill();});
 
     // holonomy readout: angle between start ghost (transported back to start) and original
     const full=transportVec(2.999);
@@ -217,13 +218,13 @@ function draw(){
     ctx.beginPath();
     for(let s=0;s<=4;s++){const p=proj(planeLoopPoint(s));s?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y);}
     ctx.closePath();ctx.stroke();
-    ctx.strokeStyle='rgba(217,164,65,0.95)';ctx.lineWidth=3;
+    ctx.strokeStyle='rgba(245,196,81,0.95)';ctx.lineWidth=3;
     ctx.beginPath();
     for(let s=0;s<=200;s++){const uu=s/200*u;const p=proj(planeLoopPoint(uu));s?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y);}
     ctx.stroke();
     const base=planeLoopPoint(u);
     drawArrow3(planeLoopPoint(0),[1,0,0],'rgba(91,156,224,0.5)',0.42); // ghost
-    drawArrow3(base,[1,0,0],'#d9a441',0.42); // stays parallel — unchanged direction
+    drawArrow3(base,[1,0,0],'#f5c451',0.42); // stays parallel — unchanged direction
     document.getElementById('ov').innerHTML =
       `surface: <b>plane</b> (K = 0)<br>loop encloses <b>0</b> curvature<br>predicted rotation = <b>0°</b><br>the arrow returns <b>unchanged</b>`;
   }
