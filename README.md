@@ -62,6 +62,24 @@ supernova — and the **✦ crack style** picker (bottom-left) forces one everyw
   why it matters*, plus chips for any pioneer involved. "open all" expands a whole field.
 - **Bridges and disputes are full stories** (`EDGE_DETAIL` in `extras.js`).
 
+## Interactive field guides (`guide-kit.js`, `guides/*.js`)
+
+Every one of the 52 fields opens with a guide in the Web of Computation format: a timeline, a
+hands-on lab (sometimes two), the story in movements with WHAT / HOW / STORY / TODAY tabs,
+things to try, the field's topics with their "deeper" drawers, and landmark sources. One file
+per domain registers its guides with `GuideKit.register("fieldId", {...})`:
+
+| File | Labs |
+|---|---|
+| `guides/foundations.js` | quantifier order · Goodstein sequences · products · finite models · Collatz & Ackermann · a mini Natural Number Game |
+| `guides/algebra.js` | exact Gaussian elimination · cosets & Lagrange · Gaussian primes & non-unique factorisation · constructible polygons · Spec ℤ · exp(tX) & root systems · characters of S₃ · Betti numbers |
+| `guides/analysis.js` | Riemann rearrangement · Cantor sets · argument principle · p-norm balls · Gibbs & Fejér · Euler vs RK4 · heat/wave & CFL · Snell's law · chaos & ergodic averages · chaos game |
+| `guides/geometry.js` | triangles in three geometries · the 29 topologies on 3 points · loops as words in F₂ · Morse flooding · osculating circles · knot tricolouring · Bézout counting · Möbius sections · Cayley-graph growth |
+| `guides/number.js` | continued fractions · Euler product · p-adic digits · Ramanujan's τ mod 691 · Pell's equation · toy RSA |
+| `guides/discrete.js` | Catalan mountain ranges · greedy colouring · Erdős's Ramsey bound · partitions & Ramanujan congruences · sumsets |
+| `guides/probability.js` | birthday problem · CLT for any distribution · Markov weather chain · confidence-interval coverage · Wigner semicircle |
+| `guides/order.js` | Knaster–Tarski fixed points · truth table → minimal formula · laws of all 16 binary operations |
+
 ## Editing (the whole point)
 
 All content lives in data files — no code changes needed:
