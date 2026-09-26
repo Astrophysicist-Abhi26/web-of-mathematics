@@ -305,6 +305,121 @@ register("diophantine", {
   ]
 });
 
+/* ================================================================ LANGLANDS */
+function lgCoeffs(N) { // q ∏ (1 − qⁿ)² (1 − q¹¹ⁿ)², coefficient of q^m is c[m − 1]
+  const c = new Float64Array(N + 1); c[0] = 1;
+  const mulf = n => { for (let k = N; k >= n; k--) c[k] -= c[k - n]; };
+  for (let n = 1; n <= N; n++) { mulf(n); mulf(n); if (11 * n <= N) { mulf(11 * n); mulf(11 * n); } }
+  return m => c[m - 1];
+}
+function lgAp(p) { // a_p = p − #{(x, y) ∈ 𝔽_p² : y² + y = x³ − x²}
+  if (p === 2) { let n = 0; for (let x = 0; x < 2; x++) for (let y = 0; y < 2; y++) if ((y * y + y - x * x * x + x * x) % 2 === 0) n++; return 2 - n; }
+  const sq = new Uint8Array(p); for (let y = 0; y < p; y++) sq[y * y % p] = 1;
+  let s = 0; for (let x = 0; x < p; x++) { const v = ((4 * x * x % p * x - 4 * x * x + 1) % p + p) % p; s += v === 0 ? 0 : sq[v] ? 1 : -1; }
+  return -s;
+}
+register("langlands", {
+  kicker: "A GRAND UNIFIED THEORY · ABOUT 30 MIN",
+  hook: "Why should counting solutions of an equation modulo primes give the coefficients of a symmetric function?",
+  intro: "The Langlands program predicts that two very different kinds of object are secretly the same: Galois representations, which record the symmetries of solutions of equations, and automorphic forms, which are functions with an enormous amount of symmetry. The simplest case you can check with a pencil — or with the lab: count the points of one cubic curve modulo each prime, and the numbers you get are the coefficients of one modular form. Its geometric version, for Riemann surfaces, was proved in 2024.",
+  timeline: [[1940, "Weil's Rosetta stone"], [1967, "Langlands' letter to Weil"], [1980, "Drinfeld: GL₂ over function fields"], [1995, "Wiles: modularity ⇒ Fermat"], [2008, "Ngô: fundamental lemma"], [2024, "geometric Langlands proved"]],
+  labs: [{
+    kicker: "EICHLER–SHIMURA · MODULARITY", title: "Count points, read coefficients",
+    intro: "Left column: count solutions of y² + y = x³ − x² modulo p and set a_p = p − (number of solutions). Right column: expand q∏(1 − qⁿ)²(1 − q¹¹ⁿ)² and read the coefficient of qᵖ. Every prime agrees — that is modularity, the two-dimensional case of Langlands reciprocity.",
+    html: `<div class="gk-chips lg-mode"><button class="gk-chip on" data-m="table">the match, prime by prime</button><button class="gk-chip" data-m="st">Sato–Tate: how the a_p are spread</button></div>
+      <div class="it-control lg-n" hidden><label><span>primes up to</span><output data-o="n">5000</output></label><input type="range" data-i="n" min="500" max="30000" step="500" value="5000"></div>
+      <canvas class="gk-canvas lg-cv" hidden></canvas>
+      <div class="gk-out lg-out" style="max-height:19rem;overflow:auto"></div>`,
+    caveat: "The Hasse bound |a_p| ≤ 2√p is the Riemann hypothesis for this curve over 𝔽_p. Sato–Tate (proved 2008–11 by Clozel, Harris, Shepherd-Barron, Taylor and others, via Langlands functoriality): the numbers a_p / 2√p are distributed like the semicircle (2/π)√(1 − x²).",
+    init(root) {
+      const out = root.querySelector(".lg-out"), cv = root.querySelector(".lg-cv"), nI = root.querySelector("[data-i=n]");
+      const coef = lgCoeffs(120), P = []; for (let k = 2; k < 100; k++) if (isPrime(k)) P.push(k);
+      const table = () => {
+        out.innerHTML = `  p   #solutions   a_p = p − #   coefficient of qᵖ\n` + P.map(p => { const a = lgAp(p), c = coef(p); return `${String(p).padStart(3)}   ${String(p - a).padStart(10)}   ${String(a).padStart(11)}   ${String(c).padStart(12)}  ${a === c ? '<span class="t">✓</span>' : '<span class="r">✗</span>'}${p === 11 ? ' <span class="d">(bad prime: the curve is singular mod 11)</span>' : ""}`; }).join("\n") +
+          `\n\n<span class="g">q∏(1 − qⁿ)²(1 − q¹¹ⁿ)² = q − 2q² − q³ + 2q⁴ + q⁵ + 2q⁶ − 2q⁷ − 2q⁹ − 2q¹⁰ + q¹¹ + ⋯</span>`;
+      };
+      const st = () => {
+        const N = +nI.value; root.querySelector("[data-o=n]").textContent = N;
+        const xs = []; for (let p = 3; p <= N; p++) if (p !== 11 && isPrime(p)) xs.push(lgAp(p) / (2 * Math.sqrt(p)));
+        const B = 30, H = new Array(B).fill(0); xs.forEach(x => H[Math.min(B - 1, Math.floor((x + 1) / 2 * B))]++);
+        const { ctx, w, h } = canvas(cv, 200), dens = H.map(c => c / xs.length / (2 / B)), top = Math.max(.75, ...dens) * 1.1;
+        const X = x => 10 + (w - 20) * (x + 1) / 2, Y = v => h - 16 - (h - 26) * v / top;
+        dens.forEach((v, i) => { ctx.fillStyle = "rgba(245,196,81,.7)"; ctx.fillRect(X(-1 + 2 * i / B) + 1, Y(v), (w - 20) / B - 2, h - 16 - Y(v)); });
+        ctx.strokeStyle = C.teal; ctx.lineWidth = 2; ctx.beginPath(); for (let i = 0; i <= 200; i++) { const x = -1 + 2 * i / 200, v = 2 / Math.PI * Math.sqrt(Math.max(0, 1 - x * x)); i ? ctx.lineTo(X(x), Y(v)) : ctx.moveTo(X(x), Y(v)); } ctx.stroke();
+        ctx.fillStyle = "#9a93b8"; ctx.font = "10px IBM Plex Mono"; ctx.fillText("−1", 8, h - 3); ctx.fillText("+1", w - 22, h - 3); ctx.fillText("a_p / 2√p", w / 2 - 22, h - 3);
+        const mx = Math.max(...xs.map(Math.abs));
+        out.innerHTML = `${xs.length} primes up to ${N}\nlargest |a_p| / 2√p = ${mx.toFixed(4)} ≤ 1 <span class="d">(Hasse, 1933)</span>\n<span class="t">teal: the Sato–Tate semicircle (2/π)√(1 − x²)</span>`;
+      };
+      root.querySelectorAll(".lg-mode .gk-chip").forEach(b => b.addEventListener("click", () => {
+        root.querySelectorAll(".lg-mode .gk-chip").forEach(x => x.classList.toggle("on", x === b));
+        const isST = b.dataset.m === "st"; root.querySelector(".lg-n").hidden = !isST; cv.hidden = !isST; isST ? st() : table();
+      }));
+      nI.addEventListener("change", st); table();
+    }
+  }, {
+    kicker: "WEIL 1940 · THE ROSETTA STONE", title: "Primes among polynomials",
+    intro: "In Weil's middle column, the integers are replaced by polynomials over a finite field 𝔽_q and primes by irreducible polynomials. The prime number theorem there is an exact formula (Gauss): the number of monic irreducibles of degree n is (1/n) Σ_{d | n} μ(d) q^(n/d) ≈ qⁿ/n.",
+    html: `<div class="gk-chips lr-q">${[2, 3, 5, 7].map(q => `<button class="gk-chip${q === 2 ? " on" : ""}" data-q="${q}">q = ${q}</button>`).join("")}</div>
+      <div class="gk-out lr-out"></div>
+      <table class="gk-table"><tr><th>ℚ (numbers)</th><th>𝔽_q(t) (curves over 𝔽_q)</th><th>ℂ(t) (Riemann surfaces)</th></tr>
+        <tr><td>prime p</td><td>irreducible polynomial</td><td>point of the surface</td></tr>
+        <tr><td>π(x) ~ x / ln x</td><td>#irreducibles of degree n ~ qⁿ/n</td><td>—</td></tr>
+        <tr><td>Riemann hypothesis (open)</td><td>proved: Weil 1948, Deligne 1974</td><td>Hodge theory</td></tr>
+        <tr><td>Langlands (mostly open)</td><td>proved for GLₙ: Drinfeld, L. Lafforgue</td><td>geometric Langlands: proved 2024</td></tr></table>`,
+    caveat: "The middle column is the interpreter: arithmetic like the left, geometric like the right. That is why so much of the programme was proved there first.",
+    init(root) {
+      const out = root.querySelector(".lr-out");
+      const mu = n => { let m = 1; for (let p = 2; p * p <= n; p++) if (n % p === 0) { n /= p; if (n % p === 0) return 0; m = -m; } return n > 1 ? -m : m; };
+      const irr = (q, n) => { let s = 0n; for (let d = 1; d <= n; d++) if (n % d === 0) s += BigInt(mu(d)) * BigInt(q) ** BigInt(n / d); return s / BigInt(n); };
+      const run = q => { out.innerHTML = ` n   irreducible monic polys   qⁿ / n        ratio\n` + Array.from({ length: 12 }, (_, i) => i + 1).map(n => { const a = irr(q, n), b = Math.pow(q, n) / n; return `${String(n).padStart(2)}   ${String(a).padStart(22)}   ${b.toExponential(3).padStart(10)}   ${(Number(a) / b).toFixed(4)}`; }).join("\n"); };
+      root.querySelectorAll(".lr-q .gk-chip").forEach(b => b.addEventListener("click", () => { root.querySelectorAll(".lr-q .gk-chip").forEach(x => x.classList.toggle("on", x === b)); run(+b.dataset.q); }));
+      run(2);
+    }
+  }],
+  chapters: [
+    { icon: "🏛", title: "1882–1940 — Weil's Rosetta stone", who: "Dedekind & Weber 1882 · Emil Artin 1924 · André Weil 1940",
+      lead: "Numbers, curves over finite fields and Riemann surfaces tell one story in three languages.",
+      formula: "ℤ  ↔  𝔽_q[t]  ↔  ℂ[t]      primes ↔ irreducible polynomials ↔ points",
+      what: "Dedekind and Weber (1882) noticed that rings of algebraic numbers and rings of algebraic functions behave alike. Artin (1924) defined zeta functions for curves over finite fields. Weil organised the analogy into three columns — the Rosetta stone — and used the middle one to prove the Riemann hypothesis for curves over finite fields (1948).",
+      how: "A theorem proved in the geometric columns becomes a precise conjecture in the arithmetic one. Lab 2 shows the prime number theorem in the middle column, where it is an exact formula.",
+      story: "Weil described the analogy in March 1940 in a letter to his sister Simone Weil, written from a military prison in Rouen where he was held for failing to report for service.",
+      today: "The Langlands programme is written in all three columns: arithmetic Langlands, function-field Langlands and geometric Langlands." },
+    { icon: "🔥", title: "1967–1970 — Langlands' letter and functoriality", who: "Robert Langlands 1967, 1970 · Erich Hecke · Harish-Chandra",
+      lead: "Non-abelian class field theory: Galois representations should match automorphic representations.",
+      formula: "L(s, ρ) = L(s, π)      ρ: Gal(ℚ̄/ℚ) → GLₙ(ℂ)  ↔  π automorphic on GLₙ",
+      what: "Class field theory describes abelian symmetries of number fields by arithmetic inside the field; it is the case n = 1. Langlands conjectured that every n-dimensional Galois representation matches an automorphic representation of GLₙ with the same L-function — and, more generally, that automorphic forms transfer between groups along maps of their dual groups (functoriality).",
+      how: "L-functions are the common language: Euler products whose p-th factor is built from Frobenius eigenvalues on one side and Hecke eigenvalues on the other. Matching them prime by prime is exactly what lab 1 does for one elliptic curve.",
+      story: "Langlands set out his ideas in a 17-page handwritten letter to André Weil in January 1967; functoriality followed in 'Problems in the theory of automorphic forms' (1970). He received the Abel Prize in 2018.",
+      today: "Symmetric-power functoriality proved the Sato–Tate conjecture (2008–11), shown in lab 1's second tab." },
+    { icon: "⚙️", title: "1974–2008 — the programme becomes theorems", who: "Vladimir Drinfeld · Andrew Wiles & Richard Taylor · Harris–Taylor, Henniart · Laurent Lafforgue · Ngô Bảo Châu",
+      lead: "Function fields, elliptic curves, local fields and the trace formula fell one after another.",
+      formula: "a_p(E) = p + 1 − #E(𝔽_p)  =  p-th coefficient of a weight-2 modular form",
+      what: "Drinfeld proved reciprocity for GL₂ over function fields with shtukas (1974–80, Fields Medal 1990) and Laurent Lafforgue for GLₙ (Fields 2002). Wiles, with Taylor, proved modularity for semistable elliptic curves (1995), hence Fermat's Last Theorem; Breuil, Conrad, Diamond and Taylor finished all elliptic curves over ℚ (2001). Harris–Taylor and Henniart proved local Langlands for GLₙ.",
+      how: "Ngô Bảo Châu proved the fundamental lemma (2008, Fields 2010) by counting points on the fibres of the Hitchin fibration — a tool from the geometric side solving a problem on the arithmetic side.",
+      story: "Wiles worked in secret for seven years; the gap found in his 1993 proof was repaired with Taylor in September 1994.",
+      today: "Potential modularity and the Calegari–Geraghty method now reach many cases beyond GL₂, but the general conjecture over number fields remains open." },
+    { icon: "🔥", title: "1983–2024 — geometric Langlands", who: "Vladimir Drinfeld 1983 · Alexander Beilinson & Drinfeld 1990s · Kapustin & Witten 2006 · Gaitsgory, Raskin et al. 2024 · Fargues & Scholze 2021",
+      lead: "On a Riemann surface the correspondence becomes an equivalence of categories — and it is now a theorem.",
+      formula: "D-mod(Bun_G)  ≃  IndCoh_Nilp(LocSys_Ǧ)",
+      what: "Over a compact Riemann surface X, automorphic forms become D-modules on Bun_G, the moduli stack of G-bundles on X, and Galois representations become Ǧ-local systems (flat connections for the Langlands dual group). The geometric Langlands conjecture says these two categories are equivalent, matching Hecke eigensheaves with points of LocSys.",
+      how: "Beilinson and Drinfeld built Hecke eigensheaves from the quantised Hitchin system; Kapustin and Witten (2006) derived the conjecture from electric–magnetic (S-)duality of four-dimensional gauge theory. Fargues and Scholze (2021) transplanted the whole picture to p-adic fields using the Fargues–Fontaine curve.",
+      story: "In 2024 Dennis Gaitsgory, Sam Raskin and seven collaborators — Arinkin, Beraldo, Campbell, Chen, Faergeman, Lin and Rozenblyum — announced a proof in five papers of about 800 pages. Gaitsgory received the 2025 Breakthrough Prize.",
+      today: "Relative Langlands duality (Ben-Zvi, Sakellaridis and Venkatesh) and categorical local Langlands extend the picture; the arithmetic conjectures over number fields remain the great open core." }
+  ],
+  challenges: [
+    "In lab 1, check by hand that the curve has 4 solutions modulo 5 (list them), so a₅ = 1.",
+    "Use the Sato–Tate tab with more and more primes. Does the histogram approach the semicircle? Why can no bar lie outside [−1, 1]?",
+    "In lab 2, how many irreducible polynomials of degree 4 are there over 𝔽₂? Find them: x⁴ + x + 1 is one."
+  ],
+  sources: [
+    { type: "BOOK", title: "Edward Frenkel — Love and Math", note: "The Langlands programme told for general readers (2013).", url: null },
+    { type: "SURVEY", title: "Stephen Gelbart — An elementary introduction to the Langlands program", note: "Bulletin of the AMS 10 (1984).", url: "https://doi.org/10.1090/S0273-0979-1984-15237-6" },
+    { type: "NEWS", title: "Quanta Magazine — Monumental proof settles geometric Langlands conjecture", note: "The 2024 proof explained (July 2024).", url: "https://www.quantamagazine.org/monumental-proof-settles-geometric-langlands-conjecture-20240719/" },
+    { type: "DATABASE", title: "LMFDB — elliptic curve isogeny class 11.a", note: "The curve of lab 1 and its modular form.", url: "https://www.lmfdb.org/EllipticCurve/Q/11/a/" },
+    { type: "BIOGRAPHY", title: "MacTutor — Robert Langlands", note: "The letter and what grew from it.", url: MT("Langlands") }
+  ]
+});
+
 /* ================================================================ COMPUTATIONAL / CRYPTO */
 register("computational-nt", {
   kicker: "SECRETS FROM PRIMES · ABOUT 25 MIN",

@@ -19,10 +19,10 @@ Or preview locally: `python3 -m http.server` then open http://localhost:8000
 
 - **8 domain nebulae** — Foundations, Algebra, Analysis, Geometry & Topology, Number Theory,
   Discrete & Combinatorics, Probability, Order & Universal Algebra. Click one to zoom into its
-  **52 fields**; click a field for its **240 topics** (discoverer · year · definition), its landmark
+  **53 fields**; click a field for its **248 topics** (discoverer · year · definition), its landmark
   theorems, its canonical textbook and every bridge that touches it. New in this edition: Type
   Theory & Formal Proof, Fractal Geometry, Geometric Group Theory, Computational Number Theory &
-  Cryptography, Additive Combinatorics, Statistics & Inference, and Random Matrix Theory.
+  Cryptography, Additive Combinatorics, Statistics & Inference, Random Matrix Theory, and The Langlands Program (from Weil's Rosetta stone to the 2024 proof of geometric Langlands).
 - **The time scrubber** (bottom): drag from 1800 BCE to 2026 or press ▶. The sky tints by era
   (Ancient World → Medieval Flowering → Renaissance → Age of Calculus → Age of Rigour →
   the ❄ Foundational Crisis of 1901–1931 → the Structural Age → the Modern Frontier), and every
@@ -32,14 +32,14 @@ Or preview locally: `python3 -m http.server` then open http://localhost:8000
   Riemann, Cantor, Gödel, Wiles, Perelman).
 - **Number shells** — ℕ ⊂ ℤ ⊂ ℚ ⊂ ℝ ⊂ ℂ drawn as nested orbits. Click a shell for the equation
   that forced it into being (x + 5 = 3, 2x = 1, x² = 2, x² = −1) and who built it.
-- **Pioneer constellation** (top): 84 people who built mathematics, from Euclid and Brahmagupta
+- **Pioneer constellation** (top): 86 people who built mathematics, from Euclid and Brahmagupta
   to Scholze and Viazovska, in chronological order. Click one for a biography (life, key works,
   legacy, links to their fields); everyone is in the **▦ pioneer gallery**. Six layouts, as in
   the Web of Computation. Until a photo is added, each medallion carries a gold emblem of the
   person's signature idea (see `portraits/README.md` to fetch real portraits).
 - **Status weather** on every field and topic: 🏛 foundational · 🔥 frontier · ⚙️ workhorse ·
   🪦 closed chapter · 🧟 revived.
-- **22 gold bridges** between domains, each carrying the field-level bridges it stands for (103 in all) —
+- **22 gold bridges** between domains, each carrying the field-level bridges it stands for (107 in all) —
   the mediating concept, who built it and when, and the theory of the bridge (Galois
   correspondence, Gauss–Bonnet, Ricci flow ⇒ Poincaré, Kolmogorov's axioms, Stone duality, …).
 - **Red lightning** for the great disputes: Newton vs Leibniz, Kronecker vs Cantor,
@@ -64,7 +64,7 @@ supernova — and the **✦ crack style** picker (bottom-left) forces one everyw
 
 ## Interactive field guides (`guide-kit.js`, `guides/*.js`)
 
-Every one of the 52 fields opens with a guide in the Web of Computation format: a timeline, a
+Every one of the 53 fields opens with a guide in the Web of Computation format: a timeline, a
 hands-on lab (sometimes two), the story in movements with WHAT / HOW / STORY / TODAY tabs,
 things to try, the field's topics with their "deeper" drawers, and landmark sources. One file
 per domain registers its guides with `GuideKit.register("fieldId", {...})`:
@@ -75,7 +75,7 @@ per domain registers its guides with `GuideKit.register("fieldId", {...})`:
 | `guides/algebra.js` | exact Gaussian elimination · cosets & Lagrange · Gaussian primes & non-unique factorisation · constructible polygons · Spec ℤ · exp(tX) & root systems · characters of S₃ · Betti numbers |
 | `guides/analysis.js` | Riemann rearrangement · Cantor sets · argument principle · p-norm balls · Gibbs & Fejér · Euler vs RK4 · heat/wave & CFL · Snell's law · chaos & ergodic averages · chaos game |
 | `guides/geometry.js` | triangles in three geometries · the 29 topologies on 3 points · loops as words in F₂ · Morse flooding · osculating circles · knot tricolouring · Bézout counting · Möbius sections · Cayley-graph growth |
-| `guides/number.js` | continued fractions · Euler product · p-adic digits · Ramanujan's τ mod 691 · Pell's equation · toy RSA |
+| `guides/number.js` | continued fractions · Euler product · p-adic digits · Ramanujan's τ mod 691 · Pell's equation · modularity checked prime by prime & Sato–Tate · primes among polynomials (Weil's Rosetta stone) · toy RSA |
 | `guides/discrete.js` | Catalan mountain ranges · greedy colouring · Erdős's Ramsey bound · partitions & Ramanujan congruences · sumsets |
 | `guides/probability.js` | birthday problem · CLT for any distribution · Markov weather chain · confidence-interval coverage · Wigner semicircle |
 | `guides/order.js` | Knaster–Tarski fixed points · truth table → minimal formula · laws of all 16 binary operations |
@@ -101,16 +101,18 @@ All content lives in data files — no code changes needed:
 ## Playable atoms
 
 Open via **⚛ playable atoms** (grouped by domain), or from the gold "⚛ play" buttons inside the
-matching fields' panels. 28 atoms; each registers itself with `registerAtom({...})`
+matching fields' panels. 64 atoms; each registers itself with `registerAtom({...})`
 (`atoms.js` has the recipe), in one file per continent:
 
 | Domain | Atoms |
 |---|---|
 | Foundations (`atoms-foundations.js`) | **Hilbert's Hotel & Cantor's diagonal** — one new guest, a bus, infinitely many buses; why ℝ is uncountable · **Truth tables** — type any formula, get tautology / contradiction / satisfiable |
 | Algebra (`atoms-algebra.js`) | **Symmetries of a polygon** — the dihedral group with a live Cayley table · **Linear maps** — determinant as area, eigenvectors as fixed directions · **Times-table circles** — multiplication mod n draws cardioids |
-| Analysis (`atoms-analysis.js`) | **ε–δ game** · **Riemann vs Lebesgue** (and the Dirichlet function) · **Fourier epicycles** (draw your own) · **Domain colouring** of complex functions · **Brachistochrone race** & tautochrone · **Phase portraits** (pendulum, Van der Pol, Lotka–Volterra, Lorenz) · **Logistic map** (bifurcation + cobweb + Lyapunov) · **Mandelbrot & Julia** (zoom, pick c) |
-| Geometry (`atoms/*.html`) | **Poincaré disk** · **Structure ladder** · **Torus · Möbius · Klein** · **Parallel transport** |
-| Number Theory (`atoms-number.js`) | **Primes** — Eratosthenes' sieve, Ulam spiral, π(x) vs x/ln x vs Li(x) · **Euclid's algorithm** as squares cut from a rectangle, with Bézout · **Elliptic curve group law** over ℝ and over 𝔽ₚ (Hasse bound) |
-| Discrete (`atoms-discrete.js`) | **Königsberg bridges** — walk it yourself, Euler paths · **Ramsey party** — R(3,3) = 6 · **Pascal mod m** — Sierpiński appears · **Partitions** as Young diagrams, distinct = odd |
-| Probability (`atoms-probability.js`) | **Chance lab** — Galton board, sums of dice, law of large numbers, Monty Hall · **Random walks** — √t spreading, Pólya · **Buffon's needle** — π from sticks |
+| Analysis (`atoms-analysis.js`, `atoms-calculus.js`) | **ε–δ game** · **Riemann vs Lebesgue** (and the Dirichlet function) · **Fourier epicycles** (draw your own) · **Domain colouring** of complex functions · **Brachistochrone race** & tautochrone · **Phase portraits** (pendulum, Van der Pol, Lotka–Volterra, Lorenz) · **Logistic map** (bifurcation + cobweb + Lyapunov) · **Mandelbrot & Julia** (zoom, pick c) · **Zeno & 0.999…** (halving square, Achilles, any ratio r) · **Taylor series** with the radius of convergence (incl. 1/(1+x²) and e^(−1/x²)) · **Weierstrass zoom** · **Gabriel's horn** · **Riemann rearrangement** · **Double pendulum** twins 10⁻⁶ apart · **Chaos game**, Barnsley fern & Koch snowflake |
+| Geometry (`atoms/*.html`) | **Poincaré disk** · **Structure ladder** · **Torus · Möbius · Klein** · **Parallel transport** · **Differential Geometry Lab** — the full 13-module course from DG Lab v2 (11 surfaces, curvature heat maps, metric probe, geodesics, the glass Klein bottle; Three.js vendored in `atoms/vendor/`) · in `atoms-geometry.js`: **Platonic solids** with duals · **Tesseract & 4D solids** (6 rotation planes) · **Morley's miracle** · **Apollonian gasket** (integer curvatures) · **Pythagoras: four proofs** · **Penrose tiling** by deflation · **Sunflower & the golden angle** · in `atoms-topology.js`: **Hairy ball theorem** (comb it; indices sum to χ) · **Three utilities on a torus** · **Coffee mug = doughnut** (WebGL ray-marched) · **Möbius strip cutter** |
+| Knots (`atoms-knots.js`, `knot-engine.js`) | **Knot & link gallery** — 21 knots and links in 3D (trefoil to 10₁₂₄, granny vs square, Hopf, Whitehead, Borromean, torus and Lissajous families) with crossings, writhe, linking numbers, Jones and Alexander polynomials, determinant and 3-colourings computed live from the diagram · **Braid builder** — write a braid word, see its closure in 3D · **Knot tricolouring** — colour the arcs yourself, or let linear algebra mod 3 find one |
+| Number Theory (`atoms-number.js`) | **Primes** — Eratosthenes' sieve, Ulam spiral, π(x) vs x/ln x vs Li(x) · **Euclid's algorithm** as squares cut from a rectangle, with Bézout · **Elliptic curve group law** over ℝ and over 𝔽ₚ (Hasse bound) · in `atoms-numplay.js`: **Collatz 3n + 1** · **Water jugs & gcd** · **Caesar & Vigenère cracker** (frequency analysis, index of coincidence) · **RSA toy** (Miller–Rabin keys, Pollard-rho attack) |
+| Discrete (`atoms-discrete.js`) | **Königsberg bridges** — walk it yourself, Euler paths · **Ramsey party** — R(3,3) = 6 · **Pascal mod m** — Sierpiński appears · **Partitions** as Young diagrams, distinct = odd · in `atoms-puzzles.js`: **Tower of Hanoi** · **Nim & the XOR trick** · **15 puzzle & parity** · **Game of Life** · **Four-colour a map** |
+| Probability (`atoms-probability.js`) | **Chance lab** — Galton board, sums of dice, law of large numbers, Monty Hall · **Random walks** — √t spreading, Pólya · **Buffon's needle** — π from sticks · in `atoms-chance.js`: **Birthday paradox** · **Bayes' theorem** (Beta-prior coin, base-rate medical test) · **Simpson's paradox** (1986 kidney-stone data) · **Arctic circle** (random domino tilings by shuffling) |
 | Order (`atoms-foundations.js`) | **Lattices** — divisors (gcd/lcm), subsets, M₃ and N₅, distributivity check |
+| Algebra, cont. (`atoms-topology.js`) | **Rubik's cube group** — face turns, the order of any move sequence (R U = 105, R U2 D' B D' = 1260), replay until solved |

@@ -253,7 +253,7 @@ const isPrime = n => n >= 2 && n <= NMAX && !sieve().comp[n];
     if (st.mode === "real") drawReal(pane); else drawFinite(pane);
   }
   registerAtom({
-    id: "elliptic", name: "Elliptic curve group law", domain: "number", fields: ["modular-forms", "algebraic-geometry", "diophantine"],
+    id: "elliptic", name: "Elliptic curve group law", domain: "number", fields: ["modular-forms", "algebraic-geometry", "diophantine", "langlands"],
     html: `<h3>Elliptic curves — points you can add</h3>
       <p class="ahint">On y² = x³ + ax + b, draw the line through two points P and Q: it meets the curve in exactly one more point R. Reflecting R gives P + Q. This chord-and-tangent rule makes the points a <b>group</b> — the structure behind Fermat's Last Theorem, elliptic-curve cryptography, and a Millennium Prize Problem.</p>
       <div class="achips"><button class="achip" data-m="real">over the real numbers</button><button class="achip" data-m="finite">over a finite field 𝔽ₚ</button></div>

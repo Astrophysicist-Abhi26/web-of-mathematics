@@ -582,6 +582,20 @@ number: [
       {n:"Public-key cryptography (RSA)", y:1977, who:"Rivest, Shamir & Adleman (1977); Diffie & Hellman (1976); Clifford Cocks (1973, secret)", s:"work", d:"Publish a lock, keep the key. Diffie and Hellman (1976) proposed public-key cryptography; Rivest, Shamir and Adleman (1977) built it from Fermat's little theorem and the difficulty of factoring."},
       {n:"Elliptic-curve cryptography", y:1985, who:"Neal Koblitz & Victor Miller (1985)", s:"work", d:"Replace multiplication mod p by the group law on an elliptic curve over a finite field. The discrete logarithm problem is much harder there, so keys can be far shorter (Koblitz and Miller, 1985)."}
     ]},
+  { id:"langlands", name:"The Langlands Program", short:"Langlands Program", y:1967, s:"fire",
+    d:"A web of conjectures — and, more and more, theorems — matching the symmetries of equations (Galois representations) with the harmonics of symmetric spaces (automorphic forms). Its geometric version, for Riemann surfaces, was proved in 2024.",
+    theorems:["Modularity of elliptic curves over ℚ (Wiles, Taylor; Breuil–Conrad–Diamond–Taylor 2001)","Local Langlands for GLₙ (Harris–Taylor; Henniart 2000–01)","Langlands for GLₙ over function fields (Drinfeld; L. Lafforgue 2002)","The fundamental lemma (Ngô Bảo Châu 2008)","Geometric Langlands conjecture (Gaitsgory, Raskin et al. 2024)"],
+    book:"Edward Frenkel — Love and Math (for everyone); Bump — Automorphic Forms and Representations",
+    topics:[
+      {n:"Weil's Rosetta stone", y:1940, who:"André Weil (1940); Dedekind & Weber (1882)", s:"found", d:"Three parallel worlds: number fields like ℚ, curves over finite fields like 𝔽_q(t), and Riemann surfaces like ℂ(t). Primes, irreducible polynomials and points play the same role; a theorem in one column predicts theorems in the other two."},
+      {n:"Reciprocity: Galois ↔ automorphic", y:1967, who:"Robert Langlands (1967 letter to Weil)", s:"fire", d:"Every n-dimensional Galois representation should correspond to an automorphic representation of GLₙ with the same L-function. For n = 1 this is class field theory; for elliptic curves it is the modularity theorem that proved Fermat's Last Theorem."},
+      {n:"Functoriality", y:1970, who:"Robert Langlands (1970)", s:"fire", d:"Automorphic forms should transfer between groups whenever their dual groups are related — the principle behind the symmetric-power lifts that proved the Sato–Tate conjecture (2008–11)."},
+      {n:"Function fields: Drinfeld & Lafforgue", y:1974, who:"Vladimir Drinfeld (1974–80); Laurent Lafforgue (2002); Vincent Lafforgue (2012)", s:"work", d:"Over fields of functions on curves over finite fields the programme is largely proved: Drinfeld's shtukas settled GL₂, Laurent Lafforgue GLₙ, and Vincent Lafforgue built the automorphic-to-Galois direction for every reductive group."},
+      {n:"Local Langlands", y:2001, who:"Michael Harris & Richard Taylor (2001); Guy Henniart (2000); Peter Scholze (2013)", s:"work", d:"The one-prime-at-a-time version: representations of GLₙ(ℚ_p) match n-dimensional representations of the Weil–Deligne group of ℚ_p. Proved for GLₙ around 2000; Scholze gave a new proof in 2013."},
+      {n:"The fundamental lemma", y:2008, who:"Robert Langlands & Diana Shelstad (conjecture, 1980s); Ngô Bảo Châu (2008)", s:"work", d:"A combinatorial identity between orbital integrals that the trace formula needed for decades. Ngô proved it with the geometry of the Hitchin fibration and received the Fields Medal (2010)."},
+      {n:"Geometric Langlands", y:1983, who:"Drinfeld (1983); Beilinson & Drinfeld (1990s); Kapustin & Witten (2006); Gaitsgory, Raskin et al. (2024)", s:"fire", d:"Replace the number field by a Riemann surface: automorphic forms become sheaves on the moduli of G-bundles, Galois representations become flat connections for the dual group. The resulting equivalence of categories was proved in 2024 in about 800 pages by nine authors."},
+      {n:"Fargues–Scholze geometrisation", y:2021, who:"Laurent Fargues & Peter Scholze (2021)", s:"fire", d:"Local Langlands turned into geometric Langlands on the Fargues–Fontaine curve: a 'curve' whose geometry encodes p-adic fields. It constructs Langlands parameters for every reductive group over a p-adic field."}
+    ]},
 ],
 discrete: [
   { id:"enumerative", name:"Enumerative Combinatorics", y:-200, s:"work",
@@ -1031,7 +1045,19 @@ const LINKS = [
     note:"Pair correlation 1 − (sin πu/πu)² for both GUE eigenvalues and zeta zeros." },
   { from:"stochastic-processes", to:"random-matrices", type:"pre", y:1962, via:"Dyson Brownian motion", who:"Freeman Dyson (1962)",
     story:"Let the entries of a symmetric matrix perform independent Brownian motions; the eigenvalues then move as particles that repel with a force inversely proportional to their distance. This dynamical picture is the engine of the modern proofs of universality.",
-    note:"dλᵢ = √(2/βn) dBᵢ + (1/n) Σ_{j≠i} dt/(λᵢ − λⱼ)." }
+    note:"dλᵢ = √(2/βn) dBᵢ + (1/n) Σ_{j≠i} dt/(λᵢ − λⱼ)." },
+  { from:"modular-forms", to:"langlands", type:"sig", y:1995, via:"Modularity: elliptic curves are automorphic", who:"Andrew Wiles & Richard Taylor (1995); Breuil, Conrad, Diamond & Taylor (2001)",
+    story:"The modularity theorem is the Langlands correspondence for two-dimensional Galois representations attached to elliptic curves over ℚ: the numbers a_p = p + 1 − #E(𝔽_p) are the Fourier coefficients of a weight-2 modular form. It is the case that proved Fermat's Last Theorem, and the template for the whole programme.",
+    note:"y² + y = x³ − x²: a_p equals the coefficient of qᵖ in q∏(1 − qⁿ)²(1 − q¹¹ⁿ)²." },
+  { from:"algebraic-nt", to:"langlands", type:"pre", y:1920, via:"Class field theory = Langlands for GL₁", who:"Teiji Takagi (1920); Emil Artin (1927)",
+    story:"Class field theory describes the abelian extensions of a number field by data inside the field; in Langlands' language it is the one-dimensional case, matching characters of the Galois group with characters of the idèle class group. Langlands' letter began as a search for its non-abelian generalisation.",
+    note:"Artin reciprocity: Gal(K^ab/K) ≅ profinite completion of the idèle class group." },
+  { from:"representation-theory", to:"langlands", type:"sig", y:1967, via:"Automorphic representations", who:"Harish-Chandra; Gelfand & Graev; Robert Langlands (1967)",
+    story:"Langlands' insight was to speak of automorphic representations — irreducible pieces of functions on G(𝔸)/G(F) — rather than individual modular forms, so that the representation theory of reductive groups (Harish-Chandra's life's work) became the language of number theory. The Langlands dual group ᴸG, defined by exchanging roots and coroots, is where the correspondence lands.",
+    note:"The dual of GLₙ is GLₙ; of SO(2n+1) is Sp(2n)." },
+  { from:"algebraic-geometry", to:"langlands", type:"sig", y:1983, via:"Geometric Langlands", who:"Vladimir Drinfeld (1983); Beilinson & Drinfeld (1990s); Gaitsgory, Raskin et al. (2024)",
+    story:"Over a Riemann surface X, automorphic forms become D-modules on Bun_G(X), the moduli stack of G-bundles, and Galois representations become local systems for the dual group. Hecke eigensheaves, the Hitchin system and derived categories turn the conjecture into an equivalence of categories, proved in 2024.",
+    note:"D-mod(Bun_G) ≃ IndCoh_Nilp(LocSys_Ǧ)." }
 ];
 
 const TIMELINE_STARS = [-300,820,1637,1665,1736,1801,1832,1854,1874,1931,1994,2003];
