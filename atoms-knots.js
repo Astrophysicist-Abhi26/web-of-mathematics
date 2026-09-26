@@ -299,4 +299,74 @@ registerAtom({
   start() { brV.resize(); brV.draw(); const tick = () => { if (brV.spin && !brV.drag) { brV.yaw += .006; brV.draw(); } brRaf = requestAnimationFrame(tick); }; brRaf = requestAnimationFrame(tick); },
   stop() { if (brRaf) cancelAnimationFrame(brRaf); brRaf = null; }
 });
+
+/* ---------- tricolouring: colour the arcs yourself ---------- */
+const TRI = ["trefoil", "fig8", "5_1", "5_2", "6_1", "granny", "square", "disguise", "hopf", "borromean"];
+const TC = ["#f5c451", "#3fd0c9", "#ff7ac8"];
+registerAtom({
+  id: "tricolour", name: "Knot tricolouring", domain: "geometry", fields: ["low-dim-topology"],
+  html: `<h3>Tricolouring — a proof, in crayon, that a knot is knotted</h3>
+    <p class="ahint">An <i>arc</i> runs from one under-crossing to the next. Colour every arc with one of three colours so that at each crossing the three arcs meeting there are either all the same colour or all different — and use at least two colours. Click an arc to cycle its colour. If you succeed, the knot cannot be untied.</p>
+    <div class="achips">${TRI.map((id, i) => `<button class="achip tc-k${i ? "" : " on"}" data-id="${id}">${G.find(g => g.id === id).name}</button>`).join("")}</div>
+    <div class="achips"><button class="achip tc-solve">show a tricolouring</button><button class="achip tc-clear">clear</button></div>
+    <canvas class="acv tc-cv" style="cursor:pointer"></canvas>
+    <div class="aout tc-out"></div>
+    <p class="awhy">Ralph Fox invented colourings around 1956 to teach knot theory at Haverford College. A Reidemeister move never changes whether a diagram can be tricoloured, so tricolourability is a knot invariant. The unknot's one-arc diagram only takes a single colour, so any knot that can be tricoloured is genuinely knotted — the trefoil, for example. The figure-eight can't be (its determinant, 5, isn't divisible by 3), so it is a different knot from the trefoil. In general the count of colourings is a power of 3, and it exceeds 3 exactly when 3 divides the determinant.</p>`,
+  build(pane) {
+    const c = pane.querySelector(".tc-cv"), out = pane.querySelector(".tc-out"); let D = null, dims;
+    function load(id) {
+      const g = G.find(x => x.id === id), acomps = g.make().map(q => K.rotate(q, ...(g.tilt || TILT))), inv = K.invariants(acomps);
+      const arcs = [], arcAt = [], inA = [], outA = [];
+      acomps.forEach((cp, ci) => {
+        const M = cp.length, us = inv.X.map((x, k) => ({ x, k })).filter(o => o.x.under.c === ci).map(o => ({ pos: o.x.under.pos, k: o.k })).sort((a, b) => a.pos - b.pos);
+        if (!us.length) { const id0 = arcs.length; arcs.push({ c: ci, idx: [...Array(M + 1).keys()].map(i => i % M) }); arcAt[ci] = () => id0; return; }
+        const base = arcs.length, m = us.length;
+        for (let j = 0; j < m; j++) { const a = us[j].pos, b = us[(j + 1) % m].pos, end = b > a ? b : b + M, idx = []; for (let i = Math.ceil(a); i <= end; i++) idx.push(i % M); arcs.push({ c: ci, idx }); outA[us[j].k] = base + j; inA[us[(j + 1) % m].k] = base + j; }
+        arcAt[ci] = pos => { for (let j = 0; j < m; j++) { const a = us[j].pos, b = us[(j + 1) % m].pos; if (b > a ? pos >= a && pos < b : pos >= a || pos < b) return base + j; } return base; };
+      });
+      D = { acomps, inv, arcs, over: inv.X.map(x => arcAt[x.over.c](x.over.pos)), inA, outA, col: arcs.map(() => -1), name: g.name };
+      draw();
+    }
+    function geom() {
+      const all = D.acomps.flat(), xs = all.map(q => q[0]), ys = all.map(q => q[1]), lx = Math.min(...xs), hx = Math.max(...xs), ly = Math.min(...ys), hy = Math.max(...ys);
+      const s = Math.min((dims.w - 40) / (hx - lx), (dims.h - 40) / (hy - ly)); return ([x, y]) => [dims.w / 2 + (x - (lx + hx) / 2) * s, dims.h / 2 - (y - (ly + hy) / 2) * s];
+    }
+    function hidden(Q) { return D.acomps.map((cp, k) => { const M = cp.length, hide = new Uint8Array(M); D.inv.X.forEach(x => { if (x.under.c !== k) return; const i0 = Math.floor(x.under.pos), q = Q(x.pt); for (let d = -14; d <= 14; d++) { const i = (i0 + d + M) % M, r = Q(cp[i]); if (Math.hypot(r[0] - q[0], r[1] - q[1]) < 9) hide[i] = 1; } }); return hide; }); }
+    function draw() {
+      dims = AtomKit.canvas(c, 420); const { ctx, w, h } = dims; ctx.clearRect(0, 0, w, h); if (!D) return;
+      const Q = geom(), hide = hidden(Q); ctx.lineCap = "round"; ctx.lineWidth = 4.5;
+      D.arcs.forEach((a, k) => { const cp = D.acomps[a.c]; ctx.strokeStyle = D.col[k] < 0 ? "rgba(232,228,244,.35)" : TC[D.col[k]];
+        for (let t = 1; t < a.idx.length; t++) { const i = a.idx[t - 1], j = a.idx[t]; if (hide[a.c][i] || hide[a.c][j]) continue; ctx.beginPath(); ctx.moveTo(...Q(cp[i])); ctx.lineTo(...Q(cp[j])); ctx.stroke(); } });
+      let good = 0, bad = 0, open = 0;
+      D.inv.X.forEach((x, k) => { const cs = [D.col[D.over[k]], D.col[D.inA[k]], D.col[D.outA[k]]], [px, py] = Q(x.pt);
+        if (cs.some(v => v < 0)) { open++; return; }
+        const ok = new Set(cs).size !== 2; ok ? good++ : bad++;
+        ctx.beginPath(); ctx.arc(px, py, ok ? 4 : 11, 0, 7); if (ok) { ctx.fillStyle = "#57e08a"; ctx.fill(); } else { ctx.strokeStyle = "#ff5a5a"; ctx.lineWidth = 2.5; ctx.stroke(); ctx.lineWidth = 4.5; } });
+      const used = new Set(D.col.filter(v => v >= 0)).size, N = D.inv.colourings, knot = D.inv.components === 1;
+      let verdict = "";
+      if (!open && !bad) verdict = used >= 2 ? `<span class="t">${knot ? "a genuine tricolouring — this knot is not the unknot!" : "a valid tricolouring (for links, the number of colourings is what counts — see below)"}</span>` : `<span class="g">every crossing is fine, but one colour proves nothing — use at least two</span>`;
+      else if (bad) verdict = `<span class="r">${bad} crossing${bad > 1 ? "s" : ""} break the rule (two colours the same, one different)</span>`;
+      out.innerHTML = `${esc(D.name)}: ${D.arcs.length} arcs, ${D.inv.crossings} crossings   coloured ${D.col.filter(v => v >= 0).length}/${D.arcs.length}   crossings OK ${good}, broken ${bad}, open ${open}\n${verdict || "keep colouring…"}\n<span class="d">the engine counts ${N} colourings of this diagram ${knot ? (N > 3 ? "— so it IS tricolourable" : "— only the 3 one-colour ones: not tricolourable") : `whereas ${D.inv.components} separate circles would have 3^${D.inv.components} = ${3 ** D.inv.components}, ${N !== 3 ** D.inv.components ? "— so this link is genuinely linked" : "— colourings alone can't tell it from the unlink"}`}</span>`;
+    }
+    function solve() {
+      const n = D.arcs.length, rows = D.inv.X.map((x, k) => { const r = new Array(n).fill(0); r[D.over[k]] += 2; r[D.inA[k]] += 2; r[D.outA[k]] += 2; return r.map(v => v % 3); });
+      // 2·over − in − out ≡ 0 (mod 3), written with −1 ≡ 2; reduce to echelon form and read off the null space
+      const M = rows.map(r => r.slice()); const piv = []; let rk = 0;
+      for (let col = 0; col < n && rk < M.length; col++) { let p = rk; while (p < M.length && !M[p][col]) p++; if (p === M.length) continue; [M[p], M[rk]] = [M[rk], M[p]]; const inv = M[rk][col] === 1 ? 1 : 2; M[rk] = M[rk].map(v => v * inv % 3);
+        for (let i = 0; i < M.length; i++) if (i !== rk && M[i][col]) { const f = M[i][col]; M[i] = M[i].map((v, j) => ((v - f * M[rk][j]) % 3 + 3) % 3); } piv.push(col); rk++; }
+      const free = [...Array(n).keys()].filter(j => !piv.includes(j));
+      const basis = free.map(fc => { const v = new Array(n).fill(0); v[fc] = 1; piv.forEach((pc, r) => { v[pc] = (3 - M[r][fc]) % 3; }); return v; });
+      for (let t = 0; t < 60; t++) { const v = new Array(n).fill(0); basis.forEach(b => { const a = Math.floor(Math.random() * 3); b.forEach((x, j) => v[j] = (v[j] + a * x) % 3); }); if (new Set(v).size > 1) { D.col = v; return draw(); } }
+      D.col = D.col.map(() => 0); draw(); out.innerHTML += `\n<span class="r">no tricolouring with two or more colours exists for this ${D.inv.components === 1 ? "knot" : "link"} — only the one-colour ones</span>`;
+    }
+    c.addEventListener("click", e => { if (!D) return; const r = c.getBoundingClientRect(), x = e.clientX - r.left, y = e.clientY - r.top, Q = geom(), hide = hidden(Q); let best = -1, bd = 14;
+      D.arcs.forEach((a, k) => a.idx.forEach(i => { if (hide[a.c][i]) return; const q = Q(D.acomps[a.c][i]), d = Math.hypot(q[0] - x, q[1] - y); if (d < bd) { bd = d; best = k; } }));
+      if (best >= 0) { D.col[best] = D.col[best] >= 2 ? -1 : D.col[best] + 1; draw(); } });
+    pane.querySelectorAll(".tc-k").forEach(b => b.addEventListener("click", () => { pane.querySelectorAll(".tc-k").forEach(x => x.classList.toggle("on", x === b)); load(b.dataset.id); }));
+    pane.querySelector(".tc-solve").addEventListener("click", () => D && solve());
+    pane.querySelector(".tc-clear").addEventListener("click", () => { if (D) { D.col = D.col.map(() => -1); draw(); } });
+    this._go = () => load("trefoil");
+  },
+  start() { if (this._go && !this._did) { this._did = true; this._go(); } }
+});
 })();

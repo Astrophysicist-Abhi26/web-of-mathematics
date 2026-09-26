@@ -10,31 +10,31 @@ Keyword matching is a first pass, not a verdict: synonyms are missed and passing
 
 ## Summary
 
-**286 covered · 156 mentioned · 462 missing** (of 904)
+**303 covered · 153 mentioned · 448 missing** (of 904)
 
 | # | Pillar | ✅ | 🟡 | ⬜ |
 |---|---|---|---|---|
 | 1 | Foundations — Logic, Sets, Infinity & Computability | 24 | 7 | 26 |
-| 2 | Numbers & Number Theory | 42 | 19 | 33 |
-| 3 | Algebra | 31 | 16 | 25 |
-| 4 | Real Analysis | 29 | 26 | 34 |
+| 2 | Numbers & Number Theory | 43 | 19 | 32 |
+| 3 | Algebra | 33 | 14 | 25 |
+| 4 | Real Analysis | 31 | 25 | 33 |
 | 5 | Complex Analysis | 13 | 3 | 7 |
-| 6 | Geometry | 16 | 16 | 67 |
-| 7 | Topology | 33 | 10 | 19 |
+| 6 | Geometry | 19 | 16 | 64 |
+| 7 | Topology | 35 | 8 | 19 |
 | 8 | Differential Geometry | 13 | 11 | 19 |
-| 9 | Combinatorics | 10 | 9 | 20 |
+| 9 | Combinatorics | 11 | 9 | 19 |
 | 10 | Graph Theory & Networks | 10 | 2 | 17 |
-| 11 | Puzzles & Recreational Games | 1 | 1 | 23 |
-| 12 | Probability | 11 | 5 | 25 |
-| 13 | Statistics — Frequentist & Bayesian | 7 | 5 | 26 |
+| 11 | Puzzles & Recreational Games | 2 | 2 | 21 |
+| 12 | Probability | 12 | 5 | 24 |
+| 13 | Statistics — Frequentist & Bayesian | 9 | 5 | 24 |
 | 14 | Differential Equations | 8 | 4 | 20 |
-| 15 | Dynamical Systems, Chaos & Fractals | 14 | 4 | 17 |
+| 15 | Dynamical Systems, Chaos & Fractals | 15 | 4 | 16 |
 | 16 | Computation — Algorithms & Complexity | 4 | 1 | 15 |
-| 17 | Information, Coding & Cryptography | 7 | 4 | 14 |
+| 17 | Information, Coding & Cryptography | 7 | 5 | 13 |
 | 18 | Game Theory & Social Choice | 1 | 2 | 19 |
 | 19 | Optimization & Numerical Analysis | 7 | 1 | 12 |
 | 20 | Mathematical Physics | 5 | 6 | 5 |
-| 21 | Mathematics in the World | 0 | 4 | 19 |
+| 21 | Mathematics in the World | 1 | 4 | 18 |
 
 ## 1. Foundations — Logic, Sets, Infinity & Computability
 
@@ -112,7 +112,7 @@ Keyword matching is a first pass, not a verdict: synonyms are missed and passing
 
 ## 2. Numbers & Number Theory
 
-42 covered · 19 mentioned · 33 missing
+43 covered · 19 mentioned · 32 missing
 
 
 **2.1 Number systems — the number shells**
@@ -161,7 +161,7 @@ Keyword matching is a first pass, not a verdict: synonyms are missed and passing
 - ✅ 🔷 Clock arithmetic — *map topic/field* (`data.js`)
 - ⬜ 🔷 Divisibility tricks
 - ✅ 🏆 Euclidean algorithm — *map topic/field* (`data.js`)
-- ⬜ 🧩 Water jug puzzle (Die Hard 3)
+- ✅ 🧩 Water jug puzzle (Die Hard 3) — *playable atom* (`atoms-numplay.js`)
 - ✅ 🏆 Chinese remainder theorem — *map topic/field* (`data.js`)
 - 🟡 🏆 Fermat's little theorem & Euler's theorem — *map topic/field* (`data.js`)
 - ✅ 🏆 Quadratic reciprocity — *map topic/field* (`data.js`)
@@ -235,7 +235,7 @@ Keyword matching is a first pass, not a verdict: synonyms are missed and passing
 
 ## 3. Algebra
 
-31 covered · 16 mentioned · 25 missing
+33 covered · 14 mentioned · 25 missing
 
 
 **3.1 Equations & polynomials**
@@ -253,8 +253,8 @@ Keyword matching is a first pass, not a verdict: synonyms are missed and passing
 - ✅ 🔷 Symmetry groups — *map topic/field* (`data.js`)
 - ⬜ 🏆 17 wallpaper groups & 7 frieze groups
 - 🟡 🏆 230 space groups — *field guide* (`guides/algebra.js`)
-- 🟡 🧩 Rubik's Cube group — *field guide* (`guides/algebra.js`)
-- 🟡 🧩📜 15 puzzle — *map topic/field* (`data.js`)
+- ✅ 🧩 Rubik's Cube group — *playable atom* (`atoms-topology.js`)
+- ✅ 🧩📜 15 puzzle — *playable atom* (`atoms-puzzles.js`)
 - ⬜ ⚡ Socks and shoes
 - ✅ 🏆 Lagrange's theorem — *map topic/field* (`data.js`)
 - 🟡 🏆 Cayley's theorem — *map topic/field* (`data.js`)
@@ -333,7 +333,7 @@ Keyword matching is a first pass, not a verdict: synonyms are missed and passing
 
 ## 4. Real Analysis
 
-29 covered · 26 mentioned · 34 missing
+31 covered · 25 mentioned · 33 missing
 
 
 **4.1 Limits & sequences**
@@ -367,7 +367,7 @@ Keyword matching is a first pass, not a verdict: synonyms are missed and passing
 - ⬜ 🧩 Wobbly table theorem
 - ✅ 🏆 Mean value theorem — *map topic/field* (`data.js`)
 - ⬜ 📜 L'Hôpital's rule
-- 🟡 👾 Weierstrass function (1872) — *map topic/field* (`data.js`)
+- ✅ 👾 Weierstrass function (1872) — *playable atom* (`atoms-calculus.js`)
 - ⬜ 👾 Blancmange (Takagi) function
 - ✅ 👾 Dirichlet function — *topic drawer* (`topics-data.js`)
 - ⬜ 👾 Thomae's popcorn function
@@ -387,7 +387,7 @@ Keyword matching is a first pass, not a verdict: synonyms are missed and passing
 - 🟡 📜 Archimedes' method — *pioneer bio* (`pioneers-data.js`)
 - ⬜ 🏆 Cavalieri's principle
 - ⬜ ⚡ Napkin ring problem
-- ⬜ ⚡ Gabriel's horn
+- ✅ ⚡ Gabriel's horn — *playable atom* (`atoms-calculus.js`)
 - 🟡 🔷 Gaussian integral — *topic drawer* (`topics-data.js`)
 - ⬜ 🔷 Feynman's trick
 - ⬜ ⚡ Sophomore's dream
@@ -479,7 +479,7 @@ Keyword matching is a first pass, not a verdict: synonyms are missed and passing
 
 ## 6. Geometry
 
-16 covered · 16 mentioned · 67 missing
+19 covered · 16 mentioned · 64 missing
 
 
 **6.1 Euclidean plane geometry**
@@ -497,7 +497,7 @@ Keyword matching is a first pass, not a verdict: synonyms are missed and passing
 - 🟡 🏆 Butterfly theorem — *topic drawer* (`topics-data.js`)
 - ⬜ 🔷 Apollonius' problem
 - 🟡 🏆 Descartes' circle theorem — *field guide* (`guides/geometry.js`)
-- ⬜ 🔷 Apollonian gasket
+- ✅ 🔷 Apollonian gasket — *playable atom* (`atoms-geometry.js`)
 - ⬜ 🏆 Poncelet's porism
 - 🟡 🔷 Circle inversion — *topic drawer* (`topics-data.js`)
 - ⬜ 🔷 Arbelos
@@ -521,8 +521,8 @@ Keyword matching is a first pass, not a verdict: synonyms are missed and passing
 - ⬜ 🔷 Kepler–Poinsot polyhedra
 - ✅ 🏆 Euler's formula V − E + F = 2 — *map topic/field* (`data.js`)
 - ⬜ 🏆 Descartes' angle defect
-- ⬜ 🔷 The six regular 4D polytopes
-- ⬜ 🔷 Tesseract
+- ✅ 🔷 The six regular 4D polytopes — *playable atom* (`atoms-geometry.js`)
+- ✅ 🔷 Tesseract — *playable atom* (`atoms-geometry.js`)
 - ⬜ 📜 Flatland (1884)
 - ⬜ ⚡ High-dimensional balls
 - ⬜ ⚡ Spheres poking out of boxes
@@ -598,14 +598,14 @@ Keyword matching is a first pass, not a verdict: synonyms are missed and passing
 
 ## 7. Topology
 
-33 covered · 10 mentioned · 19 missing
+35 covered · 8 mentioned · 19 missing
 
 
 **7.1 Rubber-sheet intuition & surfaces**
 
 - ⬜ ⚡ Coffee mug = donut
 - ⬜ 🧩 Topology of the alphabet
-- 🟡 🔷 Möbius strip — *field guide* (`guides/geometry.js`)
+- ✅ 🔷 Möbius strip — *playable atom* (`atoms-topology.js`)
 - ✅ 🔷 Klein bottle — *map topic/field* (`data.js`)
 - ✅ 🔷 Projective plane — *map topic/field* (`data.js`)
 - ✅ 🔷 Torus — *map topic/field* (`data.js`)
@@ -625,7 +625,7 @@ Keyword matching is a first pass, not a verdict: synonyms are missed and passing
 - ⬜ 🏆 Borsuk–Ulam theorem
 - ⬜ 🏆 Ham sandwich theorem
 - ⬜ 🧩 Necklace splitting
-- 🟡 🏆 Poincaré–Hopf theorem — *topic drawer* (`topics-data.js`)
+- ✅ 🏆 Poincaré–Hopf theorem — *playable atom* (`atoms-topology.js`)
 - ✅ 🏆 Lefschetz fixed-point theorem — *field guide* (`guides/geometry.js`)
 - ⬜ ❓ Inscribed square problem (1911)
 
@@ -743,7 +743,7 @@ Keyword matching is a first pass, not a verdict: synonyms are missed and passing
 
 ## 9. Combinatorics
 
-10 covered · 9 mentioned · 20 missing
+11 covered · 9 mentioned · 19 missing
 
 
 **9.1 Counting**
@@ -758,7 +758,7 @@ Keyword matching is a first pass, not a verdict: synonyms are missed and passing
 - 🟡 🏆 Euler's partition theorem — *map topic/field* (`data.js`)
 - ✅ 🔷 Generating functions — *map topic/field* (`data.js`)
 - ✅ 🏆 Cayley's formula — *topic drawer* (`topics-data.js`)
-- ⬜ 🔷 Domino tilings
+- ✅ 🔷 Domino tilings — *playable atom* (`atoms-chance.js`)
 - ⬜ ⚡ Arctic circle theorem
 - ⬜ 🔷 de Bruijn sequences
 - ⬜ 🔷 Gray codes
@@ -830,9 +830,9 @@ Keyword matching is a first pass, not a verdict: synonyms are missed and passing
 
 ## 11. Puzzles & Recreational Games
 
-1 covered · 1 mentioned · 23 missing
+2 covered · 2 mentioned · 21 missing
 
-- ⬜ 🧩 Nim
+- 🟡 🧩 Nim — *playable atom* (`atoms-puzzles.js`)
 - ⬜ 🧩 Chomp
 - ⬜ 🧩 Hex
 - ⬜ 🧩 Tic-tac-toe
@@ -844,7 +844,7 @@ Keyword matching is a first pass, not a verdict: synonyms are missed and passing
 - ⬜ 🧩 Dots and boxes
 - ⬜ ⚡ Conway's soldiers
 - ⬜ 🧩 Peg solitaire
-- ⬜ 🧩 Tower of Hanoi
+- ✅ 🧩 Tower of Hanoi — *playable atom* (`atoms-puzzles.js`)
 - ⬜ 🧩 Josephus problem
 - ⬜ ⚡ 100 prisoners and 100 drawers
 - ⬜ 🧩 100 prisoners and a light bulb
@@ -860,10 +860,10 @@ Keyword matching is a first pass, not a verdict: synonyms are missed and passing
 
 ## 12. Probability
 
-11 covered · 5 mentioned · 25 missing
+12 covered · 5 mentioned · 24 missing
 
 - ✅ 📜 Pascal–Fermat letters (1654) — *field guide* (`guides/probability.js`)
-- ⬜ ⚡ Birthday paradox
+- ✅ ⚡ Birthday paradox — *playable atom* (`atoms-chance.js`)
 - ⬜ ⚡📜 Monty Hall problem
 - ⬜ ⚡ Boy-or-girl & the Tuesday boy
 - ⬜ ⚡ Bertrand's box & the three prisoners
@@ -906,14 +906,14 @@ Keyword matching is a first pass, not a verdict: synonyms are missed and passing
 
 ## 13. Statistics — Frequentist & Bayesian
 
-7 covered · 5 mentioned · 26 missing
+9 covered · 5 mentioned · 24 missing
 
 
 **13.1 Seeing data**
 
 - ⬜ 🔷 Mean vs median
 - ⬜ ⚡ Anscombe's quartet & the Datasaurus
-- ⬜ ⚡ Simpson's paradox
+- ✅ ⚡ Simpson's paradox — *playable atom* (`atoms-chance.js`)
 - ⬜ ⚡ Correlation ≠ causation
 - ⬜ ⚡ Berkson's paradox
 - ✅ ⚡ Regression to the mean — *topic drawer* (`topics-data.js`)
@@ -950,7 +950,7 @@ Keyword matching is a first pass, not a verdict: synonyms are missed and passing
 - ✅ 🔷 MCMC — *map topic/field* (`data.js`)
 - ⬜ 🔷 Hierarchical models & shrinkage
 - ⬜ ⚡ Lindley's paradox
-- ⬜ 🔷 Causal diagrams (Pearl)
+- ✅ 🔷 Causal diagrams (Pearl) — *playable atom* (`atoms-chance.js`)
 - ⬜ 🔷 Cromwell's rule
 - ⬜ ⚡ The hot hand, revisited
 - ⬜ 🔷 Zipf's law & power laws
@@ -1001,7 +1001,7 @@ Keyword matching is a first pass, not a verdict: synonyms are missed and passing
 
 ## 15. Dynamical Systems, Chaos & Fractals
 
-14 covered · 4 mentioned · 17 missing
+15 covered · 4 mentioned · 16 missing
 
 
 **15.1 Chaos**
@@ -1010,7 +1010,7 @@ Keyword matching is a first pass, not a verdict: synonyms are missed and passing
 - ✅ 🏆 Feigenbaum constant δ ≈ 4.669 — *playable atom* (`atoms-analysis.js`)
 - ✅ 🏆 Period three implies chaos (1975) — *field guide* (`guides/analysis.js`)
 - ✅ 🔷📜 Lorenz attractor — *map topic/field* (`data.js`)
-- ⬜ 🔷 Double pendulum
+- ✅ 🔷 Double pendulum — *playable atom* (`atoms-calculus.js`)
 - ⬜ 📜 Poincaré's prize-winning error (1889)
 - ✅ 🏆 KAM theorem — *map topic/field* (`data.js`)
 - 🟡 🏆 Poincaré recurrence — *map topic/field* (`data.js`)
@@ -1075,7 +1075,7 @@ Keyword matching is a first pass, not a verdict: synonyms are missed and passing
 
 ## 17. Information, Coding & Cryptography
 
-7 covered · 4 mentioned · 14 missing
+7 covered · 5 mentioned · 13 missing
 
 
 **17.1 Information theory**
@@ -1100,7 +1100,7 @@ Keyword matching is a first pass, not a verdict: synonyms are missed and passing
 **17.3 Cryptography**
 
 - ⬜ 🔷 Caesar & substitution ciphers
-- ⬜ 📜 Vigenère cipher
+- 🟡 📜 Vigenère cipher — *playable atom* (`atoms-numplay.js`)
 - 🟡 🏆 One-time pad — *field guide* (`guides/analysis.js`)
 - ✅ 📜 Enigma — *pioneer bio* (`pioneers-data.js`)
 - ✅ 🔷 Diffie–Hellman (1976) — *map topic/field* (`data.js`)
@@ -1187,12 +1187,12 @@ Keyword matching is a first pass, not a verdict: synonyms are missed and passing
 
 ## 21. Mathematics in the World
 
-0 covered · 4 mentioned · 19 missing
+1 covered · 4 mentioned · 18 missing
 
 
 **21.1 Life**
 
-- ⬜ 🔷 Phyllotaxis
+- ✅ 🔷 Phyllotaxis — *playable atom* (`atoms-geometry.js`)
 - ⬜ 📜 Hardy–Weinberg principle (1908)
 - ⬜ 🔷 Kleiber's law
 - ⬜ 🔷 Epidemics, Turing patterns, DNA knots
