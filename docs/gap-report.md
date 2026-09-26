@@ -8,6 +8,64 @@ Automatic keyword comparison of the 904 catalog atoms (`docs/atom-catalog.md`) w
 
 Keyword matching is a first pass, not a verdict: synonyms are missed and passing mentions count. Use it as a to-do list.
 
+
+## Starter set (Layer E) — checked by hand
+
+49 of 50 have a playable atom; the hat monotile is described in the Penrose atom but not yet drawable.
+
+| # | Starter atom | Playable atom id |
+|---|---|---|
+| 1 | Hilbert's Hotel | `infinity` |
+| 2 | Cantor's diagonal machine | `infinity` |
+| 3 | Zeno & the geometric series | `zeno` |
+| 4 | 0.999… = 1 | `zeno` |
+| 5 | Sieve of Eratosthenes & Ulam spiral | `primes` |
+| 6 | Collatz explorer | `collatz` |
+| 7 | Euclidean algorithm & water jugs | `euclid, jugs` |
+| 8 | Pascal's triangle mod n | `pascal` |
+| 9 | Fibonacci & sunflower phyllotaxis | `phyllotaxis` |
+| 10 | Pythagorean proof gallery | `pythagoras` |
+| 11 | Morley's triangle | `morley` |
+| 12 | Apollonian gasket | `apollonian` |
+| 13 | Platonic solid builder | `platonic` |
+| 14 | Tesseract rotator | `polytope4d` |
+| 15 | Hyperbolic disk tiler | `hyperbolic` |
+| 16 | Möbius strip cutter | `mobius` |
+| 17 | Klein bottle viewer | `surfaces, dglab` |
+| 18 | Coffee mug ↔ donut morph | `mugdonut` |
+| 19 | Hairy ball comber | `hairyball` |
+| 20 | Knot tricoloring | `tricolour` |
+| 21 | Gabriel's horn | `gabriel` |
+| 22 | Riemann rearrangement | `rearrange` |
+| 23 | Weierstrass function zoom | `weierstrass` |
+| 24 | Fourier epicycles & Gibbs overshoot | `epicycles` |
+| 25 | Taylor series approximator | `taylor` |
+| 26 | Domain-coloring playground | `domaincolour` |
+| 27 | Mandelbrot & Julia explorer | `mandelbrot` |
+| 28 | Logistic-map bifurcation | `logistic` |
+| 29 | Lorenz attractor | `phase` |
+| 30 | Double pendulum | `pendulum` |
+| 31 | Game of Life | `life` |
+| 32 | Koch, Sierpiński & the chaos game | `chaosgame` |
+| 33 | Birthday paradox simulator | `birthday` |
+| 34 | Monty Hall simulator | `chance` |
+| 35 | Galton board | `chance` |
+| 36 | Buffon's needle | `buffon` |
+| 37 | Bayes updater with a Beta prior | `bayes` |
+| 38 | Simpson's paradox slider | `simpson` |
+| 39 | Königsberg & Euler paths | `konigsberg` |
+| 40 | Four-coloring a map | `fourcolour` |
+| 41 | Three utilities on a torus | `utilities` |
+| 42 | Nim with XOR hints | `nim` |
+| 43 | Tower of Hanoi | `hanoi` |
+| 44 | 15 puzzle parity | `fifteen` |
+| 45 | Rubik's cube group | `rubik` |
+| 46 | Penrose & hat tilers | `penrose (hat only described)` |
+| 47 | Brachistochrone race | `brachistochrone` |
+| 48 | Arctic circle domino tiler | `arctic` |
+| 49 | Caesar & Vigenère cracker | `cipher` |
+| 50 | RSA toy | `rsa` |
+
 ## Summary
 
 **303 covered · 153 mentioned · 448 missing** (of 904)
