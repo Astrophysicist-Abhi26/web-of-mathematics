@@ -407,6 +407,7 @@ chip.id = "crack-chip"; chip.setAttribute("aria-live", "polite");
 document.body.appendChild(chip);
 let chipT = null;
 function showChip(key, what) {
+  return;   // the style name is an implementation detail; no chip on screen
   const s = STYLES[key];
   chip.innerHTML = `<b>${s.tag}</b> ${s.name}<span>${what}</span>`;
   chip.classList.add("on");
@@ -415,7 +416,7 @@ function showChip(key, what) {
 
 /* ---------- picker in the toggles column ---------- */
 const toggles = document.getElementById("toggles");
-if (toggles) {
+if (toggles && false) {
   const wrapEl = document.createElement("label");
   wrapEl.id = "crack-pick";
   wrapEl.innerHTML = `<span>✦ crack style</span><select id="crack-style" aria-label="Crack-open animation style">
