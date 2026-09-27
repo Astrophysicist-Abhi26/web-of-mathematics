@@ -237,7 +237,8 @@ body.people .pioneer { opacity: 1; pointer-events: auto; }
 
 /* legend */
 #legend {
-  position: fixed; right: 1.2rem; top: 4.2rem; z-index: 15;
+  position: fixed; right: 1.2rem; top: 50%; transform: translateY(-50%); z-index: 15;
+  transition: opacity .35s ease, transform .35s ease;
   font-family: "IBM Plex Mono", monospace; font-size: 0.66rem; color: var(--dim);
   background: var(--glass); border: 1px solid rgba(255,255,255,0.1);
   border-radius: 12px; padding: 0.7rem 0.9rem; line-height: 1.9;
@@ -398,3 +399,26 @@ canvas#pc-canvas, canvas#mb-canvas, canvas#at-canvas {
 
 /* fields not yet born stay hidden until you zoom into their domain */
 body:not(.zoomed) .field.unborn, .field.unborn:not(.active) { opacity: 0 !important; }
+
+/* ---------- tidy screen: nothing overlaps ---------- */
+/* no focus box after a mouse click on the map; keyboard focus gets a soft gold glow instead */
+#map g:focus, #map g:focus-visible { outline: none; }
+#map g:focus-visible circle { filter: drop-shadow(0 0 6px var(--gold)); }
+/* the legend is only for the overview */
+body.zoomed #legend, body.topic-focus #legend, body:has(#panel.open) #legend { opacity: 0; pointer-events: none; transform: translate(30px, -50%); }
+/* the time scrubber tucks away like a dock once you dive in; bring the mouse to the bottom edge to reveal it */
+#timebar { transition: transform .45s cubic-bezier(.2,.7,.2,1), opacity .35s ease; }
+body.zoomed #timebar, body.topic-focus #timebar { transform: translate(-50%, calc(100% + 2rem)); opacity: 0; }
+body.zoomed.tb-peek #timebar, body.topic-focus.tb-peek #timebar { transform: translate(-50%, 0); opacity: 1; }
+#tb-hot { position: fixed; left: 0; right: 0; bottom: 0; height: 18px; z-index: 24; display: none; }
+body.zoomed #tb-hot, body.topic-focus #tb-hot { display: block; }
+/* the controls column steps aside too while you read a domain */
+#toggles { transition: opacity .35s ease, transform .35s ease; }
+body.zoomed #toggles, body.topic-focus #toggles { opacity: 0; transform: translateX(-30px); pointer-events: none; }
+/* smooth open/close for the playable atoms */
+#atoms:not([hidden]) { animation: wom-fade .28s ease both; }
+#atoms:not([hidden]) #atoms-box { animation: wom-rise .34s cubic-bezier(.2,.7,.2,1) both; }
+.atom-pane:not([hidden]) { animation: wom-fade .25s ease both; }
+@keyframes wom-fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes wom-rise { from { opacity: 0; transform: translateY(18px) scale(.985); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { #atoms, #atoms-box, .atom-pane { animation: none !important; } }

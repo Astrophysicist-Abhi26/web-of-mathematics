@@ -307,9 +307,26 @@ function openShell(r) {
 window.openShell = openShell;
 
 // ---------- semantic zoom ----------
-let HOME = "0 -190 1600 1190";   // room at the top for the pioneer portraits
+// The home view is fitted to the free part of the screen, so the map never slides under the
+// title band, the controls column, the legend or the time scrubber.
+let HOME_TOP = -130;                  // top of the content (pioneer portraits) in map units
+let HOME = "0 -190 1600 1190";
+function fitHome() {
+  const W = innerWidth, H = innerHeight, narrow = W < 760;
+  const leg = document.getElementById("legend"), tb = document.getElementById("timebar"), tg = document.getElementById("toggles");
+  const L = narrow ? 8 : (tg ? tg.getBoundingClientRect().width + 36 : 250);
+  const R = W - (narrow || !leg ? 8 : leg.offsetWidth + 34);
+  const T = narrow ? 64 : 92;
+  const B = H - (tb ? tb.offsetHeight + 30 : 20);
+  const C = { x0: 100, x1: 1430, y0: HOME_TOP, y1: 955 }, cw = C.x1 - C.x0, ch = C.y1 - C.y0;
+  const s = Math.max(.05, Math.min((R - L) / cw, (B - T) / ch));
+  const ox = L + ((R - L) - cw * s) / 2, oy = T + ((B - T) - ch * s) / 2;
+  HOME = `${C.x0 - ox / s} ${C.y0 - oy / s} ${W / s} ${H / s}`;
+  return HOME;
+}
 // pioneers.js changes the home view to suit the chosen pioneer layout
-function setHome(v) { HOME = v; if (!S.zoomed) animateViewBox(HOME); }
+function setHome(v) { HOME_TOP = +v.split(" ")[1] + 60; fitHome(); if (!S.zoomed) animateViewBox(HOME); }
+addEventListener("resize", () => { fitHome(); if (!S.zoomed) svg.setAttribute("viewBox", HOME); });
 function domainBox(d) {
   // shift the domain left of centre so the side panel doesn't cover its fields,
   // and leave room below for the scrubber (big domains get a bigger box)
@@ -351,7 +368,7 @@ function animateViewBox(target) {
     if (k < 1) vbAnim = requestAnimationFrame(step);
   })(t0);
 }
-svg.setAttribute("viewBox", HOME);
+fitHome(); svg.setAttribute("viewBox", HOME);
 
 // ---------- the era engine (signature) ----------
 function eraFor(y) { return ERAS.find(e => y >= e.from && y <= e.to) || (y < ERAS[0].from ? ERAS[0] : ERAS[ERAS.length - 1]); }
@@ -430,3 +447,15 @@ document.body.classList.add("people"); // pioneers visible by default
 $("toggle-people").classList.add("on");
 S.people = true;
 setYear(2026);
+
+// ---------- dock-style scrubber: hidden while zoomed, revealed from the bottom edge ----------
+(function () {
+  const hot = document.createElement("div"); hot.id = "tb-hot"; document.body.appendChild(hot);
+  const tb = document.getElementById("timebar"); let t = null;
+  const peek = on => { clearTimeout(t); if (on) document.body.classList.add("tb-peek"); else t = setTimeout(() => document.body.classList.remove("tb-peek"), 700); };
+  hot.addEventListener("mouseenter", () => peek(true));
+  if (tb) { tb.addEventListener("mouseenter", () => peek(true)); tb.addEventListener("mouseleave", () => peek(false)); }
+  hot.addEventListener("mouseleave", () => peek(false));
+  // a click on the map drops the keyboard focus so no focus box lingers
+  svg.addEventListener("mouseup", () => { const a = document.activeElement; if (a && a !== document.body && svg.contains(a)) a.blur(); });
+})();
