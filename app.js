@@ -96,6 +96,7 @@ for (const d of DOMAINS) {
 
 // ---------- layers ----------
 const Lshell  = el("g", {}, svg);
+Lshell.style.display = "none";   // number shells retired from the map
 const Ledge   = el("g", {}, svg);
 const Ldomain = el("g", {}, svg);
 const Lfield  = el("g", {}, svg);
@@ -435,11 +436,6 @@ $("toggle-people").addEventListener("click", e => {
   S.people = !S.people;
   document.body.classList.toggle("people", S.people);
   e.currentTarget.classList.toggle("on", S.people);
-});
-$("toggle-shells").addEventListener("click", e => {
-  const on = Lshell.style.display !== "none";
-  Lshell.style.display = on ? "none" : "";
-  e.currentTarget.classList.toggle("on", !on);
 });
 
 // ---------- boot ----------
