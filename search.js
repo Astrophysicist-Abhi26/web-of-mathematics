@@ -40,7 +40,8 @@ for (const b of BRIDGES) add("Gold bridge", b.label, `${DOMAINS.find(d => d.id =
   () => { closeS(); openEdgeDetail(b, "bridge"); }, 45, b.y);
 for (const c of CONTROVERSIES) add("Dispute ⚡", c.label, `${DOMAINS.find(d => d.id === c.a).name} ↔ ${DOMAINS.find(d => d.id === c.b).name}`, "",
   () => { closeS(); openEdgeDetail(c, "controversy"); }, 355, c.y);
-for (const r of SHELLS.rings) add("Number shell", r.label, r.who, r.blurb + " " + r.eq, () => { closeS(); openShell(r); }, 285, r.y);
+// number shells retired from the map
+if (false) for (const r of SHELLS.rings) add("Number shell", r.label, r.who, r.blurb + " " + r.eq, () => { closeS(); openShell(r); }, 285, r.y);
 if (typeof PEOPLE !== "undefined") for (const p of PEOPLE) {
   const d = DOMAINS.find(q => q.id === p.dom[0]);
   add("Pioneer", p.name, p.role, [p.epitaph, p.legacy, p.life.map(l => l[1] + " " + l[2]).join(" ")].join(" "),
