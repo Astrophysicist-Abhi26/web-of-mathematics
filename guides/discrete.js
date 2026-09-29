@@ -288,4 +288,60 @@ register("additive-combinatorics", {
     { type: "BIOGRAPHY", title: "MacTutor — Endre Szemerédi", note: "Regularity and progressions.", url: MT("Szemeredi") }
   ]
 });
+
+/* ================================================================ GAME THEORY */
+register("game-theory", {
+  kicker: "STRATEGY, VOTES AND FAIR SHARES · ABOUT 25 MIN",
+  hook: "Why can two perfectly rational people both end up worse off?",
+  intro: "Game theory studies decisions whose outcome depends on what others decide. Von Neumann (1928) solved zero-sum games with randomised strategies; Nash (1950) showed every game has an equilibrium where nobody wants to change alone; Arrow (1951) showed no voting rule is perfectly fair. The playable atoms let you run Axelrod's tournament, count one election five ways, watch Braess's paradox, bid in auctions, cut a cake and split parliament seats.",
+  timeline: [[1785, "Condorcet's paradox"], [1928, "von Neumann: minimax"], [1944, "Theory of Games and Economic Behavior"], [1950, "Nash equilibrium; prisoner's dilemma"], [1951, "Arrow's theorem"], [1961, "Vickrey auctions"], [1968, "Braess's paradox"], [1980, "Axelrod's tournaments"], [2016, "envy-free cake cutting for any n"]],
+  labs: [{
+    kicker: "VON NEUMANN 1928", title: "Solve a 2 × 2 zero-sum game",
+    intro: "Row picks a row, Column a column; Row wins the number shown (Column loses it). If there is no saddle point, both should randomise so that the other is indifferent — and the game has a value.",
+    html: `<div class="it-control"><label><span>a (top-left)</span><output data-o="a">2</output></label><input type="range" data-i="a" min="-5" max="5" value="2"></div>
+      <div class="it-control"><label><span>b (top-right)</span><output data-o="b">-3</output></label><input type="range" data-i="b" min="-5" max="5" value="-3"></div>
+      <div class="it-control"><label><span>c (bottom-left)</span><output data-o="c">-1</output></label><input type="range" data-i="c" min="-5" max="5" value="-1"></div>
+      <div class="it-control"><label><span>d (bottom-right)</span><output data-o="d">4</output></label><input type="range" data-i="d" min="-5" max="5" value="4"></div>
+      <div class="gk-out gt-out"></div>`,
+    caveat: "Bigger games are solved by linear programming — von Neumann saw at once that Dantzig's simplex problem (1947) was his minimax theorem in disguise.",
+    init(root) {
+      const I = k => +root.querySelector(`[data-i=${k}]`).value, out = root.querySelector(".gt-out");
+      const run = () => { const [a, b, c, d] = ["a", "b", "c", "d"].map(I); ["a", "b", "c", "d"].forEach(k => root.querySelector(`[data-o=${k}]`).textContent = I(k));
+        const lower = Math.max(Math.min(a, b), Math.min(c, d)), upper = Math.min(Math.max(a, c), Math.max(b, d));
+        if (lower === upper) { out.innerHTML = `saddle point: both play pure strategies\nvalue of the game = <span class="g">${lower}</span>`; return; }
+        const den = a - b - c + d, p = (d - c) / den, q = (d - b) / den, v = (a * d - b * c) / den;
+        out.innerHTML = `no saddle point (maximin ${lower} < minimax ${upper}) — randomise:\nRow plays top with probability <span class="t">${p.toFixed(3)}</span>, Column plays left with probability <span class="t">${q.toFixed(3)}</span>\nvalue of the game = <span class="g">${v.toFixed(3)}</span> per round`; };
+      root.querySelectorAll("input").forEach(i => i.addEventListener("input", run)); run();
+    }
+  }],
+  chapters: [
+    { icon: "🏛", title: "1928–1950 — minimax and equilibrium", who: "John von Neumann 1928 · von Neumann & Morgenstern 1944 · John Nash 1950",
+      lead: "Games became mathematics when strategies became probabilities.",
+      formula: "max_p min_q pᵀAq = min_q max_p pᵀAq",
+      what: "Von Neumann proved every finite two-person zero-sum game has a value. Nash extended the idea of equilibrium to any number of players and any payoffs, proving existence with Kakutani's fixed-point theorem.",
+      how: "In an equilibrium each strategy is a best response to the others; mixing makes the opponent indifferent between their options.",
+      story: "Nash's thesis was 27 pages long; von Neumann reportedly dismissed his idea as 'just a fixed-point theorem'.",
+      today: "Equilibrium thinking runs through economics, evolutionary biology (Maynard Smith's ESS) and the training of AI systems by self-play." },
+    { icon: "🗳", title: "1785–1975 — voting and its impossibilities", who: "Marquis de Condorcet 1785 · Kenneth Arrow 1951 · Allan Gibbard & Mark Satterthwaite 1973–75",
+      lead: "No ranked voting rule can be perfectly fair.",
+      formula: "unanimity + independence of irrelevant alternatives ⇒ dictatorship (for ≥ 3 candidates)",
+      what: "Condorcet found that majorities can cycle. Arrow proved that any rule turning rankings into a group ranking with unanimity and independence must be a dictatorship. Gibbard and Satterthwaite showed every reasonable rule can be manipulated by tactical voting.",
+      how: "Arrow's proof finds a 'decisive' voter by moving candidates up one ballot at a time until the group ranking flips.",
+      story: "Arrow proved his theorem in his PhD thesis while working on a question from the RAND Corporation.",
+      today: "Approval, score and random-ballot methods sidestep the theorems by changing the rules of the game; the voting atom shows five methods disagreeing." },
+    { icon: "🔥", title: "1961 onward — designing the game", who: "William Vickrey 1961 · Roger Myerson 1981 · Lloyd Shapley · Alvin Roth",
+      lead: "Mechanism design runs game theory backwards: choose the rules so that selfish play gives a good outcome.",
+      formula: "second-price sealed bid: bidding your value is a dominant strategy",
+      what: "Vickrey's auction makes honesty optimal; Myerson characterised optimal auctions; Gale and Shapley's stable matching (1962) now assigns doctors to hospitals and students to schools.",
+      how: "Make each player's payment independent of their own report, except through whether they win.",
+      story: "Vickrey learned of his Nobel prize in 1996 and died three days later.",
+      today: "Spectrum auctions, online ad auctions and kidney exchanges are all designed with these tools." }
+  ],
+  challenges: ["Set a = 1, b = −1, c = −1, d = 1 (matching pennies). What mixture and value do you get?", "Find entries where the game has a saddle point.", "In the voting atom, add voters to one ballot until every method agrees."],
+  sources: [
+    { type: "BOOK", title: "Osborne & Rubinstein — A Course in Game Theory", note: "Free from the authors.", url: null },
+    { type: "BOOK", title: "Axelrod — The Evolution of Cooperation (1984)", note: "The tournaments and their lessons.", url: null },
+    { type: "BIOGRAPHY", title: "MacTutor — John von Neumann", note: "Founder of game theory.", url: MT("Von_Neumann") }
+  ]
+});
 })();

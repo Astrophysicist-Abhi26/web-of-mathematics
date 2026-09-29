@@ -19,7 +19,7 @@ Or preview locally: `python3 -m http.server` then open http://localhost:8000
 
 - **8 domain nebulae** — Foundations, Algebra, Analysis, Geometry & Topology, Number Theory,
   Discrete & Combinatorics, Probability, Order & Universal Algebra. Click one to zoom into its
-  **53 fields**; click a field for its **248 topics** (discoverer · year · definition), its landmark
+  **54 fields**; click a field for its **256 topics** (discoverer · year · definition), its landmark
   theorems, its canonical textbook and every bridge that touches it. New in this edition: Type
   Theory & Formal Proof, Fractal Geometry, Geometric Group Theory, Computational Number Theory &
   Cryptography, Additive Combinatorics, Statistics & Inference, Random Matrix Theory, and The Langlands Program (from Weil's Rosetta stone to the 2024 proof of geometric Langlands).
@@ -64,7 +64,7 @@ supernova — and the **✦ crack style** picker (bottom-left) forces one everyw
 
 ## Interactive field guides (`guide-kit.js`, `guides/*.js`)
 
-Every one of the 53 fields opens with a guide in the Web of Computation format: a timeline, a
+Every one of the 54 fields opens with a guide in the Web of Computation format: a timeline, a
 hands-on lab (sometimes two), the story in movements with WHAT / HOW / STORY / TODAY tabs,
 things to try, the field's topics with their "deeper" drawers, and landmark sources. One file
 per domain registers its guides with `GuideKit.register("fieldId", {...})`:
@@ -101,7 +101,7 @@ All content lives in data files — no code changes needed:
 ## Playable atoms
 
 Open via **⚛ playable atoms** (grouped by domain), or from the gold "⚛ play" buttons inside the
-matching fields' panels. 64 atoms; each registers itself with `registerAtom({...})`
+matching fields' panels. 71 atoms; each registers itself with `registerAtom({...})`
 (`atoms.js` has the recipe), in one file per continent:
 
 | Domain | Atoms |
@@ -112,7 +112,7 @@ matching fields' panels. 64 atoms; each registers itself with `registerAtom({...
 | Geometry (`atoms/*.html`) | **Poincaré disk** · **Structure ladder** · **Torus · Möbius · Klein** · **Parallel transport** · **Differential Geometry Lab** — the full 13-module course from DG Lab v2 (11 surfaces, curvature heat maps, metric probe, geodesics, the glass Klein bottle; Three.js vendored in `atoms/vendor/`) · in `atoms-geometry.js`: **Platonic solids** with duals · **Tesseract & 4D solids** (6 rotation planes) · **Morley's miracle** · **Apollonian gasket** (integer curvatures) · **Pythagoras: four proofs** · **Penrose tiling** by deflation · **Sunflower & the golden angle** · in `atoms-topology.js`: **Hairy ball theorem** (comb it; indices sum to χ) · **Three utilities on a torus** · **Coffee mug = doughnut** (WebGL ray-marched) · **Möbius strip cutter** |
 | Knots (`atoms-knots.js`, `knot-engine.js`) | **Knot & link gallery** — 21 knots and links in 3D (trefoil to 10₁₂₄, granny vs square, Hopf, Whitehead, Borromean, torus and Lissajous families) with crossings, writhe, linking numbers, Jones and Alexander polynomials, determinant and 3-colourings computed live from the diagram · **Braid builder** — write a braid word, see its closure in 3D · **Knot tricolouring** — colour the arcs yourself, or let linear algebra mod 3 find one |
 | Number Theory (`atoms-number.js`) | **Primes** — Eratosthenes' sieve, Ulam spiral, π(x) vs x/ln x vs Li(x) · **Euclid's algorithm** as squares cut from a rectangle, with Bézout · **Elliptic curve group law** over ℝ and over 𝔽ₚ (Hasse bound) · in `atoms-numplay.js`: **Collatz 3n + 1** · **Water jugs & gcd** · **Caesar & Vigenère cracker** (frequency analysis, index of coincidence) · **RSA toy** (Miller–Rabin keys, Pollard-rho attack) |
-| Discrete (`atoms-discrete.js`) | **Königsberg bridges** — walk it yourself, Euler paths · **Ramsey party** — R(3,3) = 6 · **Pascal mod m** — Sierpiński appears · **Partitions** as Young diagrams, distinct = odd · in `atoms-puzzles.js`: **Tower of Hanoi** · **Nim & the XOR trick** · **15 puzzle & parity** · **Game of Life** · **Four-colour a map** |
+| Discrete (`atoms-discrete.js`) | **Königsberg bridges** — walk it yourself, Euler paths · **Ramsey party** — R(3,3) = 6 · **Pascal mod m** — Sierpiński appears · **Partitions** as Young diagrams, distinct = odd · in `atoms-puzzles.js`: **Tower of Hanoi** · **Nim & the XOR trick** · **15 puzzle & parity** · **Game of Life** · **Four-colour a map** · in `atoms-games.js`: **Prisoner's dilemma tournament** (Axelrod, replicator dynamics) · **Voting methods & Arrow** · **Braess's paradox** · **Auctions: Vickrey vs first price** · **Fair cake cutting** · **Apportionment & the Alabama paradox** |
 | Probability (`atoms-probability.js`) | **Chance lab** — Galton board, sums of dice, law of large numbers, Monty Hall · **Random walks** — √t spreading, Pólya · **Buffon's needle** — π from sticks · in `atoms-chance.js`: **Birthday paradox** · **Bayes' theorem** (Beta-prior coin, base-rate medical test) · **Simpson's paradox** (1986 kidney-stone data) · **Arctic circle** (random domino tilings by shuffling) |
 | Order (`atoms-foundations.js`) | **Lattices** — divisors (gcd/lcm), subsets, M₃ and N₅, distributivity check |
 | Algebra, cont. (`atoms-topology.js`) | **Rubik's cube group** — face turns, the order of any move sequence (R U = 105, R U2 D' B D' = 1260), replay until solved |
