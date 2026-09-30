@@ -327,6 +327,7 @@ function fitHome() {
 }
 // pioneers.js changes the home view to suit the chosen pioneer layout
 function setHome(v) { HOME_TOP = +v.split(" ")[1] + 60; fitHome(); if (!S.zoomed) animateViewBox(HOME); }
+window.homeBox = () => { fitHome(); return HOME.split(" ").map(Number); };
 addEventListener("resize", () => { fitHome(); if (!S.zoomed) svg.setAttribute("viewBox", HOME); });
 function domainBox(d) {
   // shift the domain left of centre so the side panel doesn't cover its fields,
@@ -454,4 +455,16 @@ setYear(2026);
   hot.addEventListener("mouseleave", () => peek(false));
   // a click on the map drops the keyboard focus so no focus box lingers
   svg.addEventListener("mouseup", () => { const a = document.activeElement; if (a && a !== document.body && svg.contains(a)) a.blur(); });
+})();
+
+// ---------- a one-time welcome ----------
+(function () {
+  const w = document.getElementById("welcome"); if (!w) return;
+  let seen = false; try { seen = localStorage.getItem("wom-welcomed") === "1"; } catch (e) {}
+  if (seen) return;
+  w.hidden = false;
+  const close = () => { if (w.hidden) return; try { localStorage.setItem("wom-welcomed", "1"); } catch (e) {} w.classList.add("out"); setTimeout(() => { w.hidden = true; w.classList.remove("out"); }, 450); };
+  document.getElementById("wc-go").addEventListener("click", close);
+  w.addEventListener("click", e => { if (e.target === w) close(); });
+  addEventListener("keydown", e => { if (e.key === "Escape" || e.key === "Enter") close(); });
 })();

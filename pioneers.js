@@ -160,9 +160,7 @@ const LAYOUTS = {
 };
 LAYOUTS.home.people = Object.values(HOMES).flatMap(h => h.ids);
 LAYOUTS.home.hint = `${LAYOUTS.home.people.length} people, each next to the domain they shaped.`;
-let LAYOUT = "row";
-try { LAYOUT = localStorage.getItem("wom-pioneer-layout") || "row"; } catch (e) {}
-if (!LAYOUTS[LAYOUT]) LAYOUT = "row";
+let LAYOUT = "sky";   // the constellation is the one fixed layout
 let FEATURED = [];
 
 const htmlLayer = document.createElement("div");
@@ -202,13 +200,13 @@ const peopleOf = ids => ids.map(id => byId[id]).filter(Boolean).sort((a, b) => a
 
 const BUILD = {
   row() {
-    const list = peopleOf(TWELVE), X0 = 74, X1 = 1316;
+    const list = peopleOf(TWELVE), [bx, , bw] = window.homeBox ? homeBox() : [0, 0, 1600], X0 = Math.min(74, bx + 70), X1 = Math.max(1316, bx + bw - 70);
     list.forEach((p, i) => svgPerson(p, X0 + i * (X1 - X0) / (list.length - 1), -20, 40));
   },
   sky() {
-    const list = peopleOf(SIXTEEN), pos = {};
+    const list = peopleOf(SIXTEEN), pos = {}, [bx, , bw] = window.homeBox ? homeBox() : [0, 0, 1600], X0 = Math.min(80, bx + 80), X1 = Math.max(1380, bx + bw - 80);
     list.forEach((p, i) => {
-      const x = 80 + i * (1300 / (list.length - 1));
+      const x = X0 + i * ((X1 - X0) / (list.length - 1));
       const y = -28 + 50 * Math.sin(i * 1.9 + .6) + 12 * Math.cos(i * 3.3);   // stays below the title band
       pos[p.id] = [x, y];
     });
@@ -264,6 +262,7 @@ function applyLayout(name, animate) {
   LAYOUT = name; clearLayout();
   const L = LAYOUTS[name];
   FEATURED = L.people.slice();
+  if (window.setHome) setHome(L.home);   // fit the view first, so layouts can use the whole width
   BUILD[name]();
   document.body.dataset.pioLayout = name;
   if (window.setHome) setHome(L.home); 
@@ -272,10 +271,11 @@ function applyLayout(name, animate) {
 }
 applyLayout(LAYOUT);
 probePhotos();
-addEventListener("resize", () => { if (LAYOUT === "ribbon") applyLayout("ribbon"); });
+let pioResize = null;
+addEventListener("resize", () => { clearTimeout(pioResize); pioResize = setTimeout(() => { if (["ribbon", "sky", "row"].includes(LAYOUT)) applyLayout(LAYOUT); }, 180); });
 
-// the picker, next to the crack-style picker
-{
+// (the layout picker was retired: the constellation is fixed)
+if (false) {
   const toggles = document.getElementById("toggles");
   if (toggles) {
     const lab = document.createElement("label");

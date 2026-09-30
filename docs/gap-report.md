@@ -68,7 +68,7 @@ Keyword matching is a first pass, not a verdict: synonyms are missed and passing
 
 ## Summary
 
-**323 covered · 155 mentioned · 426 missing** (of 904)
+**332 covered · 159 mentioned · 413 missing** (of 904)
 
 | # | Pillar | ✅ | 🟡 | ⬜ |
 |---|---|---|---|---|
@@ -77,22 +77,22 @@ Keyword matching is a first pass, not a verdict: synonyms are missed and passing
 | 3 | Algebra | 33 | 14 | 25 |
 | 4 | Real Analysis | 32 | 25 | 32 |
 | 5 | Complex Analysis | 13 | 3 | 7 |
-| 6 | Geometry | 19 | 16 | 64 |
+| 6 | Geometry | 20 | 18 | 61 |
 | 7 | Topology | 35 | 8 | 19 |
 | 8 | Differential Geometry | 13 | 11 | 19 |
 | 9 | Combinatorics | 11 | 9 | 19 |
 | 10 | Graph Theory & Networks | 11 | 2 | 16 |
 | 11 | Puzzles & Recreational Games | 2 | 3 | 20 |
 | 12 | Probability | 13 | 5 | 23 |
-| 13 | Statistics — Frequentist & Bayesian | 9 | 5 | 24 |
-| 14 | Differential Equations | 9 | 5 | 18 |
+| 13 | Statistics — Frequentist & Bayesian | 12 | 7 | 19 |
+| 14 | Differential Equations | 13 | 5 | 14 |
 | 15 | Dynamical Systems, Chaos & Fractals | 15 | 4 | 16 |
 | 16 | Computation — Algorithms & Complexity | 4 | 1 | 15 |
 | 17 | Information, Coding & Cryptography | 7 | 5 | 13 |
 | 18 | Game Theory & Social Choice | 12 | 1 | 9 |
 | 19 | Optimization & Numerical Analysis | 8 | 0 | 12 |
 | 20 | Mathematical Physics | 5 | 6 | 5 |
-| 21 | Mathematics in the World | 5 | 6 | 12 |
+| 21 | Mathematics in the World | 6 | 6 | 11 |
 
 ## 1. Foundations — Logic, Sets, Infinity & Computability
 
@@ -537,7 +537,7 @@ Keyword matching is a first pass, not a verdict: synonyms are missed and passing
 
 ## 6. Geometry
 
-19 covered · 16 mentioned · 64 missing
+20 covered · 18 mentioned · 61 missing
 
 
 **6.1 Euclidean plane geometry**
@@ -597,7 +597,7 @@ Keyword matching is a first pass, not a verdict: synonyms are missed and passing
 - ⬜ 🔷 Reuleaux triangle
 - ⬜ 🏆 Barbier & Blaschke–Lebesgue
 - ⬜ 🔷 Sphericon & oloid
-- ⬜ 🔷 Buckyball
+- ✅ 🔷 Buckyball — *playable atom* (`atoms-geometry2.js`)
 - ⬜ 🔷 Szilassi & Császár polyhedra
 
 **6.3 Non-Euclidean geometry**
@@ -632,8 +632,8 @@ Keyword matching is a first pass, not a verdict: synonyms are missed and passing
 **6.5 Tilings & discrete geometry**
 
 - ⬜ 🔷 Regular & Archimedean tilings
-- ⬜ 📜 The 15 pentagon tilings
-- ⬜ 🔷 Penrose tilings
+- 🟡 📜 The 15 pentagon tilings — *playable atom* (`atoms-de.js`)
+- 🟡 🔷 Penrose tilings — *playable atom* (`atoms-de.js`)
 - ⬜ 🔷📜 The hat & the spectre (2023)
 - ⬜ 👾 Wang tiles
 - ⬜ 🔷 Rep-tiles
@@ -964,18 +964,18 @@ Keyword matching is a first pass, not a verdict: synonyms are missed and passing
 
 ## 13. Statistics — Frequentist & Bayesian
 
-9 covered · 5 mentioned · 24 missing
+12 covered · 7 mentioned · 19 missing
 
 
 **13.1 Seeing data**
 
 - ⬜ 🔷 Mean vs median
-- ⬜ ⚡ Anscombe's quartet & the Datasaurus
+- 🟡 ⚡ Anscombe's quartet & the Datasaurus — *playable atom* (`atoms-stats.js`)
 - ✅ ⚡ Simpson's paradox — *playable atom* (`atoms-chance.js`)
 - ⬜ ⚡ Correlation ≠ causation
-- ⬜ ⚡ Berkson's paradox
+- ✅ ⚡ Berkson's paradox — *playable atom* (`atoms-stats.js`)
 - ✅ ⚡ Regression to the mean — *topic drawer* (`topics-data.js`)
-- ⬜ ⚡ Survivorship bias
+- 🟡 ⚡ Survivorship bias — *playable atom* (`atoms-stats.js`)
 - ⬜ ⚡ Small samples, extreme rates
 - ⬜ 📜 Nightingale's rose, Minard's march, Snow's map
 
@@ -985,8 +985,8 @@ Keyword matching is a first pass, not a verdict: synonyms are missed and passing
 - ⬜ 📜 Literary Digest poll (1936)
 - 🟡 🔷 p-values & the replication crisis — *map topic/field* (`data.js`)
 - ✅ 📜 Student's t — *field guide* (`guides/probability.js`)
-- ⬜ 🧩 German tank problem
-- ⬜ 🔷 Capture–recapture
+- ✅ 🧩 German tank problem — *playable atom* (`atoms-stats.js`)
+- ✅ 🔷 Capture–recapture — *playable atom* (`atoms-stats.js`)
 - 🟡 📜 Least squares & Ceres (1801) — *topic drawer* (`topics-data.js`)
 - ✅ 🔷 Bootstrap (1979) — *field guide* (`guides/probability.js`)
 - ⬜ ⚡ Stein's paradox
@@ -1016,7 +1016,7 @@ Keyword matching is a first pass, not a verdict: synonyms are missed and passing
 
 ## 14. Differential Equations
 
-9 covered · 5 mentioned · 18 missing
+13 covered · 5 mentioned · 14 missing
 
 
 **14.1 Ordinary differential equations**
@@ -1026,7 +1026,7 @@ Keyword matching is a first pass, not a verdict: synonyms are missed and passing
 - ✅ 🔷 Lotka–Volterra — *playable atom* (`atoms-analysis.js`)
 - 🟡 🔷 SIR epidemic model — *playable atom* (`atoms-world.js`)
 - ⬜ 🔷 Harmonic oscillator & resonance
-- ⬜ 📜 Tacoma Narrows (1940)
+- ✅ 📜 Tacoma Narrows (1940) — *playable atom* (`atoms-de.js`)
 - 🟡 ⚡ Pendulum period — *topic drawer* (`topics-data.js`)
 - ✅ 🏆 Three-body problem — *pioneer bio* (`pioneers-data.js`)
 - ⬜ ⚡ Norton's dome
@@ -1035,7 +1035,7 @@ Keyword matching is a first pass, not a verdict: synonyms are missed and passing
 - ⬜ 🔷 Tsiolkovsky rocket equation
 - ⬜ 🔷 Hodgkin–Huxley model
 - ⬜ 🔷 Belousov–Zhabotinsky reaction
-- ⬜ 🔷 Kuramoto model
+- ✅ 🔷 Kuramoto model — *playable atom* (`atoms-de.js`)
 
 **14.2 Partial differential equations**
 
@@ -1047,10 +1047,10 @@ Keyword matching is a first pass, not a verdict: synonyms are missed and passing
 - ✅ ❓ Navier–Stokes — *field guide* (`guides/analysis.js`)
 - ⬜ 🔷 Maxwell's equations
 - 🟡 ⚡ Black–Scholes is the heat equation — *topic drawer* (`topics-data.js`)
-- ⬜ 🔷📜 Solitons
+- ✅ 🔷📜 Solitons — *playable atom* (`atoms-de.js`)
 - ✅ 🔷 Turing patterns (1952) — *playable atom* (`atoms-world.js`)
 - ⬜ 🔷 Traffic waves
-- ⬜ 🔷📜 Chladni figures
+- ✅ 🔷📜 Chladni figures — *playable atom* (`atoms-de.js`)
 - ✅ ⚡ Can you hear the shape of a drum? — *topic drawer* (`topics-data.js`)
 - ⬜ ⚡ Kelvin wake
 - ⬜ ⚡ d'Alembert's paradox
@@ -1245,7 +1245,7 @@ Keyword matching is a first pass, not a verdict: synonyms are missed and passing
 
 ## 21. Mathematics in the World
 
-5 covered · 6 mentioned · 12 missing
+6 covered · 6 mentioned · 11 missing
 
 
 **21.1 Life**
@@ -1275,7 +1275,7 @@ Keyword matching is a first pass, not a verdict: synonyms are missed and passing
 - ⬜ 🔷 Perspective, Escher, Dürer, Dalí
 - ⬜ 🔷 Islamic girih tiles
 - 🟡 🔷 Gaudí's hanging-chain models — *playable atom* (`atoms-world.js`)
-- ⬜ 🔷 Geodesic domes
+- ✅ 🔷 Geodesic domes — *playable atom* (`atoms-geometry2.js`)
 - ⬜ 🔷 Knitting & crochet
 
 **21.5 Everyday**

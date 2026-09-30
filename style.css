@@ -241,7 +241,7 @@ body.people .pioneer { opacity: 1; pointer-events: auto; }
   transition: opacity .35s ease, transform .35s ease;
   font-family: "IBM Plex Mono", monospace; font-size: 0.66rem; color: var(--dim);
   background: var(--glass); border: 1px solid rgba(255,255,255,0.1);
-  border-radius: 12px; padding: 0.7rem 0.9rem; line-height: 1.9;
+  border-radius: 14px; padding: 0.85rem 1rem; line-height: 1.75; width: 15.5rem;
   backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
 }
 #legend b { color: var(--ink); font-weight: 500; }
@@ -422,3 +422,28 @@ body.zoomed #toggles, body.topic-focus #toggles { opacity: 0; transform: transla
 @keyframes wom-fade { from { opacity: 0; } to { opacity: 1; } }
 @keyframes wom-rise { from { opacity: 0; transform: translateY(18px) scale(.985); } to { opacity: 1; transform: none; } }
 @media (prefers-reduced-motion: reduce) { #atoms, #atoms-box, .atom-pane { animation: none !important; } }
+
+/* ---------- guide card, welcome and entrance ---------- */
+#legend .lg-h { display: block; font-family: "Fraunces", Georgia, serif; font-size: .9rem; color: var(--ink); margin-bottom: .2rem; }
+#legend .lg-row { display: grid; grid-template-columns: 1fr 1fr; gap: .4rem; }
+#legend .lg-sep { height: 1px; background: rgba(255,255,255,.1); margin: .45rem 0; }
+#legend .lg-stats { color: #cfc9e4; } #legend .lg-stats b { color: var(--gold); }
+#legend .lg-tips { color: #b3acd0; font-size: .63rem; line-height: 1.85; }
+#welcome { position: fixed; inset: 0; z-index: 60; display: grid; place-items: center; background: rgba(8,3,16,.55); backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px); animation: wom-fade .5s ease both; }
+#welcome[hidden] { display: none; }
+#welcome.out { animation: wom-out .45s ease both; }
+@keyframes wom-out { to { opacity: 0; } }
+.wc-card { width: min(560px, 92vw); background: linear-gradient(180deg, rgba(44,20,78,.92), rgba(16,8,32,.94)); border: 1px solid rgba(245,196,81,.35); border-radius: 20px; padding: 1.6rem 1.8rem 1.4rem; box-shadow: 0 30px 80px rgba(0,0,0,.6), 0 0 60px rgba(245,196,81,.08); animation: wom-rise .6s cubic-bezier(.2,.7,.2,1) both; }
+.wc-k { font: 500 .66rem "IBM Plex Mono", monospace; letter-spacing: .18em; text-transform: uppercase; color: var(--gold); margin: 0; }
+.wc-card h2 { font-family: "Fraunces", Georgia, serif; font-size: 2rem; margin: .2rem 0 .6rem; color: var(--ink); }
+.wc-card h2 em { font-style: normal; color: var(--gold); }
+.wc-card p { font-family: "Spectral", Georgia, serif; font-size: 1.02rem; line-height: 1.55; color: #ddd7ee; margin: 0 0 .8rem; }
+.wc-card ul { margin: 0 0 1.1rem; padding-left: 1.1rem; color: #cfc9e4; font-family: "Spectral", Georgia, serif; line-height: 1.6; }
+.wc-card li b { color: #fff; }
+#wc-go { font: 600 .85rem "IBM Plex Mono", monospace; color: #120b18; background: var(--gold); border: 0; border-radius: 999px; padding: .65rem 1.3rem; cursor: pointer; box-shadow: 0 0 24px rgba(245,196,81,.45); }
+#wc-go:hover { filter: brightness(1.08); }
+/* the sky arrives gently */
+#sky { animation: wom-sky 1.4s cubic-bezier(.2,.7,.2,1) both; }
+@keyframes wom-sky { from { opacity: 0; transform: scale(1.04); } to { opacity: 1; transform: none; } }
+#toggles, #timebar, #legend, header { animation: wom-fade 1s .5s ease backwards; }
+@media (prefers-reduced-motion: reduce) { #sky, #toggles, #timebar, #legend, header, #welcome, .wc-card { animation: none !important; } }
