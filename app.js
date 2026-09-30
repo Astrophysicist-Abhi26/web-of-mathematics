@@ -457,13 +457,12 @@ setYear(2026);
   svg.addEventListener("mouseup", () => { const a = document.activeElement; if (a && a !== document.body && svg.contains(a)) a.blur(); });
 })();
 
-// ---------- a one-time welcome ----------
+// ---------- the welcome card: shown on every visit and every reload ----------
 (function () {
   const w = document.getElementById("welcome"); if (!w) return;
-  let seen = false; try { seen = localStorage.getItem("wom-welcomed") === "1"; } catch (e) {}
-  if (seen) return;
+  try { localStorage.removeItem("wom-welcomed"); } catch (e) {}
   w.hidden = false;
-  const close = () => { if (w.hidden) return; try { localStorage.setItem("wom-welcomed", "1"); } catch (e) {} w.classList.add("out"); setTimeout(() => { w.hidden = true; w.classList.remove("out"); }, 450); };
+  const close = () => { if (w.hidden) return; w.classList.add("out"); setTimeout(() => { w.hidden = true; w.classList.remove("out"); }, 450); };
   document.getElementById("wc-go").addEventListener("click", close);
   w.addEventListener("click", e => { if (e.target === w) close(); });
   addEventListener("keydown", e => { if (e.key === "Escape" || e.key === "Enter") close(); });
