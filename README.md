@@ -101,7 +101,7 @@ All content lives in data files — no code changes needed:
 ## Playable atoms
 
 Open via **⚛ playable atoms** (grouped by domain), or from the gold "⚛ play" buttons inside the
-matching fields' panels. 83 atoms; each registers itself with `registerAtom({...})`
+matching fields' panels. 91 atoms; each registers itself with `registerAtom({...})`
 (`atoms.js` has the recipe), in one file per continent:
 
 | Domain | Atoms |
@@ -115,5 +115,8 @@ matching fields' panels. 83 atoms; each registers itself with `registerAtom({...
 | Discrete (`atoms-discrete.js`) | **Königsberg bridges** — walk it yourself, Euler paths · **Ramsey party** — R(3,3) = 6 · **Pascal mod m** — Sierpiński appears · **Partitions** as Young diagrams, distinct = odd · in `atoms-puzzles.js`: **Tower of Hanoi** · **Nim & the XOR trick** · **15 puzzle & parity** · **Game of Life** · **Four-colour a map** · in `atoms-games.js`: **Prisoner's dilemma tournament** (Axelrod, replicator dynamics) · **Voting methods & Arrow** · **Braess's paradox** · **Auctions: Vickrey vs first price** · **Fair cake cutting** · **Apportionment & the Alabama paradox** |
 | Probability (`atoms-probability.js`) | **Chance lab** — Galton board, sums of dice, law of large numbers, Monty Hall · **Random walks** — √t spreading, Pólya · **Buffon's needle** — π from sticks · in `atoms-chance.js`: **Birthday paradox** · **Bayes' theorem** (Beta-prior coin, base-rate medical test) · **Simpson's paradox** (1986 kidney-stone data) · **Arctic circle** (random domino tilings by shuffling) |
 | In the world (`atoms-world.js`) | **Pythagorean comma & equal temperament** (with sound) · **Euclidean rhythms** (with sound) · **Hanging chains & Gaudí's arches** (catenary fit, inverted arch) · **Epidemics: the SIR model** · **Turing patterns** (Gray–Scott) · **Kelly betting** · **Fat tails** · **PageRank** · **The date of Easter** |
+| Statistics (`atoms-stats.js`) | **Anscombe's quartet** · **German tanks & fish in a lake** · **Selection bias: Berkson & Wald** · **Overfitting** |
+| Differential equations & patterns (`atoms-de.js`) | **Driven oscillator & resonance** · **Synchrony: the Kuramoto model** · **Chladni figures** · **Solitons** (exact KdV two-soliton) · **Islamic star patterns** (Hankin's method) |
+| Also | **Banach–Tarski paradox** (`atoms-paradox.js`) · **Geodesic dome** · **Perspective & vanishing points** (`atoms-geometry2.js`) |
 | Order (`atoms-foundations.js`) | **Lattices** — divisors (gcd/lcm), subsets, M₃ and N₅, distributivity check |
 | Algebra, cont. (`atoms-topology.js`) | **Rubik's cube group** — face turns, the order of any move sequence (R U = 105, R U2 D' B D' = 1260), replay until solved |
