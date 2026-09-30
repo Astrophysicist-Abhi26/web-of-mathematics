@@ -68,7 +68,7 @@ Keyword matching is a first pass, not a verdict: synonyms are missed and passing
 
 ## Summary
 
-**303 covered · 153 mentioned · 448 missing** (of 904)
+**316 covered · 152 mentioned · 436 missing** (of 904)
 
 | # | Pillar | ✅ | 🟡 | ⬜ |
 |---|---|---|---|---|
@@ -81,16 +81,16 @@ Keyword matching is a first pass, not a verdict: synonyms are missed and passing
 | 7 | Topology | 35 | 8 | 19 |
 | 8 | Differential Geometry | 13 | 11 | 19 |
 | 9 | Combinatorics | 11 | 9 | 19 |
-| 10 | Graph Theory & Networks | 10 | 2 | 17 |
-| 11 | Puzzles & Recreational Games | 2 | 2 | 21 |
+| 10 | Graph Theory & Networks | 11 | 2 | 16 |
+| 11 | Puzzles & Recreational Games | 2 | 3 | 20 |
 | 12 | Probability | 12 | 5 | 24 |
 | 13 | Statistics — Frequentist & Bayesian | 9 | 5 | 24 |
 | 14 | Differential Equations | 8 | 4 | 20 |
 | 15 | Dynamical Systems, Chaos & Fractals | 15 | 4 | 16 |
 | 16 | Computation — Algorithms & Complexity | 4 | 1 | 15 |
 | 17 | Information, Coding & Cryptography | 7 | 5 | 13 |
-| 18 | Game Theory & Social Choice | 1 | 2 | 19 |
-| 19 | Optimization & Numerical Analysis | 7 | 1 | 12 |
+| 18 | Game Theory & Social Choice | 12 | 1 | 9 |
+| 19 | Optimization & Numerical Analysis | 8 | 0 | 12 |
 | 20 | Mathematical Physics | 5 | 6 | 5 |
 | 21 | Mathematics in the World | 1 | 4 | 18 |
 
@@ -854,7 +854,7 @@ Keyword matching is a first pass, not a verdict: synonyms are missed and passing
 
 ## 10. Graph Theory & Networks
 
-10 covered · 2 mentioned · 17 missing
+11 covered · 2 mentioned · 16 missing
 
 - 🟡 📜 Seven Bridges of Königsberg (1736) — *map topic/field* (`data.js`)
 - ⬜ 🏆 Handshake lemma
@@ -884,17 +884,17 @@ Keyword matching is a first pass, not a verdict: synonyms are missed and passing
 - ⬜ 📜 Turán's brick factory
 - ⬜ ❓ Reconstruction conjecture
 - ⬜ ❓ Graceful tree & Hadwiger conjectures
-- ⬜ ⚡ Braess's paradox
+- ✅ ⚡ Braess's paradox — *map topic/field* (`data.js`)
 
 ## 11. Puzzles & Recreational Games
 
-2 covered · 2 mentioned · 21 missing
+2 covered · 3 mentioned · 20 missing
 
 - 🟡 🧩 Nim — *playable atom* (`atoms-puzzles.js`)
 - ⬜ 🧩 Chomp
 - ⬜ 🧩 Hex
 - ⬜ 🧩 Tic-tac-toe
-- ⬜ 🧩 Solved games
+- 🟡 🧩 Solved games — *field guide* (`guides/discrete.js`)
 - ✅ 🧩 Chess — *pioneer bio* (`pioneers-data.js`)
 - ⬜ 🧩 Wheat and chessboard
 - ⬜ 🧩 Go
@@ -1172,22 +1172,22 @@ Keyword matching is a first pass, not a verdict: synonyms are missed and passing
 
 ## 18. Game Theory & Social Choice
 
-1 covered · 2 mentioned · 19 missing
+12 covered · 1 mentioned · 9 missing
 
-- ⬜ 🔷 Prisoner's dilemma
-- ⬜ 📜 Axelrod's tournament (1980)
-- ✅ 🏆 Nash equilibrium — *pioneer bio* (`pioneers-data.js`)
-- 🟡 🏆 Von Neumann's minimax theorem (1928) — *pioneer bio* (`pioneers-data.js`)
+- ✅ 🔷 Prisoner's dilemma — *map topic/field* (`data.js`)
+- ✅ 📜 Axelrod's tournament (1980) — *field guide* (`guides/discrete.js`)
+- ✅ 🏆 Nash equilibrium — *map topic/field* (`data.js`)
+- ✅ 🏆 Von Neumann's minimax theorem (1928) — *map topic/field* (`data.js`)
 - ⬜ 🔷 Chicken, stag hunt, tragedy of the commons
-- ⬜ ⚡ Braess's paradox
-- ⬜ 🔷 Vickrey auctions
-- ⬜ 🧩 Fair cake cutting
-- ⬜ ⚡ Condorcet paradox
-- ⬜ 🏆 Arrow's impossibility theorem (1951)
-- ⬜ 🏆 Gibbard–Satterthwaite theorem
-- ⬜ 🔷 Voting methods
+- ✅ ⚡ Braess's paradox — *map topic/field* (`data.js`)
+- ✅ 🔷 Vickrey auctions — *field guide* (`guides/discrete.js`)
+- ✅ 🧩 Fair cake cutting — *playable atom* (`atoms-games.js`)
+- ✅ ⚡ Condorcet paradox — *map topic/field* (`data.js`)
+- ✅ 🏆 Arrow's impossibility theorem (1951) — *map topic/field* (`data.js`)
+- ✅ 🏆 Gibbard–Satterthwaite theorem — *map topic/field* (`data.js`)
+- ✅ 🔷 Voting methods — *playable atom* (`atoms-games.js`)
 - ⬜ 🔷 Gerrymandering math
-- ⬜ ⚡ Alabama paradox (1880)
+- ✅ ⚡ Alabama paradox (1880) — *playable atom* (`atoms-games.js`)
 - 🟡 🔷 Shapley value — *topic drawer* (`topics-data.js`)
 - ⬜ 🔷 Evolutionary game theory
 - ⬜ 🧩 Keynesian beauty contest
@@ -1199,11 +1199,11 @@ Keyword matching is a first pass, not a verdict: synonyms are missed and passing
 
 ## 19. Optimization & Numerical Analysis
 
-7 covered · 1 mentioned · 12 missing
+8 covered · 0 mentioned · 12 missing
 
-- ✅ 📜 Linear programming — *topic drawer* (`topics-data.js`)
+- ✅ 📜 Linear programming — *map topic/field* (`data.js`)
 - ⬜ 👾 Klee–Minty cube
-- 🟡 🏆 LP duality — *map topic/field* (`data.js`)
+- ✅ 🏆 LP duality — *map topic/field* (`data.js`)
 - ✅ 🔷 Optimal transport — *field guide* (`guides/analysis.js`)
 - ⬜ 🔷 Gradient descent
 - ⬜ 🔷 Convexity
