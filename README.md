@@ -101,7 +101,7 @@ All content lives in data files — no code changes needed:
 ## Playable atoms
 
 Open via **⚛ playable atoms** (grouped by domain), or from the gold "⚛ play" buttons inside the
-matching fields' panels. 80 atoms; each registers itself with `registerAtom({...})`
+matching fields' panels. 81 atoms; each registers itself with `registerAtom({...})`
 (`atoms.js` has the recipe), in one file per continent:
 
 | Domain | Atoms |
