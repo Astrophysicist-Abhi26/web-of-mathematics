@@ -68,7 +68,7 @@ Keyword matching is a first pass, not a verdict: synonyms are missed and passing
 
 ## Summary
 
-**332 covered · 159 mentioned · 413 missing** (of 904)
+**338 covered · 161 mentioned · 405 missing** (of 904)
 
 | # | Pillar | ✅ | 🟡 | ⬜ |
 |---|---|---|---|---|
@@ -82,12 +82,12 @@ Keyword matching is a first pass, not a verdict: synonyms are missed and passing
 | 8 | Differential Geometry | 13 | 11 | 19 |
 | 9 | Combinatorics | 11 | 9 | 19 |
 | 10 | Graph Theory & Networks | 11 | 2 | 16 |
-| 11 | Puzzles & Recreational Games | 2 | 3 | 20 |
+| 11 | Puzzles & Recreational Games | 6 | 5 | 14 |
 | 12 | Probability | 13 | 5 | 23 |
 | 13 | Statistics — Frequentist & Bayesian | 12 | 7 | 19 |
 | 14 | Differential Equations | 13 | 5 | 14 |
 | 15 | Dynamical Systems, Chaos & Fractals | 15 | 4 | 16 |
-| 16 | Computation — Algorithms & Complexity | 4 | 1 | 15 |
+| 16 | Computation — Algorithms & Complexity | 6 | 1 | 13 |
 | 17 | Information, Coding & Cryptography | 7 | 5 | 13 |
 | 18 | Game Theory & Social Choice | 12 | 1 | 9 |
 | 19 | Optimization & Numerical Analysis | 8 | 0 | 12 |
@@ -888,29 +888,29 @@ Keyword matching is a first pass, not a verdict: synonyms are missed and passing
 
 ## 11. Puzzles & Recreational Games
 
-2 covered · 3 mentioned · 20 missing
+6 covered · 5 mentioned · 14 missing
 
 - 🟡 🧩 Nim — *playable atom* (`atoms-puzzles.js`)
 - ⬜ 🧩 Chomp
-- ⬜ 🧩 Hex
-- ⬜ 🧩 Tic-tac-toe
+- 🟡 🧩 Hex — *playable atom* (`atoms-puzzles2.js`)
+- ✅ 🧩 Tic-tac-toe — *playable atom* (`atoms-puzzles2.js`)
 - 🟡 🧩 Solved games — *field guide* (`guides/discrete.js`)
 - ✅ 🧩 Chess — *pioneer bio* (`pioneers-data.js`)
-- ⬜ 🧩 Wheat and chessboard
+- ✅ 🧩 Wheat and chessboard — *playable atom* (`atoms-puzzles2.js`)
 - ⬜ 🧩 Go
 - 🟡 🔷 Conway's surreal games — *pioneer bio* (`pioneers-data.js`)
 - ⬜ 🧩 Dots and boxes
 - ⬜ ⚡ Conway's soldiers
 - ⬜ 🧩 Peg solitaire
 - ✅ 🧩 Tower of Hanoi — *playable atom* (`atoms-puzzles.js`)
-- ⬜ 🧩 Josephus problem
-- ⬜ ⚡ 100 prisoners and 100 drawers
+- ✅ 🧩 Josephus problem — *playable atom* (`atoms-puzzles2.js`)
+- 🟡 ⚡ 100 prisoners and 100 drawers — *playable atom* (`atoms-puzzles2.js`)
 - ⬜ 🧩 100 prisoners and a light bulb
 - ⬜ 🧩 Hat puzzles
 - ⬜ 🧩 12 coins, 3 weighings
 - ⬜ 🧩 River crossings
 - ⬜ 🧩 Pirate game
-- ⬜ 🧩 Kruskal count
+- ✅ 🧩 Kruskal count — *playable atom* (`atoms-puzzles2.js`)
 - ⬜ 🧩 Fitch Cheney's five-card trick
 - ⬜ 🧩 Gilbreath principle
 - ⬜ ⚡ Games are hard
@@ -1108,15 +1108,15 @@ Keyword matching is a first pass, not a verdict: synonyms are missed and passing
 
 ## 16. Computation — Algorithms & Complexity
 
-4 covered · 1 mentioned · 15 missing
+6 covered · 1 mentioned · 13 missing
 
-- ⬜ ❓🏆 P vs NP
+- ✅ ❓🏆 P vs NP — *playable atom* (`atoms-computation.js`)
 - ⬜ 🏆 Cook–Levin (1971) & Karp's 21 problems
 - ⬜ 🧩 Traveling salesman
 - ⬜ 🧩 Knapsack, Sudoku, Minesweeper
 - ⬜ 🔷 Sorting & the n log n barrier
 - ⬜ 🏆 Karatsuba (1960)
-- ⬜ 📜 Pancake sorting
+- ✅ 📜 Pancake sorting — *playable atom* (`atoms-computation.js`)
 - ⬜ 🔷 Dynamic programming
 - ✅ 🔷 Ackermann function — *field guide* (`guides/foundations.js`)
 - ⬜ 🔷 Finite automata & the Chomsky hierarchy
