@@ -2,246 +2,656 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>The Structure Ladder</title>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Spectral:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#0e0618;--text:#e8e4f4;--dim:#9a93b8;--gold:#f5c451;--line:rgba(255,255,255,0.09);}
-*{box-sizing:border-box;}
-html,body{margin:0;height:100%;background:radial-gradient(120% 100% at 50% 20%, #2a0f45, var(--bg) 70%);color:var(--text);
-  font-family:'Spectral',Georgia,serif;overflow:hidden;}
-#app{position:fixed;inset:0;display:flex;flex-direction:column;}
-header{padding:12px 16px 8px;border-bottom:1px solid var(--line);}
-h1{font-family:'Fraunces',Georgia,serif;font-size:18px;font-weight:600;margin:0;}
-h1 em{font-style:italic;color:var(--dim);font-weight:400;}
-.stages{display:flex;gap:6px;margin-top:9px;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:2px;}
-.stages::-webkit-scrollbar{display:none;}
-.stage-chip{flex:0 0 auto;font-family:'IBM Plex Mono',monospace;font-size:10.5px;
-  padding:6px 10px;border-radius:999px;border:1px solid var(--line);color:var(--dim);
-  background:rgba(255,255,255,0.04);cursor:pointer;white-space:nowrap;}
-.stage-chip.on{border-color:var(--gold);color:var(--gold);background:rgba(245,196,81,0.12);}
-main{flex:1;position:relative;min-height:0;}
-canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;}
-footer{border-top:1px solid var(--line);padding:12px 16px 16px;background:linear-gradient(180deg,rgba(16,12,34,0.6),var(--bg));}
-.f-title{font-family:'Spectral',serif;font-size:17px;font-weight:600;margin:0 0 4px;color:var(--gold);}
-.f-added{font-size:13px;line-height:1.45;margin:0 0 8px;}
-.f-q{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--dim);line-height:1.6;}
-.f-q b{color:#9fd6a8;font-weight:500;}
-.nav{display:flex;gap:8px;margin-top:10px;}
-.nbtn{flex:1;padding:10px;border-radius:10px;border:1px solid var(--line);background:rgba(255,255,255,0.05);
-  color:var(--text);font-size:13px;font-weight:600;cursor:pointer;text-align:center;}
-.nbtn:active{background:rgba(255,255,255,0.12);}
-.nbtn.primary{background:rgba(245,196,81,0.16);border-color:var(--gold);color:var(--gold);}
+/* The structure ladder: from the empty set to a Riemannian manifold, one layer of structure per rung. */
+:root{--bg:#0e0618;--ink:#e8e4f4;--dim:#9a93b8;--gold:#f5c451;--teal:#3fd0c9;--pink:#ff7ac8;--blue:#7aa8ff;--green:#57e08a;--violet:#b48cff;--red:#ff6b5a;--line:rgba(255,255,255,.1);}
+*{box-sizing:border-box}
+html{background:#0e0618}
+html,body{margin:0;background-color:#0e0618;color:var(--ink);font-family:'Spectral',Georgia,serif}
+body{padding:14px 16px 28px;background:radial-gradient(120% 60% at 50% 0%,#2a0f45,#0e0618 70%) no-repeat,#0e0618}
+h1{font-family:'Fraunces',Georgia,serif;font-size:19px;font-weight:600;margin:0 0 2px}
+h1 em{font-style:italic;color:var(--dim);font-weight:400}
+.sub{font-size:13px;color:var(--dim);margin:0 0 10px}
+.rungs{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px}
+.rung{font:500 10.5px 'IBM Plex Mono',monospace;padding:5px 9px;border-radius:999px;border:1px solid var(--line);color:var(--dim);background:rgba(255,255,255,.035);cursor:pointer;white-space:nowrap;transition:all .2s}
+.rung:hover{border-color:rgba(245,196,81,.5);color:var(--ink)}
+.rung.done{color:#cfc9e4;border-color:rgba(245,196,81,.25)}
+.rung.on{border-color:var(--gold);color:#120b18;background:var(--gold)}
+.rung.milestone{box-shadow:inset 0 0 0 1px rgba(127,227,214,.35)}
+.stage{border:1px solid var(--line);border-radius:14px;overflow:hidden;background:rgba(10,6,20,.45)}
+.ctl{display:flex;flex-wrap:wrap;gap:5px;align-items:center;padding:8px 10px;border-bottom:1px solid var(--line);min-height:40px}
+.ctl:empty{display:none}
+.ctl .lab{font:10.5px 'IBM Plex Mono',monospace;color:var(--dim);margin:0 2px 0 6px}
+.b{font:500 10.5px 'IBM Plex Mono',monospace;padding:4px 9px;border-radius:999px;border:1px solid rgba(255,255,255,.16);color:#cfc9e4;background:rgba(255,255,255,.04);cursor:pointer}
+.b:hover{border-color:var(--gold)}
+.b.on{border-color:var(--gold);color:#fff;background:rgba(245,196,81,.16)}
+.b.set{border-radius:7px;min-width:62px;text-align:center}
+.b.set.on{border-color:var(--teal);background:rgba(63,208,201,.18)}
+.ctl input[type=range]{accent-color:var(--gold);width:130px;vertical-align:middle}
+#cv{display:block;width:100%;height:400px;touch-action:none;cursor:crosshair}
+.read{font:11.5px/1.65 'IBM Plex Mono',monospace;color:#cfc9e4;padding:8px 12px;border-top:1px solid var(--line);min-height:40px;white-space:pre-wrap}
+.read .g{color:var(--gold);font-weight:500}.read .t{color:var(--teal);font-weight:500}.read .r{color:var(--red);font-weight:500}.read .d{color:#8d86a8}
+.card{margin-top:12px;border:1px solid var(--line);border-radius:14px;padding:14px 16px;background:linear-gradient(180deg,rgba(40,18,70,.45),rgba(14,6,24,.4));animation:rise .35s ease both}
+@keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.kick{font:500 10px 'IBM Plex Mono',monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--gold)}
+.card h2{font-family:'Fraunces',Georgia,serif;font-size:21px;margin:3px 0 6px;line-height:1.2}
+.lead{font-size:15px;line-height:1.55;margin:0 0 12px;color:#e2ddf2}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:760px){.grid{grid-template-columns:1fr}}
+.box{border-left:2px solid var(--gold);padding:4px 0 4px 12px}
+.box.def{grid-column:1/-1;border-color:var(--teal);background:rgba(63,208,201,.05);padding:9px 12px;border-radius:0 10px 10px 0}
+.box h3{font:500 10px 'IBM Plex Mono',monospace;letter-spacing:.14em;text-transform:uppercase;margin:0 0 5px;color:var(--gold)}
+.box.def h3{color:var(--teal)}
+.box p,.box li{font-size:14px;line-height:1.55;margin:0 0 6px;color:#d9d3ec}
+.box ul{margin:0;padding-left:18px}
+.box b,.gloss b{color:#fff}
+.m{font-family:'IBM Plex Mono',monospace;font-size:.88em;color:#ffe9a8}
+.no{color:#ff9d8f}.yes{color:#8ff0c0}
+.nav{display:flex;gap:8px;margin-top:12px}
+.nbtn{flex:1;padding:10px;border-radius:10px;border:1px solid var(--line);background:rgba(255,255,255,.05);color:var(--ink);font:600 13px 'Spectral',serif;cursor:pointer}
+.nbtn.primary{background:rgba(245,196,81,.16);border-color:var(--gold);color:var(--gold)}
+.nbtn:disabled{opacity:.35;cursor:default}
+.gloss{margin-top:16px;border-top:1px solid var(--line);padding-top:12px}
+.gloss h2{font-family:'Fraunces',Georgia,serif;font-size:17px;margin:0 0 4px}
+.gloss .sub{margin-bottom:8px}
+.gloss section{margin:0 0 10px}
+.gloss section h4{font:500 10px 'IBM Plex Mono',monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin:0 0 4px;cursor:pointer}
+.gloss dl{margin:0;display:grid;grid-template-columns:minmax(120px,190px) 1fr;gap:3px 12px}
+.gloss dt{font:600 13px 'Spectral',serif;color:#fff}
+.gloss dd{margin:0;font-size:13px;line-height:1.5;color:#cfc9e4}
+.gloss section.cur h4{color:var(--teal)}
+.chain{font:11px 'IBM Plex Mono',monospace;color:var(--dim);margin:6px 0 0;line-height:1.7}
+.chain b{color:var(--gold);font-weight:500}
 </style>
 </head>
 <body>
-<div id="app">
-  <header>
-    <h1>The Structure Ladder <em>— a dull space acquires powers</em></h1>
-    <div class="stages" id="stages"></div>
-  </header>
-  <main><canvas id="cv"></canvas></main>
-  <footer>
-    <div class="f-title" id="ft"></div>
-    <div class="f-added" id="fa"></div>
-    <div class="f-q" id="fq"></div>
-    <div class="nav">
-      <div class="nbtn" id="prev">← previous</div>
-      <div class="nbtn primary" id="next">add structure →</div>
-    </div>
-  </footer>
+<h1>The Structure Ladder <em>— from nothing to curved space, one layer at a time</em></h1>
+<p class="sub">Each rung adds exactly one piece of structure, says precisely what was added, and shows what you can suddenly ask. Everything defined so far is collected at the bottom.</p>
+<div class="rungs" id="rungs"></div>
+<div class="stage">
+  <div class="ctl" id="ctl"></div>
+  <canvas id="cv"></canvas>
+  <div class="read" id="read"></div>
 </div>
+<div id="card"></div>
+<div class="nav"><button class="nbtn" id="prev">← previous rung</button><button class="nbtn primary" id="next">add the next structure →</button></div>
+<div class="gloss" id="gloss"></div>
 <script>
 "use strict";
-const STAGES=[
- {chip:"0 · bare set", title:"A bare set",
-  added:"Just points. No nearness, no distance, nothing between them — the only structure is membership.",
-  q:"Askable now: <b>how many points?</b> (cardinality) — and truly nothing else. Two points 'close together' means nothing yet."},
- {chip:"1 · + topology", title:"+ Topology",
-  added:"Declare certain collections of points 'open sets' (three axioms). Suddenly points have neighborhoods.",
-  q:"Newly askable: <b>nearness · limits · continuity · connectedness · compactness</b>. Still meaningless: distance, angle, straightness."},
- {chip:"2 · + smooth structure", title:"+ Smooth structure",
-  added:"Cover the space with coordinate charts whose overlaps are differentiable. Calculus switches on: tangent vectors exist.",
-  q:"Newly askable: <b>derivatives · velocities · vector fields · flows</b>. Still meaningless: how long a vector is, the angle between two."},
- {chip:"3 · + metric", title:"+ Riemannian metric (lengths)",
-  added:"An inner product on every tangent space. Curve lengths integrate, shortest paths — geodesics — exist, and curvature becomes measurable from inside.",
-  q:"Newly askable: <b>distance · geodesics · curvature · balls of radius r</b>."},
- {chip:"4 · angles", title:"The same metric buys angles",
-  added:"The inner product also gives ⟨u,v⟩ = |u||v|cos θ: angles, orthogonality, projections — the full Euclidean toolkit, pointwise.",
-  q:"Newly askable: <b>angle between curves · orthogonal frames · projections</b>."},
- {chip:"5 · + orientation & volume", title:"+ Orientation & volume form",
-  added:"A consistent notion of 'handedness' plus a top-degree form: signed areas and volumes, and integration of differential forms — Stokes' theorem awaits.",
-  q:"Newly askable: <b>volume · signed area · ∫ over the space · Stokes' theorem</b>. The ladder from bare set to geometry is complete."}
-];
+const $ = s => document.querySelector(s);
+const TAU = Math.PI * 2;
+const COL = { ink:"#e8e4f4", dim:"#9a93b8", gold:"#f5c451", teal:"#3fd0c9", pink:"#ff7ac8", blue:"#7aa8ff", green:"#57e08a", violet:"#b48cff", red:"#ff6b5a" };
+const cv = $("#cv"), ctx = cv.getContext("2d");
+let W = 600, H = 400, DPR = 1;
+function resize() { DPR = Math.min(2, window.devicePixelRatio || 1); W = cv.clientWidth || 600; H = cv.clientHeight || 400; cv.width = W * DPR; cv.height = H * DPR; ctx.setTransform(DPR, 0, 0, DPR, 0, 0); }
+addEventListener("resize", resize); if (window.ResizeObserver) new ResizeObserver(resize).observe(cv);
+function mulberry(a) { return () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+const clamp = (x, a, b) => Math.max(a, Math.min(b, x));
+const smooth = t => t * t * (3 - 2 * t);
+const read = h => { $("#read").innerHTML = h; };
 
-let stage=0, shown=0; // shown eases toward stage
-const cv=document.getElementById('cv'), ctx=cv.getContext('2d');
-let W=0,H=0,DPR=1;
-function resize(){
-  DPR=Math.min(2,window.devicePixelRatio||1);
-  W=cv.clientWidth; H=cv.clientHeight;
-  cv.width=W*DPR; cv.height=H*DPR;
-  ctx.setTransform(DPR,0,0,DPR,0,0);
+/* ---------- drawing kit ---------- */
+function dot(x, y, r, c, glow) { if (glow) { ctx.shadowColor = c; ctx.shadowBlur = glow; } ctx.fillStyle = c; ctx.beginPath(); ctx.arc(x, y, r, 0, TAU); ctx.fill(); ctx.shadowBlur = 0; }
+function text(s, x, y, c, size, align, font) { ctx.font = `${font || ""}${size || 12}px "IBM Plex Mono", monospace`; ctx.fillStyle = c; ctx.textAlign = align || "left"; ctx.textBaseline = "middle"; ctx.fillText(s, x, y); ctx.textAlign = "left"; ctx.textBaseline = "alphabetic"; }
+function serif(s, x, y, c, size, align) { ctx.font = `600 ${size || 16}px Fraunces, Georgia, serif`; ctx.fillStyle = c; ctx.textAlign = align || "left"; ctx.textBaseline = "middle"; ctx.fillText(s, x, y); ctx.textAlign = "left"; ctx.textBaseline = "alphabetic"; }
+function line(x1, y1, x2, y2, c, w, dash) { ctx.strokeStyle = c; ctx.lineWidth = w || 1; if (dash) ctx.setLineDash(dash); ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke(); ctx.setLineDash([]); }
+function arrow(x1, y1, x2, y2, c, w, head) { line(x1, y1, x2, y2, c, w); const a = Math.atan2(y2 - y1, x2 - x1), h = head || 9; ctx.fillStyle = c; ctx.beginPath(); ctx.moveTo(x2, y2); ctx.lineTo(x2 - h * Math.cos(a - .42), y2 - h * Math.sin(a - .42)); ctx.lineTo(x2 - h * Math.cos(a + .42), y2 - h * Math.sin(a + .42)); ctx.closePath(); ctx.fill(); }
+function poly(P, fill, stroke, w, dash) { ctx.beginPath(); P.forEach((p, i) => i ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1])); if (fill) { ctx.fillStyle = fill; ctx.fill(); } if (stroke) { ctx.strokeStyle = stroke; ctx.lineWidth = w || 1; if (dash) ctx.setLineDash(dash); ctx.stroke(); ctx.setLineDash([]); } }
+function curve(P, stroke, w, dash) { ctx.beginPath(); P.forEach((p, i) => i ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1])); ctx.strokeStyle = stroke; ctx.lineWidth = w || 1; if (dash) ctx.setLineDash(dash); ctx.stroke(); ctx.setLineDash([]); }
+function panelTitle(s, x, y) { text(s, x, y, "rgba(207,201,228,.7)", 10.5); }
+// the pad-neighbourhood of the convex hull of some points: a smooth blob that contains exactly those points
+function hullOf(P) { const pts = P.slice().sort((a, b) => a.x - b.x || a.y - b.y); if (pts.length < 3) return pts; const cr = (o, a, b) => (a.x - o.x) * (b.y - o.y) - (a.y - o.y) * (b.x - o.x); const lo = [], up = [];
+  for (const p of pts) { while (lo.length >= 2 && cr(lo[lo.length - 2], lo[lo.length - 1], p) <= 0) lo.pop(); lo.push(p); }
+  for (let i = pts.length - 1; i >= 0; i--) { const p = pts[i]; while (up.length >= 2 && cr(up[up.length - 2], up[up.length - 1], p) <= 0) up.pop(); up.push(p); } up.pop(); lo.pop(); return lo.concat(up); }
+function blob(P, pad) {
+  const h = hullOf(P); ctx.beginPath(); if (!h.length) return;
+  if (h.length === 1) { ctx.arc(h[0].x, h[0].y, pad, 0, TAU); return; }
+  if (h.length === 2) { const [a, b] = h, t = Math.atan2(b.y - a.y, b.x - a.x); ctx.arc(b.x, b.y, pad, t - Math.PI / 2, t + Math.PI / 2); ctx.arc(a.x, a.y, pad, t + Math.PI / 2, t + 1.5 * Math.PI); ctx.closePath(); return; }
+  const n = h.length, cx = h.reduce((s, p) => s + p.x, 0) / n, cy = h.reduce((s, p) => s + p.y, 0) / n;
+  const nr = (a, b) => { const dx = b.x - a.x, dy = b.y - a.y, l = Math.hypot(dx, dy) || 1; let nx = dy / l, ny = -dx / l; if (nx * ((a.x + b.x) / 2 - cx) + ny * ((a.y + b.y) / 2 - cy) < 0) { nx = -nx; ny = -ny; } return Math.atan2(ny, nx); };
+  for (let i = 0; i < n; i++) { const a = h[(i - 1 + n) % n], b = h[i], c = h[(i + 1) % n], a0 = nr(a, b); let d = nr(b, c) - a0; while (d > Math.PI) d -= TAU; while (d < -Math.PI) d += TAU; ctx.arc(b.x, b.y, pad, a0, a0 + d, d < 0); }
+  ctx.closePath();
 }
-window.addEventListener('resize',resize);
-if(window.ResizeObserver)new ResizeObserver(()=>resize()).observe(cv);
+// a smooth closed region used as "an open set U" in the plane rungs
+function region(cx, cy, R) { const f = th => R * (1 + .16 * Math.sin(3 * th + .4) + .09 * Math.cos(5 * th - 1)); const P = []; for (let i = 0; i <= 240; i++) { const th = TAU * i / 240; P.push([cx + f(th) * Math.cos(th), cy + f(th) * Math.sin(th)]); }
+  return { P, inside: (x, y) => Math.hypot(x - cx, y - cy) < f(Math.atan2(y - cy, x - cx)), dist: (x, y) => Math.min(...P.map(p => Math.hypot(p[0] - x, p[1] - y))) }; }
 
-/* seeded points */
-function mulberry(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;}}
-const rnd=mulberry(26);
-const PTS=[];for(let i=0;i<26;i++)PTS.push({x:0.12+0.76*rnd(),y:0.12+0.76*rnd()});
-const A=PTS[7], B=PTS[16]; // marked points
+/* ---------- the shared set of points (rungs 1 and 2) ---------- */
+const LET = "abcdefghijklmnopqrstuvwxyz";
+const rnd = mulberry(7);
+let PTS = [], spawn = 0;
+const place = () => ({ x: .08 + .84 * rnd(), y: .1 + .8 * rnd() });
+function addPoint() { if (PTS.length >= 26) return; const q = place(); PTS.push({ name: LET[PTS.length], x: q.x, y: q.y, tx: q.x, ty: q.y, born: performance.now() }); }
+function stepPoints() { for (const p of PTS) { p.x += (p.tx - p.x) * .12; p.y += (p.ty - p.y) * .12; } }
+const SP = p => [20 + p.x * (W - 40), 16 + p.y * (H - 32)];
+function drawPoint(p, t, c, label) { const [x, y] = SP(p), age = (t - p.born) / 350, r = 5.5 * clamp(age, 0, 1);
+  if (age < 2.5) { ctx.strokeStyle = `rgba(245,196,81,${.6 * (1 - age / 2.5)})`; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.arc(x, y, 6 + 26 * age / 2.5, 0, TAU); ctx.stroke(); }
+  dot(x, y, r, c || COL.ink, 10); if (label !== false) text(p.name, x + 9, y - 8, "#ffe9a8", 12); }
+const setName = S => S.length ? "{" + S.join(", ") + "}" : "∅";
 
-function ease(a,b,t){return a+(b-a)*t;}
-function lerpStage(s){ // per-stage alpha in [0,1]
-  return Math.max(0,Math.min(1, shown-s+1));
-}
-function px(p){return {x:p.x*W, y:p.y*H*0.96+H*0.02};}
+/* ================================================================ THE RUNGS */
+const RUNGS = [];
 
-function grid(t,alpha){ // curvilinear chart grid
-  ctx.strokeStyle=`rgba(91,156,224,${0.22*alpha})`;
-  ctx.lineWidth=1;
-  const n=9;
-  for(let i=0;i<=n;i++){
-    ctx.beginPath();
-    for(let j=0;j<=40;j++){
-      const u=i/n, v=j/40;
-      const wob=0.03*Math.sin(6.28*(v+u)+t*0.0006);
-      const p=px({x:0.06+0.88*u+wob*0.4, y:0.05+0.9*v+wob});
-      j?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y);
-    }
-    ctx.stroke();
-    ctx.beginPath();
-    for(let j=0;j<=40;j++){
-      const v=i/n, u=j/40;
-      const wob=0.03*Math.sin(6.28*(u-v)+t*0.0006);
-      const p=px({x:0.06+0.88*u+wob, y:0.05+0.9*v+wob*0.4});
-      j?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y);
-    }
-    ctx.stroke();
-  }
-}
-function arrow(x1,y1,x2,y2,color,w){
-  ctx.strokeStyle=color;ctx.fillStyle=color;ctx.lineWidth=w;
-  ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();
-  const a=Math.atan2(y2-y1,x2-x1);
-  ctx.beginPath();
-  ctx.moveTo(x2,y2);
-  ctx.lineTo(x2-10*Math.cos(a-0.4),y2-10*Math.sin(a-0.4));
-  ctx.lineTo(x2-10*Math.cos(a+0.4),y2-10*Math.sin(a+0.4));
-  ctx.closePath();ctx.fill();
-}
-function label(txt,x,y,color){
-  ctx.font='11px "IBM Plex Mono",monospace';
-  ctx.fillStyle=color;ctx.fillText(txt,x,y);
-}
-
-function draw(t){
-  ctx.clearRect(0,0,W,H);
-  const a1=lerpStage(1), a2=lerpStage(2), a3=lerpStage(3), a4=lerpStage(4), a5=lerpStage(5);
-
-  // stage 2: chart grid
-  if(a2>0) grid(t,a2);
-
-  // stage 1: open neighborhoods (soft pulsing disks)
-  if(a1>0){
-    PTS.forEach((p,i)=>{
-      const q=px(p);
-      const r=(18+8*Math.sin(t*0.001+i))* (0.4+0.6*a1);
-      const g=ctx.createRadialGradient(q.x,q.y,2,q.x,q.y,r);
-      g.addColorStop(0,`rgba(87,171,121,${0.28*a1})`);
-      g.addColorStop(1,'rgba(87,171,121,0)');
-      ctx.fillStyle=g;
-      ctx.beginPath();ctx.arc(q.x,q.y,r,0,6.28);ctx.fill();
-    });
-  }
-
-  // stage 3: geodesic + distance + metric ball
-  const pa=px(A), pb=px(B);
-  if(a3>0){
-    ctx.strokeStyle=`rgba(245,196,81,${0.9*a3})`;ctx.lineWidth=2;
-    ctx.beginPath();ctx.moveTo(pa.x,pa.y);
-    const mx=(pa.x+pb.x)/2, my=(pa.y+pb.y)/2-40;
-    ctx.quadraticCurveTo(mx,my,pb.x,pb.y);ctx.stroke();
-    label('d(p,q) — along the geodesic',(pa.x+pb.x)/2-70,my-8,`rgba(245,196,81,${a3})`);
-    ctx.strokeStyle=`rgba(245,196,81,${0.45*a3})`;ctx.setLineDash([4,4]);
-    ctx.beginPath();ctx.arc(pa.x,pa.y,56,0,6.28);ctx.stroke();ctx.setLineDash([]);
-    label('ball of radius r',pa.x-30,pa.y-62,`rgba(245,196,81,${0.8*a3})`);
-  }
-
-  // stage 2: tangent vector at A
-  if(a2>0){
-    arrow(pa.x,pa.y,pa.x+70*a2,pa.y-30*a2,`rgba(91,156,224,${a2})`,2);
-    label('tangent vector',pa.x+40,pa.y-38,`rgba(91,156,224,${a2})`);
-  }
-
-  // stage 4: second vector + angle arc
-  if(a4>0){
-    arrow(pa.x,pa.y,pa.x+22*a4,pa.y+62*a4,`rgba(171,123,214,${a4})`,2);
-    ctx.strokeStyle=`rgba(233,230,220,${0.85*a4})`;ctx.lineWidth=1.5;
-    const ang1=Math.atan2(-30,70), ang2=Math.atan2(62,22);
-    ctx.beginPath();ctx.arc(pa.x,pa.y,26,ang1,ang2);ctx.stroke();
-    label('θ = arccos ⟨u,v⟩/|u||v|',pa.x+30,pa.y+26,`rgba(233,230,220,${a4})`);
-  }
-
-  // stage 5: oriented parallelogram (signed area)
-  if(a5>0){
-    const ux=70,uy=-30, vx=22,vy=62;
-    ctx.fillStyle=`rgba(245,196,81,${0.18*a5})`;
-    ctx.strokeStyle=`rgba(245,196,81,${0.7*a5})`;ctx.lineWidth=1.5;
-    ctx.beginPath();
-    ctx.moveTo(pa.x,pa.y);ctx.lineTo(pa.x+ux,pa.y+uy);
-    ctx.lineTo(pa.x+ux+vx,pa.y+uy+vy);ctx.lineTo(pa.x+vx,pa.y+vy);
-    ctx.closePath();ctx.fill();ctx.stroke();
-    label('signed area = u ∧ v',pa.x+56,pa.y+52,`rgba(245,196,81,${a5})`);
-    // orientation loop
-    ctx.strokeStyle=`rgba(159,214,168,${0.9*a5})`;ctx.lineWidth=1.6;
-    ctx.beginPath();ctx.arc(W*0.85,H*0.16,20,0.4,5.6);ctx.stroke();
-    arrow(W*0.85+20*Math.cos(5.6),H*0.16+20*Math.sin(5.6),
-          W*0.85+20*Math.cos(5.9),H*0.16+20*Math.sin(5.9),`rgba(159,214,168,${0.9*a5})`,1.6);
-    label('orientation',W*0.85-30,H*0.16+38,`rgba(159,214,168,${0.9*a5})`);
-  }
-
-  // the points themselves — always
-  PTS.forEach(p=>{
-    const q=px(p);
-    ctx.fillStyle='#e8e4f4';
-    ctx.beginPath();ctx.arc(q.x,q.y,3,0,6.28);ctx.fill();
-  });
-  // marked points
-  [[pa,'p'],[pb,'q']].forEach(([q,nm])=>{
-    ctx.fillStyle='#f5c451';
-    ctx.beginPath();ctx.arc(q.x,q.y,4.5,0,6.28);ctx.fill();
-    label(nm,q.x+7,q.y+4,'#f5c451');
-  });
-}
-
-function loop(t){
-  shown += (stage-shown)*0.08;
-  if(Math.abs(stage-shown)<0.001) shown=stage;
-  draw(t);
-  requestAnimationFrame(loop);
-}
-
-/* UI */
-const stagesEl=document.getElementById('stages');
-STAGES.forEach((s,i)=>{
-  const c=document.createElement('div');c.className='stage-chip';c.textContent=s.chip;
-  c.onclick=()=>setStage(i);
-  stagesEl.appendChild(c);
+/* ---------------------------------------------------------------- 0 · nothing */
+RUNGS.push({
+  chip: "0 · nothing", kick: "Rung 0 · before any structure", title: "Nothing at all — the empty set",
+  lead: "Start with no points, no space, no shape. Mathematics still has one object here: the set with no elements.",
+  def: `<p>A <b>set</b> is a collection of objects, its <b>elements</b>; <span class="m">x ∈ X</span> means "x is an element of X". Two sets are equal exactly when they have the same elements (<b>extensionality</b>).</p>
+    <p>The <b>empty set</b> <span class="m">∅</span> is the set with no elements. Its existence is an axiom of set theory (Zermelo–Fraenkel), and by extensionality there is only one.</p>`,
+  ask: `<p>Nothing: there are no points to ask about. The only fact is <span class="m">|∅| = 0</span>.</p>`,
+  ex: `<p>All the spaces in this ladder — the plane, the sphere, curved space-time — are built out of sets. From ∅ alone set theory builds the numbers: <span class="m">0 = ∅, 1 = {∅}, 2 = {∅, {∅}}, …</span> (von Neumann, 1923).</p>`,
+  gloss: [["set", "a collection of distinct objects, its elements; x ∈ X means x is an element of X"], ["extensionality", "two sets are equal exactly when they have the same elements"], ["empty set ∅", "the unique set with no elements"]],
+  enter() { read(`X = ∅      |X| = 0      <span class="d">press "add the next structure" to create points</span>`); },
+  draw(t) { const a = .35 + .15 * Math.sin(t / 900); ctx.save(); ctx.shadowColor = COL.violet; ctx.shadowBlur = 40; serif("∅", W / 2, H / 2 - 6, `rgba(180,140,255,${a})`, 150, "center"); ctx.restore(); text("the empty set: no elements, no structure", W / 2, H - 28, "rgba(207,201,228,.55)", 11, "center"); }
 });
-function setStage(i){
-  stage=Math.max(0,Math.min(STAGES.length-1,i));
-  document.querySelectorAll('.stage-chip').forEach((c,j)=>c.classList.toggle('on',j===stage));
-  document.getElementById('ft').textContent=STAGES[stage].title;
-  document.getElementById('fa').textContent=STAGES[stage].added;
-  document.getElementById('fq').innerHTML=STAGES[stage].q;
-  document.getElementById('next').textContent = stage===STAGES.length-1 ? 'ladder complete ✓' : 'add structure →';
-}
-document.getElementById('next').onclick=()=>setStage(stage+1);
-document.getElementById('prev').onclick=()=>setStage(stage-1);
 
-resize();setStage(0);requestAnimationFrame(loop);
+/* ---------------------------------------------------------------- 1 · a set */
+let shuffleMsg = 0;
+RUNGS.push({
+  chip: "1 · a set of points", kick: "Rung 1 · add elements", title: "A set of points — and nothing else",
+  lead: "Points appear one at a time. That is all there is: a list of distinct elements. Where each dot sits on the screen is only for drawing — press “shuffle the picture” and the set does not change at all.",
+  def: `<p>A <b>set</b> X is determined entirely by which elements it has. The only questions it answers are <b>membership</b> (<span class="m">x ∈ X</span>?) and <b>equality</b> (<span class="m">x = y</span>?).</p>
+    <p>A <b>function</b> <span class="m">f : X → Y</span> assigns to each x ∈ X exactly one f(x) ∈ Y. A <b>bijection</b> is a function that is one-to-one and onto. Two sets have the same <b>cardinality</b> <span class="m">|X| = |Y|</span> when there is a bijection between them — and as sets they are then indistinguishable.</p>`,
+  ask: `<ul><li class="yes">Is x in X? Are x and y the same point?</li><li class="yes">How many points are there? (|X|)</li><li class="no">Not yet: which points are close to each other, whether a sequence of points converges, what shape X has. Distance on the screen is not part of the set.</li></ul>`,
+  ex: `<p>{a, b, c} and {1, 2, 3} are different sets with the same cardinality, 3. The natural numbers and the even numbers have the same (infinite) cardinality, via n ↦ 2n; the real numbers have more (Cantor, 1874).</p>`,
+  gloss: [["element / membership", "x ∈ X: x belongs to X — the only relation a bare set has"], ["function f : X → Y", "a rule assigning to each x ∈ X exactly one f(x) ∈ Y"], ["bijection", "a one-to-one and onto function; it has an inverse"], ["cardinality |X|", "the size of X; |X| = |Y| when a bijection X → Y exists"]],
+  controls: `<button class="b" data-a="add">+ add a point</button><button class="b" data-a="del">− remove one</button><button class="b" data-a="shuffle">⤮ shuffle the picture</button>`,
+  wire(c) { c.querySelectorAll("[data-a]").forEach(b => b.onclick = () => { const a = b.dataset.a; if (a === "add") addPoint(); if (a === "del") PTS.pop(); if (a === "shuffle") { PTS.forEach(p => { const q = place(); p.tx = q.x; p.ty = q.y; }); shuffleMsg = performance.now(); } this.info(); }); },
+  enter() { if (PTS.length < 3) { PTS = []; spawn = 10; } this.info(); },
+  info() { read(`X = ${setName(PTS.map(p => p.name))}      |X| = <span class="g">${PTS.length}</span>\n<span class="d">the dots' positions are not part of X — shuffling gives the same set</span>`); },
+  draw(t) {
+    if (spawn > 0 && (!this._last || t - this._last > 260)) { this._last = t; addPoint(); spawn--; this.info(); }
+    stepPoints(); PTS.forEach(p => drawPoint(p, t));
+    if (t - shuffleMsg < 2600) serif("same set — the picture changed, the set didn't", W / 2, 22, `rgba(245,196,81,${1 - (t - shuffleMsg) / 2600})`, 15, "center");
+  }
+});
+
+/* ---------------------------------------------------------------- 2 · subsets, relations, functions */
+let relMode = "subset", relSeed = 1, saved = null;
+const CLS = [COL.gold, COL.teal, COL.pink, COL.blue, COL.green];
+RUNGS.push({
+  chip: "2 · relations", kick: "Rung 2 · add subsets and relations", title: "Subsets, relations, equivalence classes, functions",
+  lead: "Still no geometry — but now we can single out collections of points (subsets), connect points by a relation, group them into classes, and map one set to another. These are the tools every later rung is built with.",
+  def: `<p>A <b>subset</b> <span class="m">A ⊆ X</span> is a set whose elements all lie in X. The <b>power set</b> <span class="m">𝒫(X)</span> is the set of all subsets; if |X| = n it has 2ⁿ elements.</p>
+    <p>The <b>Cartesian product</b> <span class="m">X × Y</span> is the set of ordered pairs (x, y). A <b>relation</b> from X to Y is any subset <span class="m">R ⊆ X × Y</span>; write x R y when (x, y) ∈ R. A function is a relation in which every x is related to exactly one y.</p>
+    <p>An <b>equivalence relation</b> ~ on X is reflexive (x ~ x), symmetric (x ~ y ⇒ y ~ x) and transitive (x ~ y and y ~ z ⇒ x ~ z). It splits X into disjoint <b>equivalence classes</b> [x] — a <b>partition</b> — and the set of classes is the <b>quotient set</b> <span class="m">X/~</span>.</p>`,
+  ask: `<ul><li class="yes">Is A contained in B? Which points are related? Which class is x in? Is f one-to-one, onto?</li><li class="no">Still not: "x is <i>near</i> y". A relation can say which pairs are linked, but a limit needs nearness at every scale at once — closer, and closer, and closer. That is exactly what a topology will provide.</li></ul>`,
+  ex: `<p>"Has the same remainder mod 3" is an equivalence relation on the integers with three classes. Gluing is an equivalence relation too: a circle is the interval [0, 1] with 0 ~ 1 — a quotient we will meet again (the line with two origins, the Möbius band, tangent vectors are all built as quotients).</p>`,
+  gloss: [["subset A ⊆ X", "every element of A is an element of X"], ["power set 𝒫(X)", "the set of all subsets of X (2ⁿ of them if |X| = n)"], ["Cartesian product X × Y", "the set of ordered pairs (x, y) with x ∈ X, y ∈ Y"], ["relation", "a subset R ⊆ X × Y; x R y means (x, y) ∈ R"], ["equivalence relation", "a relation that is reflexive, symmetric and transitive"], ["equivalence class, quotient X/~", "[x] = {y : y ~ x}; the classes partition X and form the quotient set X/~"]],
+  controls: `<span class="lab">show</span><button class="b on" data-m="subset">a subset</button><button class="b" data-m="relation">a relation</button><button class="b" data-m="equiv">an equivalence relation</button><button class="b" data-m="function">a function</button><button class="b" data-a="again">↻ another</button>`,
+  wire(c) { c.querySelectorAll("[data-m]").forEach(b => b.onclick = () => { c.querySelectorAll("[data-m]").forEach(x => x.classList.toggle("on", x === b)); this.mode(b.dataset.m); }); c.querySelector("[data-a=again]").onclick = () => { relSeed++; this.mode(relMode); }; },
+  enter() { while (PTS.length < 9) addPoint(); PTS.forEach(p => p.born = -1e9); this.mode("subset"); },
+  leave() { if (saved) { PTS.forEach((p, i) => { p.tx = saved[i][0]; p.ty = saved[i][1]; }); saved = null; } },
+  mode(m) {
+    if (saved && m !== "function") { PTS.forEach((p, i) => { p.tx = saved[i][0]; p.ty = saved[i][1]; }); saved = null; }
+    relMode = m; const R = mulberry(relSeed * 97 + m.length), n = PTS.length, names = PTS.map(p => p.name);
+    if (m === "subset") { this.S = PTS.map(() => R() < .45); if (!this.S.some(Boolean)) this.S[0] = true; const A = names.filter((_, i) => this.S[i]); read(`A = ${setName(A)} ⊆ X      |A| = ${A.length}\n<span class="d">X has 2^${n} = ${2 ** n} subsets in all — the power set 𝒫(X)</span>`); }
+    if (m === "relation") { this.E = []; for (let k = 0; k < n + 3; k++) { const i = Math.floor(R() * n), j = Math.floor(R() * n); this.E.push([i, j]); } read(`R = { ${this.E.map(([i, j]) => `(${names[i]}, ${names[j]})`).join(", ")} } ⊆ X × X\n<span class="d">a relation is nothing but a set of ordered pairs — any set of arrows you like</span>`); }
+    if (m === "equiv") { const k = 3 + Math.floor(R() * 2); this.C = PTS.map((_, i) => i < k ? i : Math.floor(R() * k)); const cls = [...Array(k).keys()].map(c => names.filter((_, i) => this.C[i] === c));
+      read(`classes: ${cls.map(c => setName(c)).join("  ")}\nX/~ = { ${cls.map(c => "[" + c[0] + "]").join(", ")} }   <span class="d">— ${k} classes; every point is in exactly one</span>`); }
+    if (m === "function") { saved = PTS.map(p => [p.tx, p.ty]); const half = Math.ceil(n / 2); this.F = []; PTS.forEach((p, i) => { const L = i < half, k = L ? i : i - half, cnt = L ? half : n - half; p.tx = L ? .18 : .78; p.ty = .1 + .8 * (k + .5) / cnt; }); for (let i = 0; i < half; i++) this.F.push([i, half + Math.floor(R() * (n - half))]);
+      const img = new Set(this.F.map(f => f[1])), inj = img.size === this.F.length, sur = img.size === n - half;
+      read(`f : X → Y   ${this.F.map(([i, j]) => `${names[i]} ↦ ${names[j]}`).join(", ")}\none-to-one: ${inj ? '<span class="t">yes</span>' : '<span class="r">no</span>'}   onto: ${sur ? '<span class="t">yes</span>' : '<span class="r">no</span>'}   <span class="d">every x has exactly one arrow</span>`); }
+  },
+  draw(t) {
+    stepPoints(); const P = PTS.map(SP);
+    if (relMode === "subset") { PTS.forEach((p, i) => { if (this.S[i]) { dot(...P[i], 15, "rgba(63,208,201,.18)"); ctx.strokeStyle = COL.teal; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.arc(...P[i], 15, 0, TAU); ctx.stroke(); } }); text("teal rings: the elements of A", 14, H - 14, "rgba(127,227,214,.8)", 11); }
+    if (relMode === "relation") this.E.forEach(([i, j]) => { if (i === j) { ctx.strokeStyle = COL.pink; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.arc(P[i][0], P[i][1] - 14, 10, 0, TAU); ctx.stroke(); return; } const [x1, y1] = P[i], [x2, y2] = P[j], a = Math.atan2(y2 - y1, x2 - x1); arrow(x1 + 9 * Math.cos(a), y1 + 9 * Math.sin(a), x2 - 10 * Math.cos(a), y2 - 10 * Math.sin(a), "rgba(255,122,200,.85)", 1.6); });
+    if (relMode === "equiv") { PTS.forEach((_, i) => PTS.forEach((_, j) => { if (j > i && this.C[i] === this.C[j]) line(...P[i], ...P[j], CLS[this.C[i]] + "66", 1.4); })); }
+    if (relMode === "function") { text("X", W * .18 + 20 - 4, 14, COL.gold, 13, "center"); text("Y", W * .78 + 8, 14, COL.teal, 13, "center"); this.F.forEach(([i, j]) => { const [x1, y1] = P[i], [x2, y2] = P[j]; arrow(x1 + 10, y1, x2 - 12, y2, "rgba(245,196,81,.75)", 1.5); }); }
+    PTS.forEach((p, i) => drawPoint(p, t, relMode === "equiv" ? CLS[this.C[i]] : relMode === "function" ? (i < Math.ceil(PTS.length / 2) ? COL.gold : COL.teal) : null));
+  }
+});
+
+/* ---------------------------------------------------------------- 3 · a topology */
+const TOP = { tau: new Set([0, 1, 3, 15]), pick: -1 };
+const FOUR = ["a", "b", "c", "d"], FULL = 15;
+const members = m => FOUR.filter((_, i) => m >> i & 1);
+const mname = m => m === 0 ? "∅" : m === FULL ? "X" : "{" + members(m).join(",") + "}";
+const PRE = { "indiscrete": [0, 15], "discrete": [...Array(16).keys()], "a chain": [0, 1, 3, 7, 15], "Sierpiński-type": [0, 1, 15], "separates a, b": [0, 1, 2, 3, 15], "✗ union missing": [0, 1, 2, 15], "✗ intersection missing": [0, 3, 6, 7, 15] };
+function checkTop(T) {
+  const L = [...T], res = { a1: T.has(0) && T.has(FULL), a2: null, a3: null, need: [] };
+  if (!T.has(0)) res.need.push(0); if (!T.has(FULL)) res.need.push(FULL);
+  for (const U of L) for (const V of L) { if (res.a2 === null && !T.has(U | V)) { res.a2 = [U, V]; res.need.push(U | V); } if (res.a3 === null && !T.has(U & V)) { res.a3 = [U, V]; res.need.push(U & V); } }
+  res.ok = res.a1 && !res.a2 && !res.a3; return res;
+}
+RUNGS.push({
+  chip: "3 · a topology", kick: "Rung 3 · add nearness", title: "A topology: saying which sets are “open”",
+  lead: "Nearness is introduced without any distances. We simply declare some subsets to be open — think “regions with no edge”. A point's open sets are its neighbourhoods. Three rules make the declaration consistent. Try it on a four-point set: tick subsets and the rules are checked live.",
+  def: `<p>A <b>topology</b> on a set X is a collection τ of subsets of X, called <b>open sets</b>, such that</p>
+    <ul><li><b>(T1)</b> ∅ and X are open;</li><li><b>(T2)</b> any union of open sets is open;</li><li><b>(T3)</b> the intersection of finitely many open sets is open.</li></ul>
+    <p>The pair (X, τ) is a <b>topological space</b>. A <b>neighbourhood</b> of x is an open set containing x. A set is <b>closed</b> when its complement is open. X is <b>connected</b> if it is not the union of two disjoint non-empty open sets.</p>`,
+  ask: `<ul><li class="yes">Which points can be told apart by open sets? Which points are "stuck together"? Is X connected?</li><li class="yes">Soon: limits and continuity — both are defined using only open sets.</li><li class="no">Not yet: how far apart two points are. A topology has no numbers in it.</li></ul>`,
+  ex: `<p>The same four points carry many topologies. <b>Discrete</b>: every subset open — every point is isolated. <b>Indiscrete</b>: only ∅ and X — no two points can be separated. <span class="no">Not a topology</span>: {∅, {a}, {b}, X}, because the union {a, b} is missing. On a finite set there are exactly 355 topologies on 4 points.</p>`,
+  gloss: [["topology τ", "a collection of subsets (open sets) containing ∅ and X, closed under all unions and finite intersections"], ["topological space (X, τ)", "a set together with a topology on it"], ["neighbourhood of x", "an open set that contains x"], ["closed set", "a set whose complement is open"], ["connected", "X cannot be split into two disjoint non-empty open sets"]],
+  controls: `<span class="lab">start from</span>${Object.keys(PRE).map(k => `<button class="b" data-p="${k}">${k}</button>`).join("")}<span style="flex-basis:100%;height:0"></span><span class="lab">open sets (tick to declare open)</span>${[...Array(16).keys()].sort((a, b) => members(a).length - members(b).length || a - b).map(m => `<button class="b set" data-s="${m}">${mname(m)}</button>`).join("")}`,
+  wire(c) { c.querySelectorAll("[data-p]").forEach(b => b.onclick = () => { TOP.tau = new Set(PRE[b.dataset.p]); TOP.pick = -1; this.sync(); }); c.querySelectorAll("[data-s]").forEach(b => b.onclick = () => { const m = +b.dataset.s; TOP.tau.has(m) ? TOP.tau.delete(m) : TOP.tau.add(m); TOP.pick = -1; this.sync(); }); this.c = c; },
+  enter() { this.sync(); },
+  pos() { const L = W * .52; return [[.26, .26], [.78, .2], [.72, .78], [.2, .74]].map(([u, v]) => ({ x: 26 + u * (L - 52), y: 30 + v * (H - 60) })); },
+  sync() {
+    this.c && this.c.querySelectorAll("[data-s]").forEach(b => b.classList.toggle("on", TOP.tau.has(+b.dataset.s)));
+    const T = TOP.tau, k = checkTop(T); this.k = k; const L = [...T].sort((a, b) => members(a).length - members(b).length);
+    let s = `τ = { ${L.map(mname).join(", ")} }\n(T1) ∅ and X open: ${k.a1 ? '<span class="t">✓</span>' : '<span class="r">✗</span>'}   (T2) unions: ${k.a2 ? `<span class="r">✗ ${mname(k.a2[0])} ∪ ${mname(k.a2[1])} = ${mname(k.a2[0] | k.a2[1])} is not open</span>` : '<span class="t">✓</span>'}   (T3) intersections: ${k.a3 ? `<span class="r">✗ ${mname(k.a3[0])} ∩ ${mname(k.a3[1])} = ${mname(k.a3[0] & k.a3[1])} is not open</span>` : '<span class="t">✓</span>'}\n`;
+    if (k.ok) {
+      const sep = (x, y) => L.some(U => (U >> x & 1) && !(U >> y & 1) || (U >> y & 1) && !(U >> x & 1)), haus = (x, y) => L.some(U => L.some(V => (U >> x & 1) && (V >> y & 1) && !(U & V)));
+      let T0 = true, T2 = true; for (let x = 0; x < 4; x++) for (let y = x + 1; y < 4; y++) { if (!sep(x, y)) T0 = false; if (!haus(x, y)) T2 = false; }
+      const conn = !L.some(U => U && U !== FULL && T.has(FULL ^ U));
+      s += `<span class="g">a topology ✓</span>   connected: ${conn ? "yes" : "no"}   every two points told apart by some open set: ${T0 ? "yes" : "no"}   … by disjoint open sets (Hausdorff, rung 6): ${T2 ? "yes" : "no"}\n<span class="d">click a point to see its smallest neighbourhood</span>`;
+      if (TOP.pick >= 0) { const nb = L.filter(U => U >> TOP.pick & 1).reduce((a, b) => a & b, FULL); s += `   smallest neighbourhood of ${FOUR[TOP.pick]}: <span class="g">${mname(nb)}</span>`; this.nb = nb; } else this.nb = 0;
+    } else { s += `<span class="r">not a topology yet</span> — the red dashed outline shows a set the rules force to be open`; this.nb = 0; }
+    read(s);
+  },
+  down(x, y) { const P = this.pos(); P.forEach((p, i) => { if (Math.hypot(p.x - x, p.y - y) < 22) TOP.pick = i; }); this.sync(); },
+  draw(t) {
+    const P = this.pos(), L = [...TOP.tau].filter(m => m).sort((a, b) => members(b).length - members(a).length);
+    L.forEach(m => { const S = P.filter((_, i) => m >> i & 1), pad = 16 + 10 * members(m).length; blob(S, pad); ctx.fillStyle = m === FULL ? "rgba(63,208,201,.05)" : "rgba(63,208,201,.08)"; ctx.fill(); ctx.strokeStyle = "rgba(127,227,214,.75)"; ctx.lineWidth = 1.4; ctx.stroke(); });
+    if (this.k && !this.k.ok) this.k.need.filter(m => m && m !== FULL).forEach(m => { const S = P.filter((_, i) => m >> i & 1); blob(S, 14 + 10 * members(m).length); ctx.strokeStyle = COL.red; ctx.lineWidth = 2; ctx.setLineDash([6, 5]); ctx.stroke(); ctx.setLineDash([]); });
+    if (this.nb) { const S = P.filter((_, i) => this.nb >> i & 1); blob(S, 12 + 10 * members(this.nb).length); ctx.strokeStyle = COL.gold; ctx.lineWidth = 3; ctx.shadowColor = COL.gold; ctx.shadowBlur = 12; ctx.stroke(); ctx.shadowBlur = 0; }
+    P.forEach((p, i) => { dot(p.x, p.y, 7, i === TOP.pick ? COL.gold : COL.ink, 12); text(FOUR[i], p.x + 11, p.y - 11, "#ffe9a8", 14); });
+    // Hasse diagram of τ, ordered by inclusion
+    const x0 = W * .56, x1 = W - 16, Lv = [...TOP.tau], lev = k => Lv.filter(m => members(m).length === k);
+    panelTitle("τ ordered by inclusion (bottom ∅, top X)", x0, 16);
+    const at = {}, nw = {}; for (let k = 0; k <= 4; k++) { const row = lev(k); row.forEach((m, j) => { at[m] = [x0 + (x1 - x0) * (j + 1) / (row.length + 1), H - 26 - (H - 70) * k / 4]; nw[m] = Math.min(62, (x1 - x0) / (row.length + 1) - 4); }); }
+    Lv.forEach(U => Lv.forEach(V => { if (U !== V && (U & V) === U && !Lv.some(Wm => Wm !== U && Wm !== V && (U & Wm) === U && (Wm & V) === Wm)) line(...at[U], ...at[V], "rgba(127,227,214,.35)", 1.2); }));
+    Lv.forEach(m => { const [x, y] = at[m]; ctx.fillStyle = m === this.nb ? "rgba(245,196,81,.25)" : "rgba(20,12,40,.95)"; ctx.strokeStyle = m === this.nb ? COL.gold : "rgba(127,227,214,.7)"; ctx.lineWidth = 1.2; ctx.beginPath(); ctx.roundRect(x - nw[m] / 2, y - 11, nw[m], 22, 11); ctx.fill(); ctx.stroke(); text(mname(m), x, y + 1, "#e8e4f4", nw[m] < 50 ? 9.5 : 11, "center"); });
+  }
+});
+
+/* ---------------------------------------------------------------- 4 · open sets in the plane */
+let r4closed = false, r4probe = null, r4t0 = 0;
+RUNGS.push({
+  chip: "4 · the plane's topology", kick: "Rung 4 · from finitely many points to a continuum", title: "Open sets in the plane: room to spare around every point",
+  lead: "Now take all points of the plane. Here nearness comes from distance, and a set is open when every one of its points has a little disc around it that stays inside the set. Move over the region: at every point of an open set a disc fits — smaller near the edge, but never zero.",
+  def: `<p>The <b>distance</b> in the plane is <span class="m">d(p, q) = √((x₁ − x₂)² + (y₁ − y₂)²)</span>. The <b>open ball</b> of radius r > 0 around p is <span class="m">B(p, r) = {q : d(p, q) &lt; r}</span>.</p>
+    <p>A set U ⊆ ℝ² is <b>open</b> when for every p ∈ U there is some r > 0 with B(p, r) ⊆ U. These open sets satisfy (T1)–(T3) of rung 3, so they form a topology: the <b>standard topology</b> of ℝ².</p>
+    <p>More generally a <b>metric</b> on a set is a function d with d(p, q) ≥ 0, d(p, q) = 0 ⇔ p = q, d(p, q) = d(q, p) and d(p, r) ≤ d(p, q) + d(q, r); every metric defines a topology this way.</p>`,
+  ask: `<ul><li class="yes"><b>Limits</b>: pₙ → p if every neighbourhood of p contains all but finitely many pₙ.</li><li class="yes"><b>Interior, boundary, closure</b> of a set.</li><li class="yes">Why only <i>finite</i> intersections? The intervals (−1, 1), (−½, ½), (−⅓, ⅓), … are all open, but all of them together meet only in {0}, which is not open. The right-hand panel shows it.</li></ul>`,
+  ex: `<p><span class="yes">Open</span>: the inside of a circle, the whole plane, the plane minus a point. <span class="no">Not open</span>: a closed disc (points on its rim have no disc inside), a single point, a line in the plane.</p>`,
+  gloss: [["metric d", "a distance function: positive, zero only on equal points, symmetric, and obeying the triangle inequality"], ["open ball B(p, r)", "all points at distance less than r from p"], ["open set in ℝⁿ", "a set that contains a small ball around each of its points"], ["standard topology", "the topology of ℝⁿ made of these open sets"], ["limit pₙ → p", "every neighbourhood of p contains all but finitely many of the pₙ"]],
+  controls: `<button class="b on" data-m="open">an open region (edge not included)</button><button class="b" data-m="closed">a closed disc (edge included)</button>`,
+  wire(c) { c.querySelectorAll("[data-m]").forEach(b => b.onclick = () => { c.querySelectorAll("[data-m]").forEach(x => x.classList.toggle("on", x === b)); r4closed = b.dataset.m === "closed"; r4t0 = performance.now(); }); },
+  enter() { r4probe = null; r4t0 = performance.now(); },
+  move(x, y) { r4probe = [x, y]; }, down(x, y) { r4probe = [x, y]; },
+  draw(t) {
+    const cx = W * .33, cy = H / 2, R0 = Math.min(W * .24, H * .36);
+    let U, pr;
+    if (!r4closed) { U = region(cx, cy, R0); poly(U.P, "rgba(63,208,201,.12)", "rgba(127,227,214,.85)", 2, [7, 6]); }
+    else { U = { P: [...Array(241).keys()].map(i => [cx + R0 * Math.cos(TAU * i / 240), cy + R0 * Math.sin(TAU * i / 240)]), inside: (x, y) => Math.hypot(x - cx, y - cy) <= R0 + .5 }; U.dist = (x, y) => Math.abs(R0 - Math.hypot(x - cx, y - cy)); poly(U.P, "rgba(63,208,201,.12)", COL.teal, 3); }
+    if (r4probe) pr = r4probe; else { const s = ((t - r4t0) / 4200) % 1, e = s < .5 ? smooth(s * 2) : smooth(2 - s * 2), ang = -.6; const edge = r4closed ? R0 : R0 * (1 + .16 * Math.sin(3 * ang + .4) + .09 * Math.cos(5 * ang - 1)); pr = [cx + Math.cos(ang) * edge * (r4closed ? e : .98 * e), cy + Math.sin(ang) * edge * (r4closed ? e : .98 * e)]; }
+    const inside = U.inside(pr[0], pr[1]), dd = U.dist(pr[0], pr[1]);
+    let msg;
+    if (inside && dd > 1.2) { const r = dd * .92; dot(pr[0], pr[1], r, "rgba(245,196,81,.16)"); ctx.strokeStyle = COL.gold; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.arc(pr[0], pr[1], r, 0, TAU); ctx.stroke(); msg = `p inside U: the ball B(p, ${(r / R0).toFixed(3)}) fits inside U   <span class="t">✓</span>`; }
+    else if (r4closed && dd <= 1.5) { const r = 16; ctx.save(); ctx.beginPath(); ctx.arc(pr[0], pr[1], r, 0, TAU); ctx.clip(); ctx.fillStyle = "rgba(255,107,90,.4)"; ctx.fillRect(0, 0, W, H); ctx.beginPath(); ctx.arc(cx, cy, R0, 0, TAU); ctx.fillStyle = "rgba(245,196,81,.35)"; ctx.fill(); ctx.restore(); ctx.strokeStyle = COL.red; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.arc(pr[0], pr[1], r, 0, TAU); ctx.stroke(); msg = `p on the rim of the closed disc: <span class="r">every ball around p sticks out</span> — so the closed disc is not open`; }
+    else msg = inside ? "p is right at the edge" : `p is outside the region`;
+    dot(pr[0], pr[1], 4.5, COL.gold, 10); text("p", pr[0] + 8, pr[1] - 8, COL.gold, 13);
+    text(r4closed ? "closed disc D (rim included)" : "open set U (dashed edge: not part of U)", cx, 16, "rgba(207,201,228,.75)", 11, "center");
+    // why only finite intersections: (−1/n, 1/n) shrink to {0}
+    const x0 = W * .66, x1 = W - 22, xm = (x0 + x1) / 2, sc = (x1 - x0) / 2, nMax = 1 + Math.floor(((t - r4t0) / 500) % 14);
+    panelTitle("(−1/n, 1/n) for n = 1 … " + nMax, x0, 16);
+    for (let n = 1; n <= nMax; n++) { const y = 36 + n * 20; line(xm - sc / n, y, xm + sc / n, y, n === nMax ? COL.gold : "rgba(127,227,214,.6)", 3); dot(xm - sc / n, y, 3, "#0e0618"); ctx.strokeStyle = "rgba(127,227,214,.8)"; ctx.lineWidth = 1; ctx.beginPath(); ctx.arc(xm - sc / n, y, 3, 0, TAU); ctx.stroke(); ctx.beginPath(); ctx.arc(xm + sc / n, y, 3, 0, TAU); ctx.stroke(); }
+    line(xm, 40, xm, H - 36, "rgba(245,196,81,.35)", 1, [3, 4]); text("all of them meet only in {0}", xm, H - 22, COL.gold, 11, "center");
+    read(msg + `\n<span class="d">the intersection of the infinitely many open intervals (−1/n, 1/n) is the single point {0}, which is not open — so (T3) allows only finite intersections</span>`);
+  }
+});
+
+/* ---------------------------------------------------------------- 5 · continuity & homeomorphism */
+let r5mode = "stretch";
+RUNGS.push({
+  chip: "5 · continuity", kick: "Rung 5 · add maps that respect nearness", title: "Continuous maps and homeomorphisms: rubber-sheet sameness",
+  lead: "With open sets we can say what it means for a map to keep nearby points nearby: continuity. A homeomorphism is a continuous bijection whose inverse is continuous too — bending and stretching allowed, tearing and gluing forbidden. To a topologist, homeomorphic spaces are the same space.",
+  def: `<p>A map <span class="m">f : X → Y</span> between topological spaces is <b>continuous</b> if the preimage <span class="m">f⁻¹(V)</span> of every open set V ⊆ Y is open in X. For the plane this is the familiar ε–δ condition: points close to p go to points close to f(p).</p>
+    <p>A <b>homeomorphism</b> is a bijection f such that both f and its inverse f⁻¹ are continuous. X and Y are <b>homeomorphic</b> (X ≅ Y) when one exists. A <b>topological property</b> is one preserved by homeomorphisms — connectedness, compactness, the number of holes.</p>`,
+  ask: `<ul><li class="yes">Are two spaces the same up to deformation? (a square ≅ a disc; a coffee mug ≅ a doughnut)</li><li class="no">Not topological: size, straightness, angles — a homeomorphism can change all of them.</li></ul>`,
+  ex: `<p><span class="yes">Stretch</span>: the square becomes a disc — a homeomorphism. <span class="no">Tear</span>: points on either side of the cut, however close, end up far apart — not continuous. <span class="no">Squash</span>: the top half collapses onto a line — continuous but not one-to-one, so no inverse.</p>`,
+  gloss: [["continuous map", "preimages of open sets are open — nearby points stay nearby"], ["homeomorphism", "a bijection that is continuous with a continuous inverse"], ["homeomorphic X ≅ Y", "there is a homeomorphism between them: the same space to topology"], ["topological property", "a property preserved by every homeomorphism"]],
+  controls: `<button class="b on" data-m="stretch">stretch (homeomorphism)</button><button class="b" data-m="tear">tear (not continuous)</button><button class="b" data-m="squash">squash (not one-to-one)</button>`,
+  wire(c) { c.querySelectorAll("[data-m]").forEach(b => b.onclick = () => { c.querySelectorAll("[data-m]").forEach(x => x.classList.toggle("on", x === b)); r5mode = b.dataset.m; }); },
+  draw(t) {
+    const s = (t / 3600) % 2, k = smooth(s < 1 ? s : 2 - s), R = Math.min(W * .19, H * .4), cxL = W * .27, cxR = W * .72, cy = H / 2;
+    const F = (x, y) => { if (r5mode === "stretch") { const dx = x * Math.sqrt(1 - y * y / 2), dy = y * Math.sqrt(1 - x * x / 2); return [x + (dx - x) * k, y + (dy - y) * k]; }
+      if (r5mode === "tear") return [x + (x >= 0 ? 1 : -1) * .45 * k * (y > -.2 ? 1 : 0) * (y + .2) / 1.2, y]; return [x, y < 0 ? y : y * (1 - .97 * k)]; };
+    const grid = (cx, map, col) => { for (let i = 0; i <= 10; i++) { const u = -1 + i / 5, A = [], B = []; for (let j = 0; j <= 60; j++) { const v = -1 + j / 30; const a = map(u, v), b = map(v, u); A.push([cx + a[0] * R, cy + a[1] * R]); B.push([cx + b[0] * R, cy + b[1] * R]); }
+      curve(A, col, 1.2); curve(B, col, 1.2); } };
+    panelTitle("before: a square", cxL - R, 16); panelTitle(r5mode === "stretch" ? "after: a disc — same space" : r5mode === "tear" ? "after: torn — not continuous" : "after: squashed — not one-to-one", cxR - R, 16);
+    grid(cxL, (x, y) => [x, y], "rgba(127,227,214,.55)");
+    if (r5mode === "tear") { // draw the two halves separately so the cut shows
+      for (const side of [-1, 1]) for (let i = 0; i <= 10; i++) { const u = -1 + i / 5; if (u * side < 0) continue; const A = []; for (let j = 0; j <= 60; j++) { const v = -1 + j / 30, a = F(u === 0 ? side * 1e-6 : u, v); A.push([cxR + a[0] * R, cy + a[1] * R]); } curve(A, "rgba(245,196,81,.7)", 1.2);
+        for (let i2 = 0; i2 <= 10; i2++) { const v = -1 + i2 / 5, B = []; for (let j = 0; j <= 30; j++) { const x = side * j / 30, a = F(x === 0 ? side * 1e-6 : x, v); B.push([cxR + a[0] * R, cy + a[1] * R]); } curve(B, "rgba(245,196,81,.7)", 1.2); } }
+    } else grid(cxR, F, "rgba(245,196,81,.7)");
+    arrow(cxL + R + 14, cy, cxR - R - 18, cy, "rgba(207,201,228,.6)", 1.5); text("f", (cxL + cxR) / 2, cy - 12, COL.ink, 14, "center");
+    const p1 = [-.03, .5], p2 = [.03, .5], a1 = F(...p1), a2 = F(...p2);
+    dot(cxL + p1[0] * R, cy + p1[1] * R, 4, COL.pink, 8); dot(cxL + p2[0] * R, cy + p2[1] * R, 4, COL.blue, 8);
+    dot(cxR + a1[0] * R, cy + a1[1] * R, 4, COL.pink, 8); dot(cxR + a2[0] * R, cy + a2[1] * R, 4, COL.blue, 8);
+    const d0 = Math.hypot(p1[0] - p2[0], p1[1] - p2[1]), d1 = Math.hypot(a1[0] - a2[0], a1[1] - a2[1]);
+    read(`two nearby points (pink, blue): distance before ${d0.toFixed(3)}, after ${d1.toFixed(3)}   ${r5mode === "tear" && d1 > .2 ? '<span class="r">torn apart — f is not continuous</span>' : r5mode === "squash" && k > .9 ? '<span class="r">the whole top half lands on one line — f has no inverse</span>' : '<span class="t">nearby points stay nearby</span>'}\n<span class="d">stretch mode is (x, y) ↦ (x√(1 − y²/2), y√(1 − x²/2)), a homeomorphism from the square onto the disc</span>`);
+  }
+});
+
+/* ---------------------------------------------------------------- 6 · Hausdorff */
+let r6p = [.18, .45], r6q = [.36, .6], r6drag = null;
+RUNGS.push({
+  chip: "6 · Hausdorff", kick: "Rung 6 · condition 1 of 3 for a manifold", title: "Hausdorff: distinct points can be kept apart",
+  lead: "A topology can be too coarse to separate points. The first condition we demand of a manifold is that any two different points have neighbourhoods that do not overlap. In the plane this is automatic (drag p and q). On the “line with two origins” it fails: every neighbourhood of one origin meets every neighbourhood of the other.",
+  def: `<p>A topological space X is <b>Hausdorff</b> (or T₂) if for any two distinct points x ≠ y there are open sets U ∋ x and V ∋ y with <span class="m">U ∩ V = ∅</span>.</p>
+    <p>Consequence: in a Hausdorff space a sequence has at most one limit.</p>
+    <p>The <b>line with two origins</b>: take two copies of the real line and glue each point x of one to the same x of the other, except at 0 (a quotient, rung 2). Every point has a neighbourhood like an open interval, but the two origins cannot be separated.</p>`,
+  ask: `<ul><li class="yes">Is the limit of a sequence unique? In a Hausdorff space, yes.</li><li class="no">On the line with two origins the sequence 1, ½, ⅓, … converges to <i>both</i> origins at once.</li></ul>`,
+  ex: `<p><span class="yes">Hausdorff</span>: ℝⁿ, every metric space, every subspace of a Hausdorff space. <span class="no">Not Hausdorff</span>: the line with two origins, the indiscrete topology on two or more points, the Sierpiński space of rung 3.</p>`,
+  gloss: [["Hausdorff (T₂)", "distinct points have disjoint neighbourhoods"], ["line with two origins", "two real lines glued everywhere except at 0: locally like ℝ but not Hausdorff"]],
+  enter() { r6drag = null; },
+  down(x, y) { const L = W * .48; [["p", r6p], ["q", r6q]].forEach(([n, v]) => { if (Math.hypot(20 + v[0] / .5 * (L - 40) - x, v[1] * H - y) < 18) r6drag = v; }); },
+  move(x, y, b) { if (r6drag && b) { const L = W * .48; r6drag[0] = clamp((x - 20) / (L - 40) * .5, .02, .48); r6drag[1] = clamp(y / H, .12, .9); } },
+  up() { r6drag = null; },
+  draw(t) {
+    const L = W * .48, X = v => [20 + v[0] / .5 * (L - 40), v[1] * H], P = X(r6p), Q = X(r6q), d = Math.hypot(P[0] - Q[0], P[1] - Q[1]), r = d / 2 * .92;
+    panelTitle("the plane: drag p and q", 20, 16);
+    [[P, COL.gold, "p"], [Q, COL.teal, "q"]].forEach(([c, col, n]) => { dot(c[0], c[1], r, col + "22"); ctx.strokeStyle = col; ctx.lineWidth = 1.5; ctx.setLineDash([5, 4]); ctx.beginPath(); ctx.arc(c[0], c[1], r, 0, TAU); ctx.stroke(); ctx.setLineDash([]); dot(c[0], c[1], 6, col, 10); text(n, c[0] + 9, c[1] - 9, col, 14); });
+    text(`balls of radius d(p, q)/2 never overlap`, 20, H - 16, "rgba(207,201,228,.7)", 11);
+    // the line with two origins, drawn as two copies of ℝ glued point-by-point except at 0
+    const x0 = W * .55, x1 = W - 22, xm = (x0 + x1) / 2, yT = H * .36, yB = H * .64, half = (x1 - x0) / 2, eps = half * (.1 + .75 * (.5 + .5 * Math.cos(t / 1600)));
+    panelTitle("the line with two origins = two copies of ℝ, glued at every x ≠ 0", x0, 16);
+    for (let x = x0 + 4; x <= x1; x += 13) { if (Math.abs(x - xm) < 7) continue; const inN = Math.abs(x - xm) < eps; line(x, yT + 5, x, yB - 5, inN ? "rgba(255,107,90,.85)" : "rgba(207,201,228,.22)", inN ? 1.6 : 1, [3, 3]); }
+    line(x0, yT, x1, yT, "rgba(232,228,244,.75)", 2); line(x0, yB, x1, yB, "rgba(232,228,244,.75)", 2);
+    line(xm - eps, yT, xm + eps, yT, COL.gold, 6); line(xm - eps, yB, xm + eps, yB, COL.teal, 6);
+    dot(xm, yT, 7, COL.gold, 14); text("0", xm, yT - 18, COL.gold, 14, "center"); dot(xm, yB, 7, COL.teal, 14); text("0′", xm, yB + 20, COL.teal, 14, "center");
+    ctx.fillStyle = "rgba(14,6,24,.92)"; ctx.fillRect(xm - 36, (yT + yB) / 2 - 10, 72, 20); text("not glued", xm, (yT + yB) / 2, "#e8e4f4", 10.5, "center");
+    for (let n = 2; n <= 14; n++) { const xx = xm + half * .9 / n; dot(xx, yT, 2.2, "#ffe9a8"); dot(xx, yB, 2.2, "#ffe9a8"); }
+    text("gold: a neighbourhood of 0 · teal: of 0′ · red glue: points in both", x0, H - 16, "rgba(207,201,228,.75)", 10.5);
+    read(`plane: d(p, q) = ${(d / (L - 40) * .5).toFixed(3)} — balls of radius d/2 around p and q are disjoint   <span class="t">Hausdorff ✓</span>\nline with two origins: however small ε, (−ε, 0) ∪ (0, ε) lies in both neighbourhoods   <span class="r">not Hausdorff</span>   <span class="d">(the dots 1, ½, ⅓, … converge to both origins)</span>`);
+  }
+});
+
+/* ---------------------------------------------------------------- 7 · second countable */
+let r7build = false, r7t0 = 0;
+RUNGS.push({
+  chip: "7 · second countable", kick: "Rung 7 · condition 2 of 3 for a manifold", title: "Second countable: countably many basic open sets are enough",
+  lead: "The second condition keeps a manifold from being unmanageably large. It asks for a countable supply of basic open sets from which every open set can be assembled as a union. In the plane, discs with rational centres and rational radii do the job; watch an arbitrary open region being built from them.",
+  def: `<p>A <b>base</b> for a topology τ is a collection ℬ of open sets such that every open set is a union of members of ℬ. X is <b>second countable</b> if it has a <b>countable</b> base (one that can be listed ℬ₁, ℬ₂, ℬ₃, …).</p>
+    <p>For ℝⁿ: the balls B(q, r) with q having rational coordinates and r rational form a countable base.</p>
+    <p>Why a manifold needs it: second countability (with Hausdorff) gives partitions of unity, which glue local constructions into global ones, and lets every manifold be embedded in some ℝᴺ (Whitney, 1936).</p>`,
+  ask: `<ul><li class="yes">Can every open set be described by a list of basic pieces? Yes — countably many suffice.</li><li class="yes">Can we build smooth functions, metrics, integrals by patching local pieces? Yes (partitions of unity).</li></ul>`,
+  ex: `<p><span class="yes">Second countable</span>: ℝⁿ, spheres, tori, every subspace of ℝⁿ. <span class="no">Not</span>: the <b>long line</b> — uncountably many copies of [0, 1) laid end to end (Cantor's ω₁). Near each point it looks exactly like ℝ and it is Hausdorff, but it is too long to be covered by countably many basic sets. The discrete topology on the real numbers is another non-example.</p>`,
+  gloss: [["base of a topology", "a collection of open sets whose unions give every open set"], ["second countable", "the topology has a countable base"], ["long line", "ω₁ copies of [0, 1) end to end: locally like ℝ, Hausdorff, but not second countable"]],
+  controls: `<button class="b on" data-m="base">the base: rational discs, finer and finer</button><button class="b" data-m="build">build an open set from them</button>`,
+  wire(c) { c.querySelectorAll("[data-m]").forEach(b => b.onclick = () => { c.querySelectorAll("[data-m]").forEach(x => x.classList.toggle("on", x === b)); r7build = b.dataset.m === "build"; r7t0 = performance.now(); }); },
+  enter() { r7t0 = performance.now(); },
+  draw(t) {
+    const el = (t - r7t0) / 1000, cx = W / 2, cy = H / 2, R0 = Math.min(W * .3, H * .38), U = region(cx, cy, R0);
+    const S0 = Math.min(W, H) * .5, levels = Math.min(5, 1 + Math.floor(el * 1.2));
+    if (!r7build) { this._key = null;
+      for (let k = 0; k < levels; k++) { const s = S0 / 2 ** k, r = s * .72; ctx.strokeStyle = `hsla(${180 + k * 25},70%,65%,${.55 - k * .06})`; ctx.lineWidth = 1;
+        for (let x = cx % s; x < W; x += s) for (let y = cy % s; y < H; y += s) { ctx.beginPath(); ctx.arc(x, y, r, 0, TAU); ctx.stroke(); } }
+      read(`level k: discs with centres on a grid of spacing 2⁻ᵏ and radius ≈ 0.72·2⁻ᵏ   levels shown: ${levels}\n<span class="d">all rational centres and radii together: still only countably many discs — a countable base for ℝ²</span>`);
+    } else {
+      poly(U.P, "rgba(63,208,201,.06)", "rgba(127,227,214,.8)", 2, [7, 6]);
+      const key = levels + "|" + W + "|" + H;
+      if (this._key !== key) { this._key = key; const cover = []; for (let k = 0; k < levels; k++) { const s = S0 / 2 ** (k + 1), r = s * .72; for (let x = cx % s; x < W; x += s) for (let y = cy % s; y < H; y += s) { if (U.inside(x, y) && U.dist(x, y) > r && !cover.some(c => Math.hypot(c[0] - x, c[1] - y) < c[2] * .8)) cover.push([x, y, r]); } } this._cover = cover; }
+      const cover = this._cover, used = cover.length;
+      cover.forEach(([x, y, r], i) => { dot(x, y, r, `hsla(${45 + (r < 6 ? 150 : r < 14 ? 100 : 0)},80%,60%,.18)`); ctx.strokeStyle = "rgba(245,196,81,.55)"; ctx.lineWidth = 1; ctx.beginPath(); ctx.arc(x, y, r, 0, TAU); ctx.stroke(); });
+      read(`U (dashed) = the union of the basic discs inside it   discs drawn so far: <span class="g">${used}</span>\n<span class="d">keep refining (levels ${levels}) and the union fills all of U — every open set is a countable union of basic discs</span>`);
+    }
+  }
+});
+
+/* ---------------------------------------------------------------- 8 · locally Euclidean → topological manifold */
+let r8mode = "sphere", r8p = [.35, .45], r8drag = false;
+function sph(lat, lon) { return [Math.cos(lat) * Math.sin(lon), Math.sin(lat), Math.cos(lat) * Math.cos(lon)]; }
+RUNGS.push({
+  chip: "8 · topological manifold", kick: "Rung 8 · condition 3 of 3 — a milestone", title: "Locally Euclidean — and so, a topological manifold",
+  lead: "The last condition: every point has a neighbourhood that is a faithful (homeomorphic) copy of an open piece of flat ℝⁿ. Such a copy is a chart. Drag the patch around the sphere — every patch flattens onto a disc without tearing. Then look at a cross: at its centre no neighbourhood looks like a line.",
+  def: `<p>X is <b>locally Euclidean of dimension n</b> if every point p has an open neighbourhood U and a homeomorphism <span class="m">φ : U → φ(U)</span> onto an open subset of ℝⁿ. The pair (U, φ) is a <b>chart</b>; the numbers <span class="m">φ(q) = (x¹, …, xⁿ)</span> are the <b>coordinates</b> of q.</p>
+    <p>A <b>topological manifold</b> of dimension n is a topological space that is</p>
+    <ul><li><b>Hausdorff</b> (rung 6),</li><li><b>second countable</b> (rung 7), and</li><li><b>locally Euclidean</b> of dimension n (this rung).</li></ul>
+    <p>The dimension is well defined: by Brouwer's invariance of domain (1912) an open set of ℝᵐ is never homeomorphic to one of ℝⁿ when m ≠ n.</p>`,
+  ask: `<ul><li class="yes">What does the space look like up close? Like ℝⁿ, everywhere.</li><li class="yes">Global questions: is it compact, connected, orientable (rung 13)? How many holes does it have?</li><li class="no">Not yet: derivatives. A chart is only a homeomorphism, and two charts may disagree about what is "smooth".</li></ul>`,
+  ex: `<p><span class="yes">Manifolds</span>: ℝⁿ, the circle S¹, the sphere S², the torus, the Möbius band (without its edge), any open subset of a manifold. <span class="no">Not manifolds</span>: the cross (fails locally Euclidean at the centre), the line with two origins (fails Hausdorff), the long line (fails second countable).</p>`,
+  gloss: [["locally Euclidean", "each point has a neighbourhood homeomorphic to an open subset of ℝⁿ"], ["chart (U, φ)", "an open set U with a homeomorphism φ onto an open subset of ℝⁿ; φ gives coordinates"], ["topological manifold", "a Hausdorff, second countable, locally Euclidean space"], ["dimension", "the n in ℝⁿ; well defined by Brouwer's invariance of domain"]],
+  controls: `<button class="b on" data-m="sphere">the sphere: a chart</button><button class="b" data-m="cross">the cross: not a manifold</button>`,
+  wire(c) { c.querySelectorAll("[data-m]").forEach(b => b.onclick = () => { c.querySelectorAll("[data-m]").forEach(x => x.classList.toggle("on", x === b)); r8mode = b.dataset.m; }); },
+  geo() { const R = Math.min(W * .2, H * .42); return { R, cx: W * .26, cy: H / 2, dx: W * .74, dR: Math.min(W * .19, H * .4) }; },
+  down(x, y) { if (r8mode !== "sphere") return; const g = this.geo(); if (Math.hypot(x - g.cx, y - g.cy) < g.R) { r8drag = true; this.move(x, y, 1); } },
+  move(x, y, b) { if (!r8drag || !b) return; const g = this.geo(), u = clamp((x - g.cx) / g.R, -.55, .55), v = clamp(-(y - g.cy) / g.R, -.55, .55); r8p = [Math.asin(v), Math.asin(clamp(u / Math.cos(Math.asin(v)), -.95, .95))]; },
+  up() { r8drag = false; },
+  draw(t) {
+    const g = this.geo();
+    if (r8mode === "sphere") {
+      const gr = ctx.createRadialGradient(g.cx - g.R * .35, g.cy - g.R * .4, g.R * .1, g.cx, g.cy, g.R); gr.addColorStop(0, "#4a2d80"); gr.addColorStop(1, "#150a2a"); dot(g.cx, g.cy, g.R, gr); ctx.strokeStyle = "rgba(180,140,255,.4)"; ctx.lineWidth = 1; ctx.beginPath(); ctx.arc(g.cx, g.cy, g.R, 0, TAU); ctx.stroke();
+      const [lat, lon] = r8p, P = sph(lat, lon), e1 = [Math.cos(lon), 0, -Math.sin(lon)], e2 = [-Math.sin(lat) * Math.sin(lon), Math.cos(lat), -Math.sin(lat) * Math.cos(lon)], A = .62;
+      const at = (rho, psi) => { const c = Math.cos(rho), s = Math.sin(rho); return [0, 1, 2].map(i => c * P[i] + s * (Math.cos(psi) * e1[i] + Math.sin(psi) * e2[i])); };
+      const S = v => [g.cx + v[0] * g.R, g.cy - v[1] * g.R], D = (rho, psi) => [g.dx + rho / A * g.dR * Math.cos(psi), g.cy - rho / A * g.dR * Math.sin(psi)];
+      const cap = []; for (let i = 0; i <= 80; i++) cap.push(S(at(A, TAU * i / 80))); poly(cap, "rgba(245,196,81,.12)", "rgba(245,196,81,.8)", 1.6);
+      for (let k = 1; k <= 4; k++) { const rho = A * k / 4, C1 = [], C2 = []; for (let i = 0; i <= 80; i++) { C1.push(S(at(rho, TAU * i / 80))); C2.push(D(rho, TAU * i / 80)); } curve(C1, "rgba(122,168,255,.7)", 1); curve(C2, "rgba(122,168,255,.7)", 1); }
+      for (let k = 0; k < 12; k++) { const psi = TAU * k / 12, C1 = [], C2 = []; for (let i = 0; i <= 20; i++) { C1.push(S(at(A * i / 20, psi))); C2.push(D(A * i / 20, psi)); } curve(C1, "rgba(122,168,255,.45)", 1); curve(C2, "rgba(122,168,255,.45)", 1); }
+      dot(g.dx, g.cy, g.dR, "rgba(245,196,81,.07)"); ctx.strokeStyle = "rgba(245,196,81,.8)"; ctx.lineWidth = 1.6; ctx.setLineDash([6, 5]); ctx.beginPath(); ctx.arc(g.dx, g.cy, g.dR, 0, TAU); ctx.stroke(); ctx.setLineDash([]);
+      const rq = A * .55, psi = t / 1400, q3 = at(rq, psi), q2 = D(rq, psi); dot(...S(q3), 5, COL.pink, 10); dot(...q2, 5, COL.pink, 10); dot(...S(P), 4, COL.gold, 8); dot(g.dx, g.cy, 4, COL.gold, 8);
+      arrow(g.cx + g.R + 12, g.cy - 20, g.dx - g.dR - 16, g.cy - 20, "rgba(207,201,228,.7)", 1.5); text("φ (a homeomorphism)", (g.cx + g.R + g.dx - g.dR) / 2, g.cy - 34, COL.ink, 11.5, "center");
+      text("drag the patch U over the sphere", g.cx, 16, "rgba(207,201,228,.7)", 11, "center"); text("φ(U): an open disc in ℝ²", g.dx, 16, "rgba(207,201,228,.7)", 11, "center");
+      const xy = [(rq / A * Math.cos(psi)).toFixed(3), (rq / A * Math.sin(psi)).toFixed(3)];
+      read(`the pink point q ∈ U has chart coordinates φ(q) = (x¹, x²) = (${xy[0]}, ${xy[1]})\n<span class="d">every point of the sphere lies in such a patch, the sphere is Hausdorff and second countable → S² is a topological 2-manifold</span>`);
+    } else {
+      const cx = W * .3, cy = H / 2, L = Math.min(W * .22, H * .42);
+      line(cx - L, cy - L * .7, cx + L, cy + L * .7, COL.ink, 3); line(cx - L, cy + L * .7, cx + L, cy - L * .7, COL.ink, 3);
+      const pr = [cx - L * .6, cy - L * .42], r = 26; dot(...pr, r, "rgba(63,208,201,.15)"); ctx.strokeStyle = COL.teal; ctx.beginPath(); ctx.arc(...pr, r, 0, TAU); ctx.stroke(); dot(...pr, 5, COL.teal, 8); text("p", pr[0] - 16, pr[1] - 14, COL.teal, 13);
+      dot(cx, cy, 30, "rgba(255,107,90,.15)"); ctx.strokeStyle = COL.red; ctx.beginPath(); ctx.arc(cx, cy, 30, 0, TAU); ctx.stroke(); dot(cx, cy, 6, COL.red, 10); text("x", cx + 10, cy - 16, COL.red, 14);
+      const x0 = W * .62, y1 = H * .3, y2 = H * .7, w2 = W * .3;
+      panelTitle("remove the point from a small neighbourhood:", x0, 20);
+      line(x0, y1, x0 + w2 * .45, y1, COL.teal, 3); line(x0 + w2 * .55, y1, x0 + w2, y1, COL.teal, 3); dot(x0 + w2 / 2, y1, 5, "#0e0618"); ctx.strokeStyle = COL.teal; ctx.beginPath(); ctx.arc(x0 + w2 / 2, y1, 5, 0, TAU); ctx.stroke(); text("near p: 2 pieces (like an interval)", x0, y1 + 24, COL.teal, 11);
+      const c2 = [x0 + w2 / 2, y2 - 10]; [[1, .7], [1, -.7], [-1, .7], [-1, -.7]].forEach(([a, b]) => line(c2[0] + a * 12, c2[1] + b * 8, c2[0] + a * 60, c2[1] + b * 42, COL.red, 3)); dot(...c2, 5, "#0e0618"); ctx.strokeStyle = COL.red; ctx.beginPath(); ctx.arc(...c2, 5, 0, TAU); ctx.stroke(); text("near x: 4 pieces", x0, y2 + 52, COL.red, 11);
+      read(`at p: a small neighbourhood is an open interval ≅ (−1, 1) ⊆ ℝ¹   <span class="t">locally Euclidean ✓</span>\nat x: removing x from any small neighbourhood leaves 4 pieces, but removing a point from an interval leaves 2 — so no neighbourhood of x is homeomorphic to an interval   <span class="r">not a manifold</span>`);
+    }
+  }
+});
+
+/* ---------------------------------------------------------------- 9 · atlas & smooth structure */
+let r9th = .9, r9drag = false, r9bad = false;
+RUNGS.push({
+  chip: "9 · smooth manifold", kick: "Rung 9 · add smoothness — a milestone", title: "An atlas with smooth transitions: a smooth manifold",
+  lead: "One chart rarely covers the whole space: the circle needs at least two. Where two charts overlap, going from one set of coordinates to the other is a transition map. If every transition map is infinitely differentiable, calculus done in one chart agrees with calculus done in any other — and the manifold becomes smooth. Drag p around the circle.",
+  def: `<p>An <b>atlas</b> is a collection of charts (U_α, φ_α) whose domains cover the manifold. Where two overlap, the <b>transition map</b> is <span class="m">φ_β ∘ φ_α⁻¹ : φ_α(U_α ∩ U_β) → φ_β(U_α ∩ U_β)</span>, a map between open subsets of ℝⁿ.</p>
+    <p>The atlas is <b>smooth</b> if every transition map is C^∞ (has derivatives of all orders). A <b>smooth structure</b> is a maximal smooth atlas, and a <b>smooth manifold</b> is a topological manifold together with a smooth structure. A function f : M → ℝ is <b>smooth</b> if f ∘ φ⁻¹ is C^∞ for every chart.</p>
+    <p>For the circle: stereographic projection from the north pole N gives <span class="m">u = x/(1 − y)</span> on S¹ ∖ {N}; from the south pole, <span class="m">v = x/(1 + y)</span> on S¹ ∖ {S}. On the overlap <span class="m">u·v = x²/(1 − y²) = 1</span>, so the transition map is <span class="m">v = 1/u</span> — smooth on ℝ ∖ {0}.</p>`,
+  ask: `<ul><li class="yes">Derivatives of functions on M, smooth maps between manifolds, diffeomorphisms (smooth homeomorphisms with smooth inverse).</li><li class="yes">Next rung: tangent vectors and velocities.</li><li class="no">Still not: lengths or angles — there is no ruler yet.</li></ul>`,
+  ex: `<p><span class="no">An incompatible chart</span> (the other button): replace the north chart by u ↦ ∛(u − 1). It is still a homeomorphism, but the transition v ↦ ∛(1/v − 1) has a vertical tangent at v = 1 — not differentiable. Different atlases can give genuinely different smooth structures: Milnor (1956) found spheres S⁷ that are homeomorphic but not diffeomorphic to the standard one, and ℝ⁴ has uncountably many exotic smooth structures.</p>`,
+  gloss: [["atlas", "a collection of charts whose domains cover the space"], ["transition map", "φ_β ∘ φ_α⁻¹: how coordinates of one chart convert into another on the overlap"], ["smooth atlas / structure", "all transition maps are C^∞; a smooth structure is a maximal smooth atlas"], ["smooth manifold", "a topological manifold with a smooth structure"], ["diffeomorphism", "a smooth bijection with a smooth inverse"]],
+  controls: `<button class="b on" data-m="good">stereographic charts (compatible)</button><button class="b" data-m="bad">an incompatible chart</button>`,
+  wire(c) { c.querySelectorAll("[data-m]").forEach(b => b.onclick = () => { c.querySelectorAll("[data-m]").forEach(x => x.classList.toggle("on", x === b)); r9bad = b.dataset.m === "bad"; }); },
+  geo() { const R = Math.min(W * .15, H * .3); return { R, cx: W * .28, cy: H * .46 }; },
+  down(x, y) { const g = this.geo(); if (Math.abs(Math.hypot(x - g.cx, y - g.cy) - g.R) < 22) { r9drag = true; this.move(x, y, 1); } },
+  move(x, y, b) { if (!r9drag || !b) return; const g = this.geo(); r9th = Math.atan2(-(y - g.cy), x - g.cx); },
+  up() { r9drag = false; },
+  draw(t) {
+    const g = this.geo(), px = Math.cos(r9th), py = Math.sin(r9th), S = (x, y) => [g.cx + x * g.R, g.cy - y * g.R];
+    const xL = 14, xR = W * .56; line(xL, g.cy, xR, g.cy, "rgba(232,228,244,.35)", 1); text("ℝ (the chart line y = 0)", xL, g.cy + 16, "rgba(207,201,228,.6)", 10.5);
+    ctx.strokeStyle = COL.ink; ctx.lineWidth = 2.5; ctx.beginPath(); ctx.arc(g.cx, g.cy, g.R, 0, TAU); ctx.stroke();
+    dot(...S(0, 1), 5, COL.gold, 8); text("N", g.cx + 8, g.cy - g.R - 10, COL.gold, 13); dot(...S(0, -1), 5, COL.teal, 8); text("S", g.cx + 8, g.cy + g.R + 12, COL.teal, 13);
+    const u = Math.abs(1 - py) < 1e-6 ? Infinity : px / (1 - py), v = Math.abs(1 + py) < 1e-6 ? Infinity : px / (1 + py), U = x => [g.cx + x * g.R, g.cy];
+    if (isFinite(u)) { const e = U(clamp(u, -40, 40)); line(...S(0, 1), ...e, "rgba(245,196,81,.75)", 1.4); dot(...e, 5, COL.gold, 8); text("u", e[0] - 4, e[1] - 12, COL.gold, 12); }
+    if (isFinite(v)) { const e = U(clamp(v, -40, 40)); line(...S(0, -1), ...e, "rgba(63,208,201,.75)", 1.4); dot(...e, 5, COL.teal, 8); text("v", e[0] - 4, e[1] + 14, COL.teal, 12); }
+    dot(...S(px, py), 7, COL.pink, 12); text("p", S(px, py)[0] + 10, S(px, py)[1] - 10, COL.pink, 14);
+    // transition map plot
+    const x0 = W * .62, x1 = W - 14, y0 = 26, y1 = H - 30, M = 4, PX = a => x0 + (a + M) / (2 * M) * (x1 - x0), PY = b => y1 - (b + M) / (2 * M) * (y1 - y0);
+    panelTitle(r9bad ? "transition v ↦ ∛(1/v − 1)" : "transition map v = 1/u", x0, 14);
+    line(PX(-M), PY(0), PX(M), PY(0), "rgba(255,255,255,.25)"); line(PX(0), PY(-M), PX(0), PY(M), "rgba(255,255,255,.25)");
+    const fn = r9bad ? (a => Math.cbrt(1 / a - 1)) : (a => 1 / a);
+    for (const side of [-1, 1]) { const C = []; for (let i = 1; i <= 300; i++) { const a = side * (M * i / 300); const b = fn(a); if (Math.abs(b) < M) C.push([PX(a), PY(b)]); } curve(C, r9bad ? "rgba(255,122,200,.9)" : "rgba(245,196,81,.9)", 2); }
+    if (r9bad) { dot(PX(1), PY(0), 7, "rgba(255,107,90,.3)"); ctx.strokeStyle = COL.red; ctx.beginPath(); ctx.arc(PX(1), PY(0), 9, 0, TAU); ctx.stroke(); text("vertical tangent: not differentiable", PX(1) + 12, PY(0) - 12, COL.red, 10.5); }
+    else if (isFinite(u) && isFinite(v) && Math.abs(u) < M && Math.abs(v) < M) dot(PX(u), PY(v), 6, COL.pink, 10);
+    text(r9bad ? "old chart →" : "u (north chart) →", x1 - 4, PY(0) + 14, "rgba(207,201,228,.6)", 10, "right"); text(r9bad ? "new chart" : "v (south chart)", PX(0) + 6, y0 + 6, "rgba(207,201,228,.6)", 10);
+    const f = z => isFinite(z) ? z.toFixed(4) : "undefined (p is the pole)";
+    read(`p = (${px.toFixed(3)}, ${py.toFixed(3)})   north chart u = x/(1 − y) = <span class="g">${f(u)}</span>   south chart v = x/(1 + y) = <span class="t">${f(v)}</span>\n${isFinite(u) && isFinite(v) ? `u · v = <span class="g">${(u * v).toFixed(6)}</span> — on the overlap the charts are related by v = 1/u, a C^∞ map` : "p is a pole: it lies in only one chart — the two charts together still cover the circle"}`);
+  }
+});
+
+/* ---------------------------------------------------------------- 10 · tangent vectors */
+let r10s = 1, r10th = .6, r10drag = false;
+RUNGS.push({
+  chip: "10 · tangent vectors", kick: "Rung 10 · add velocities", title: "Tangent vectors: velocities of curves through a point",
+  lead: "On a smooth manifold we can differentiate. A tangent vector at p is the velocity of a curve passing through p — and two different curves with the same velocity at p give the same vector. That “same velocity” is an equivalence relation, exactly as in rung 2. On the right, a vector field attaches a velocity to every point, and the points flow along it.",
+  def: `<p>Let γ₁, γ₂ be smooth curves with γ(0) = p. Call them equivalent if <span class="m">(φ ∘ γ₁)′(0) = (φ ∘ γ₂)′(0)</span> in some chart φ (then in every chart, because transition maps are smooth). A <b>tangent vector</b> at p is an equivalence class of curves.</p>
+    <p>The tangent vectors at p form the <b>tangent space</b> <span class="m">T_pM</span>, a vector space of dimension n. All of them together form the <b>tangent bundle</b> TM. A <b>vector field</b> X chooses a tangent vector X_p at each point, smoothly; its <b>flow</b> moves points along the field. A smooth map f has a <b>differential</b> <span class="m">df_p : T_pM → T_{f(p)}N</span>.</p>`,
+  ask: `<ul><li class="yes">Velocities, directional derivatives, vector fields, flows, differential equations on M.</li><li class="no">Still meaningless: how long a tangent vector is, and the angle between two. A vector space has no ruler or protractor until we add an inner product.</li></ul>`,
+  ex: `<p>For the circle, T_pS¹ is the tangent line at p. The field X = sin θ ∂/∂θ vanishes at θ = 0 and θ = π and pushes every other point towards π. The hairy ball theorem says any vector field on the sphere S² must vanish somewhere.</p>`,
+  gloss: [["tangent vector at p", "an equivalence class of curves through p with the same velocity in a chart"], ["tangent space T_pM", "the n-dimensional vector space of tangent vectors at p"], ["tangent bundle TM", "all tangent spaces together"], ["vector field", "a smooth choice of tangent vector at every point"], ["differential df_p", "the linear map a smooth f induces between tangent spaces"]],
+  controls: `<span class="lab">speed of the curves at p</span><input type="range" data-i="s" min="-2" max="2" step="0.05" value="1">`,
+  wire(c) { c.querySelector("[data-i=s]").oninput = e => { r10s = +e.target.value; }; },
+  geo() { const R = Math.min(W * .17, H * .36); return { R, cx: W * .27, cy: H / 2, cx2: W * .74 }; },
+  down(x, y) { const g = this.geo(); if (Math.abs(Math.hypot(x - g.cx, y - g.cy) - g.R) < 24) { r10drag = true; this.move(x, y, 1); } },
+  move(x, y, b) { if (!r10drag || !b) return; const g = this.geo(); r10th = Math.atan2(-(y - g.cy), x - g.cx); },
+  up() { r10drag = false; },
+  draw(t) {
+    const g = this.geo(), S = (c, th, R) => [c + Math.cos(th) * R, g.cy - Math.sin(th) * R];
+    ctx.strokeStyle = COL.ink; ctx.lineWidth = 2.5; ctx.beginPath(); ctx.arc(g.cx, g.cy, g.R, 0, TAU); ctx.stroke();
+    const P = S(g.cx, r10th, g.R), T = [-Math.sin(r10th), -Math.cos(r10th)], L = g.R * 1.5;
+    line(P[0] - T[0] * L, P[1] - T[1] * L, P[0] + T[0] * L, P[1] + T[1] * L, "rgba(245,196,81,.35)", 1.5); text("T_pS¹", P[0] + T[0] * L + 4, P[1] + T[1] * L, COL.gold, 11);
+    const tt = ((t / 2600) % 2) - 1, th1 = r10th + r10s * tt * .9, th2 = r10th + r10s * tt * .9 + 1.4 * tt * tt;
+    dot(...S(g.cx, th1, g.R), 6, COL.teal, 10); dot(...S(g.cx, th2, g.R), 6, COL.pink, 10);
+    if (Math.abs(r10s) > .02) arrow(P[0], P[1], P[0] + T[0] * r10s * g.R * .55, P[1] + T[1] * r10s * g.R * .55, COL.gold, 2.6, 11);
+    dot(P[0], P[1], 5, COL.gold, 10); text("p", P[0] + 10, P[1] + 14, COL.gold, 13);
+    text("teal γ₁(t) = θ₀ + s·t     pink γ₂(t) = θ₀ + s·t + 1.4t²", g.cx, H - 16, "rgba(207,201,228,.7)", 10.5, "center");
+    // vector field X = sin θ ∂/∂θ and its flow
+    const c2 = g.cx2; ctx.strokeStyle = "rgba(232,228,244,.6)"; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(c2, g.cy, g.R, 0, TAU); ctx.stroke();
+    for (let k = 0; k < 24; k++) { const th = TAU * k / 24, m = Math.sin(th), Q = S(c2, th, g.R), Tt = [-Math.sin(th), -Math.cos(th)]; if (Math.abs(m) > .05) arrow(Q[0], Q[1], Q[0] + Tt[0] * m * 26, Q[1] + Tt[1] * m * 26, "rgba(122,168,255,.8)", 1.5, 7); }
+    for (let k = 0; k < 10; k++) { const th0 = -Math.PI + .2 + k * .63, s = (t / 1000) % 6, th = 2 * Math.atan(Math.tan(th0 / 2) * Math.exp(s)); dot(...S(c2, th, g.R), 4, COL.pink, 8); }
+    dot(...S(c2, 0, g.R), 5, COL.red, 8); dot(...S(c2, Math.PI, g.R), 5, COL.red, 8); text("X = sin θ ∂/∂θ: zero at θ = 0 and θ = π", c2, H - 16, "rgba(207,201,228,.7)", 10.5, "center");
+    panelTitle("drag p · two curves, one velocity", 14, 16); panelTitle("a vector field and its flow", c2 - g.R, 16);
+    read(`in the angle chart: γ₁′(0) = s = ${r10s.toFixed(2)}   γ₂′(0) = s + 2·1.4·0 = ${r10s.toFixed(2)}   <span class="g">same tangent vector</span>, though the curves differ\n<span class="d">the gold arrow is that vector in T_pS¹; the flow on the right solves θ′ = sin θ</span>`);
+  }
+});
+
+/* ---------------------------------------------------------------- 11 · Riemannian metric */
+let r11 = { p: [-1.3, .7], q: [1.4, .9], drag: null, flat: false };
+function hypGeo(p, q) { if (Math.abs(p[0] - q[0]) < 1e-9) return { vert: true }; const c = ((q[0] ** 2 + q[1] ** 2) - (p[0] ** 2 + p[1] ** 2)) / (2 * (q[0] - p[0])); return { c, r: Math.hypot(p[0] - c, p[1]) }; }
+function hypArc(p, q, n) { const G = hypGeo(p, q), P = []; if (G.vert) { for (let i = 0; i <= n; i++) P.push([p[0], p[1] + (q[1] - p[1]) * i / n]); return P; } const a = Math.atan2(p[1], p[0] - G.c), b = Math.atan2(q[1], q[0] - G.c); for (let i = 0; i <= n; i++) { const s = a + (b - a) * i / n; P.push([G.c + G.r * Math.cos(s), G.r * Math.sin(s)]); } return P; }
+const hypDist = (p, q) => Math.acosh(1 + ((p[0] - q[0]) ** 2 + (p[1] - q[1]) ** 2) / (2 * p[1] * q[1]));
+function hLen(P) { let s = 0; for (let i = 1; i < P.length; i++) s += Math.hypot(P[i][0] - P[i - 1][0], P[i][1] - P[i - 1][1]) / ((P[i][1] + P[i - 1][1]) / 2); return s; }
+function tanAt(p, q) { const G = hypGeo(p, q); if (G.vert) return [0, Math.sign(q[1] - p[1])]; const a = Math.atan2(p[1], p[0] - G.c), b = Math.atan2(q[1], q[0] - G.c), s = b > a ? 1 : -1; return [-Math.sin(a) * s, Math.cos(a) * s]; }
+function hframe() { const b = 3.2, s = (H - 44) / b, a = (W - 30) / (2 * s); return { s, a, b, X: x => W / 2 + x * s, Y: y => H - 24 - y * s, inv: (px, py) => [(px - W / 2) / s, (H - 24 - py) / s] }; }
+function hdrag(obj, keys) { return { down(x, y) { const F = hframe(); keys.forEach(k => { if (Math.hypot(F.X(obj[k][0]) - x, F.Y(obj[k][1]) - y) < 16) obj.drag = k; }); }, move(x, y, b) { if (!obj.drag || !b) return; const F = hframe(), v = F.inv(x, y); obj[obj.drag] = [clamp(v[0], -F.a + .1, F.a - .1), clamp(v[1], .12, F.b - .05)]; }, up() { obj.drag = null; } }; }
+RUNGS.push(Object.assign({
+  chip: "11 · Riemannian metric", kick: "Rung 11 · add a ruler and a protractor — a milestone", title: "A Riemannian metric: lengths, angles, distances, geodesics",
+  lead: "Give every tangent space an inner product, varying smoothly from point to point. Now tangent vectors have lengths and angles, curves have lengths, and the shortest routes — geodesics — appear. Here the manifold is the upper half-plane with the hyperbolic metric: the little circles are all “unit circles” of the metric, so they shrink near the bottom edge, where distances blow up. Drag p and q.",
+  def: `<p>An <b>inner product</b> on a vector space is a symmetric, positive-definite bilinear form ⟨u, v⟩. A <b>Riemannian metric</b> g on a smooth manifold M assigns to each p an inner product g_p on T_pM, depending smoothly on p. (M, g) is a <b>Riemannian manifold</b>. In coordinates <span class="m">g = Σ g_ij dxⁱ dxʲ</span>.</p>
+    <p>It gives: the <b>length</b> of a vector <span class="m">|v| = √g(v, v)</span>; the <b>angle</b> θ between u and v, <span class="m">cos θ = g(u, v)/(|u||v|)</span>; the <b>length of a curve</b> <span class="m">L(γ) = ∫ |γ′(t)| dt</span>; the <b>distance</b> <span class="m">d(p, q) = inf L(γ)</span> over curves from p to q; and <b>geodesics</b>, curves that locally minimise length.</p>
+    <p>The distance d is a metric in the sense of rung 4, and the topology it defines is the manifold's original topology — the ladder closes on itself.</p>`,
+  ask: `<ul><li class="yes">How far apart are p and q? What is the shortest path? What angle do two curves make? What is the area of a region?</li><li class="yes">Next: how curved is the space?</li></ul>`,
+  ex: `<p><b>Euclidean metric</b> g = dx² + dy²: geodesics are straight lines. <b>Hyperbolic metric</b> <span class="m">g = (dx² + dy²)/y²</span> on the upper half-plane (Poincaré): geodesics are vertical lines and semicircles meeting the edge at right angles, and <span class="m">d(p, q) = arcosh(1 + |p − q|²/(2y_p y_q))</span>. The angles are the same as Euclidean ones (the metric is a rescaling), but the lengths are not.</p>`,
+  gloss: [["inner product", "a symmetric, positive-definite bilinear form: it measures lengths and angles of vectors"], ["Riemannian metric g", "a smoothly varying inner product on the tangent spaces"], ["length of a curve", "L(γ) = ∫ |γ′(t)| dt, measured with g"], ["Riemannian distance", "d(p, q) = the infimum of lengths of curves from p to q"], ["geodesic", "a curve that locally minimises length (a 'straight line' of the metric)"]],
+  controls: `<button class="b on" data-m="hyp">hyperbolic metric (dx² + dy²)/y²</button><button class="b" data-m="flat">Euclidean metric dx² + dy²</button>`,
+  wire(c) { c.querySelectorAll("[data-m]").forEach(b => b.onclick = () => { c.querySelectorAll("[data-m]").forEach(x => x.classList.toggle("on", x === b)); r11.flat = b.dataset.m === "flat"; }); },
+  draw(t) {
+    const F = hframe(), { X, Y } = F; ctx.fillStyle = "rgba(122,168,255,.04)"; ctx.fillRect(0, 0, W, Y(0));
+    line(0, Y(0), W, Y(0), "rgba(232,228,244,.5)", 1.5); text(r11.flat ? "the plane" : "y = 0: the edge at infinity (not part of the space)", 10, Y(0) + 15, "rgba(207,201,228,.6)", 10.5);
+    for (let i = -8; i <= 8; i++) for (let j = 1; j <= 6; j++) { const x = i * .45, y = j * .45 + (i % 2 ? .22 : 0); if (Math.abs(x) > F.a || y > F.b) continue; const r = (r11.flat ? .16 : .16 * y) * F.s; ctx.strokeStyle = "rgba(255,122,200,.28)"; ctx.lineWidth = 1; ctx.beginPath(); ctx.arc(X(x), Y(y), r, 0, TAU); ctx.stroke(); }
+    const { p, q } = r11, straight = [...Array(201).keys()].map(i => [p[0] + (q[0] - p[0]) * i / 200, p[1] + (q[1] - p[1]) * i / 200]);
+    curve(straight.map(v => [X(v[0]), Y(v[1])]), "rgba(232,228,244,.6)", 1.6, [6, 5]);
+    let msg;
+    if (!r11.flat) { const arc = hypArc(p, q, 200); curve(arc.map(v => [X(v[0]), Y(v[1])]), COL.gold, 3); const G = hypGeo(p, q); if (!G.vert) { const full = []; for (let i = 0; i <= 120; i++) full.push([X(G.c + G.r * Math.cos(Math.PI * i / 120)), Y(G.r * Math.sin(Math.PI * i / 120))]); curve(full, "rgba(245,196,81,.2)", 1); }
+      const t1 = tanAt(p, q), t2 = [q[0] - p[0], q[1] - p[1]], ang = Math.acos(clamp((t1[0] * t2[0] + t1[1] * t2[1]) / Math.hypot(...t2), -1, 1)) * 180 / Math.PI;
+      msg = `length of the dashed straight segment: ${hLen(straight).toFixed(4)}   length of the gold geodesic: <span class="g">${hLen(arc).toFixed(4)}</span>\nd(p, q) = arcosh(1 + |p − q|²/(2 y_p y_q)) = <span class="g">${hypDist(p, q).toFixed(4)}</span>   angle between the two curves at p: ${ang.toFixed(1)}° <span class="d">(angles are Euclidean here; lengths are not)</span>`; }
+    else msg = `Euclidean metric: the straight segment is the geodesic, length ${Math.hypot(q[0] - p[0], q[1] - p[1]).toFixed(4)}; all unit circles are the same size\n<span class="d">switch back to see how changing g changes lengths and shortest paths, though the smooth manifold is the same</span>`;
+    [[p, "p", COL.teal], [q, "q", COL.pink]].forEach(([v, n, c]) => { dot(X(v[0]), Y(v[1]), 7, c, 12); text(n, X(v[0]) + 10, Y(v[1]) - 10, c, 14); });
+    text("pink circles: vectors of length 1 in the metric", W - 12, 16, "rgba(255,122,200,.8)", 10.5, "right");
+    read(msg);
+  }
+}, hdrag(r11, ["p", "q"])));
+
+/* ---------------------------------------------------------------- 12 · curvature */
+let r12 = { A: [-1.6, .6], B: [1.5, .7], C: [.1, 2.3], drag: null, mode: "hyp", lune: 1.2 };
+RUNGS.push(Object.assign({
+  chip: "12 · curvature", kick: "Rung 12 · what the metric reveals", title: "Curvature: triangles tell you the shape of space",
+  lead: "Draw a triangle whose sides are geodesics and add up its angles. In the flat plane you always get 180°. In the hyperbolic plane you get less, on a sphere more — and the shortfall or excess equals the curvature integrated over the triangle. Curvature is measured entirely from inside, using only the metric. Drag the vertices.",
+  def: `<p>For a surface, the <b>Gaussian curvature</b> K(p) measures how the metric near p differs from flat. Gauss's <b>Theorema Egregium</b> (1827): K depends only on the metric g, not on how the surface sits in space.</p>
+    <p><b>Gauss–Bonnet</b> for a geodesic triangle T with angles α, β, γ: <span class="m">α + β + γ − π = ∬_T K dA</span>. So K = 0 gives 180°, K > 0 more, K &lt; 0 less.</p>
+    <p>In higher dimensions curvature is the <b>Riemann curvature tensor</b>, which records the curvature of every 2-dimensional slice through each point.</p>`,
+  ask: `<ul><li class="yes">Is the space flat? Positively or negatively curved? Do parallel geodesics converge or spread?</li><li class="yes">What is the area of a geodesic triangle? (from its angles alone, when K is constant)</li></ul>`,
+  ex: `<p>The plane: K = 0. The unit sphere: K = +1, so a triangle with three right angles (one-eighth of the sphere) has area 3·90° − 180° = π/2. The hyperbolic plane: K = −1, so area = π − (α + β + γ) and every triangle has area less than π.</p>`,
+  gloss: [["Gaussian curvature K", "the intrinsic curvature of a surface at a point"], ["Theorema Egregium", "K is determined by the metric alone (Gauss, 1827)"], ["Gauss–Bonnet (triangles)", "angle sum − π = the integral of K over the triangle"], ["Riemann curvature tensor", "curvature of every 2-plane at every point, in any dimension"]],
+  controls: `<button class="b on" data-m="hyp">hyperbolic plane (K = −1)</button><button class="b" data-m="flat">flat plane (K = 0)</button><button class="b" data-m="sph">sphere (K = +1)</button>`,
+  wire(c) { c.querySelectorAll("[data-m]").forEach(b => b.onclick = () => { c.querySelectorAll("[data-m]").forEach(x => x.classList.toggle("on", x === b)); r12.mode = b.dataset.m; }); },
+  draw(t) {
+    const deg = x => (x * 180 / Math.PI).toFixed(1) + "°";
+    if (r12.mode === "sph") {
+      const R = Math.min(W * .22, H * .42), cx = W * .36, cy = H / 2 + 6, lune = .5 + 1.1 * (.5 + .5 * Math.sin(t / 2200)), pitch = .45;
+      const P = v => { const y = v[1] * Math.cos(pitch) - v[2] * Math.sin(pitch), z = v[1] * Math.sin(pitch) + v[2] * Math.cos(pitch); return [cx + v[0] * R, cy - y * R, z]; };
+      const gr = ctx.createRadialGradient(cx - R * .35, cy - R * .4, R * .1, cx, cy, R); gr.addColorStop(0, "#4a2d80"); gr.addColorStop(1, "#150a2a"); dot(cx, cy, R, gr);
+      const N = [0, 1, 0], E1 = [Math.sin(-lune / 2), 0, Math.cos(-lune / 2)], E2 = [Math.sin(lune / 2), 0, Math.cos(lune / 2)];
+      const slerp = (a, b, n) => { const om = Math.acos(clamp(a[0] * b[0] + a[1] * b[1] + a[2] * b[2], -1, 1)), o = []; for (let i = 0; i <= n; i++) { const s = i / n, k1 = Math.sin((1 - s) * om) / Math.sin(om), k2 = Math.sin(s * om) / Math.sin(om); o.push([0, 1, 2].map(j => k1 * a[j] + k2 * b[j])); } return o; };
+      const tri = [...slerp(N, E1, 40), ...slerp(E1, E2, 40), ...slerp(E2, N, 40)].map(P); poly(tri, "rgba(245,196,81,.2)", COL.gold, 2.5);
+      const eq = []; for (let i = 0; i <= 120; i++) eq.push(P([Math.sin(TAU * i / 120), 0, Math.cos(TAU * i / 120)])); curve(eq.filter(v => v[2] > -.05), "rgba(232,228,244,.25)", 1);
+      [[N, "N"], [E1, "A"], [E2, "B"]].forEach(([v, n]) => { const p = P(v); dot(p[0], p[1], 5, COL.teal, 8); text(n, p[0] + 8, p[1] - 8, COL.teal, 12); });
+      const sum = Math.PI + lune; read(`angles: at A 90°, at B 90°, at N ${deg(lune)}   sum = <span class="g">${deg(sum)}</span> > 180°\narea by Gauss–Bonnet = sum − π = <span class="g">${lune.toFixed(3)}</span> (with K = +1) — the triangle is ${(lune / (4 * Math.PI) * 100).toFixed(1)}% of the sphere's area 4π`);
+      text("a triangle with two right angles on the equator", W * .72, H / 2, "rgba(207,201,228,.7)", 11, "center"); return;
+    }
+    const F = hframe(), { X, Y } = F, V = [r12.A, r12.B, r12.C], flat = r12.mode === "flat";
+    ctx.fillStyle = "rgba(122,168,255,.04)"; ctx.fillRect(0, 0, W, Y(0)); line(0, Y(0), W, Y(0), "rgba(232,228,244,.5)", 1.5);
+    const sides = [[0, 1], [1, 2], [2, 0]].map(([i, j]) => flat ? [V[i], V[j]] : hypArc(V[i], V[j], 120)), all = sides.flat();
+    poly(all.map(v => [X(v[0]), Y(v[1])]), "rgba(245,196,81,.15)", COL.gold, 2.6);
+    let sum = 0; const names = ["A", "B", "C"];
+    V.forEach((v, i) => { const a = V[(i + 1) % 3], b = V[(i + 2) % 3], t1 = flat ? [a[0] - v[0], a[1] - v[1]] : tanAt(v, a), t2 = flat ? [b[0] - v[0], b[1] - v[1]] : tanAt(v, b);
+      const ang = Math.acos(clamp((t1[0] * t2[0] + t1[1] * t2[1]) / (Math.hypot(...t1) * Math.hypot(...t2)), -1, 1)); sum += ang;
+      const a1 = Math.atan2(-t1[1], t1[0]), a2 = Math.atan2(-t2[1], t2[0]); let d = a2 - a1; while (d > Math.PI) d -= TAU; while (d < -Math.PI) d += TAU;
+      ctx.strokeStyle = COL.teal; ctx.lineWidth = 1.6; ctx.beginPath(); ctx.arc(X(v[0]), Y(v[1]), 22, a1, a1 + d, d < 0); ctx.stroke();
+      dot(X(v[0]), Y(v[1]), 7, COL.teal, 10); text(`${names[i]} ${deg(ang)}`, X(v[0]) + 10, Y(v[1]) - 14, "#e8e4f4", 12); });
+    read(flat ? `angle sum = <span class="g">${deg(sum)}</span> — always exactly 180° in the flat plane (K = 0)` : `angle sum = <span class="g">${deg(sum)}</span> < 180°\narea by Gauss–Bonnet with K = −1: π − (α + β + γ) = <span class="g">${(Math.PI - sum).toFixed(4)}</span>   <span class="d">— make the triangle huge and the area still stays below π</span>`);
+  }
+}, hdrag(r12, ["A", "B", "C"])));
+
+/* ---------------------------------------------------------------- 13 · orientation & volume */
+RUNGS.push({
+  chip: "13 · orientation & volume", kick: "Rung 13 · the top of the ladder", title: "Orientation and volume: integrating over the whole space",
+  lead: "Last, choose a consistent sense of rotation (clockwise vs anticlockwise) at every point. Carry a little oriented frame around a band: on a cylinder it comes back as it left; on a Möbius band it comes back mirrored — no consistent choice exists. On an oriented Riemannian manifold the metric then gives a volume form, and we can integrate.",
+  def: `<p>An atlas is <b>oriented</b> if all its transition maps have positive Jacobian determinant <span class="m">det D(φ_β ∘ φ_α⁻¹) > 0</span>; M is <b>orientable</b> if it has one. Equivalently, a basis of each T_pM can be declared "right-handed" continuously in p.</p>
+    <p>On an oriented Riemannian n-manifold the <b>volume form</b> is <span class="m">dV = √det(g_ij) dx¹ ∧ … ∧ dxⁿ</span> in any oriented chart. It lets us <b>integrate</b> functions, <span class="m">∫_M f dV</span>, and <b>Stokes' theorem</b> <span class="m">∫_M dω = ∫_∂M ω</span> unifies the fundamental theorem of calculus, Green, Gauss and Stokes.</p>`,
+  ask: `<ul><li class="yes">Volume of M, averages, total curvature (Gauss–Bonnet: ∫ K dA = 2πχ for a closed surface), flux, integrals of differential forms.</li></ul>`,
+  ex: `<p><span class="yes">Orientable</span>: the plane, the sphere, the torus. <span class="no">Non-orientable</span>: the Möbius band, the Klein bottle, the real projective plane. The area of the hyperbolic triangle in rung 12 is the integral of dA = dx dy / y² over it.</p>`,
+  gloss: [["orientation", "a consistent choice of handedness: an atlas whose transition maps have positive Jacobian"], ["orientable / non-orientable", "whether such a choice exists (the Möbius band: no)"], ["volume form dV", "√det g dx¹∧…∧dxⁿ, defined on an oriented Riemannian manifold"], ["integral ∫_M f dV", "the total of f over M, measured with the volume form"], ["Stokes' theorem", "∫_M dω = ∫_∂M ω"]],
+  enter() { },
+  draw(t) {
+    const bw = Math.min(W * .38, 360), bh = Math.min(H * .34, 130), y0 = H * .22, s = (t / 5200) % 2;
+    [[W * .27, "cylinder: ends glued the same way", false], [W * .73, "Möbius band: ends glued with a flip", true]].forEach(([cx, title, flip]) => {
+      const x0 = cx - bw / 2; ctx.fillStyle = flip ? "rgba(255,122,200,.08)" : "rgba(63,208,201,.08)"; ctx.fillRect(x0, y0, bw, bh); line(x0, y0, x0 + bw, y0, "rgba(232,228,244,.5)"); line(x0, y0 + bh, x0 + bw, y0 + bh, "rgba(232,228,244,.5)");
+      arrow(x0, y0 + bh - 6, x0, y0 + 10, flip ? COL.pink : COL.teal, 2.5); arrow(x0 + bw, flip ? y0 + 10 : y0 + bh - 6, x0 + bw, flip ? y0 + bh - 6 : y0 + 10, flip ? COL.pink : COL.teal, 2.5);
+      text(title, cx, y0 - 14, "rgba(207,201,228,.8)", 11, "center");
+      const lap = Math.floor(s), u = s % 1, mirrored = flip && lap % 2 === 1, fx = x0 + 20 + u * (bw - 40), fy = y0 + bh * (mirrored ? .68 : .32);
+      ctx.save(); ctx.translate(fx, fy); if (mirrored) ctx.scale(1, -1);
+      arrow(0, 0, 26, 0, COL.gold, 2.2, 8); arrow(0, 0, 0, -26, COL.gold, 2.2, 8); ctx.strokeStyle = COL.green; ctx.lineWidth = 1.8; ctx.beginPath(); ctx.arc(0, 0, 13, -.2, -1.35, true); ctx.stroke(); ctx.restore();
+      text(mirrored ? "after one trip: mirrored!" : lap ? "after one trip: the same" : "", cx, y0 + bh + 18, mirrored ? COL.red : COL.green, 11, "center");
+    });
+    const chainY = H * .82; serif("the ladder", W / 2, chainY - 26, "rgba(245,196,81,.9)", 15, "center");
+    const steps = ["∅", "set", "topological space", "Hausdorff", "2nd countable", "topological manifold", "smooth manifold", "Riemannian manifold", "+ orientation → volume"];
+    ctx.font = "11px 'IBM Plex Mono', monospace"; const widths = steps.map(s2 => ctx.measureText(s2).width + 18), total = widths.reduce((a, b) => a + b, 0), sc = Math.min(1, (W - 20) / total);
+    let x = (W - total * sc) / 2; steps.forEach((s2, i) => { const w = widths[i] * sc; ctx.fillStyle = i >= 5 ? "rgba(245,196,81,.16)" : "rgba(255,255,255,.05)"; ctx.strokeStyle = i >= 5 ? "rgba(245,196,81,.6)" : "rgba(255,255,255,.2)"; ctx.lineWidth = 1; ctx.beginPath(); ctx.roundRect(x + 2, chainY - 11, w - 6, 22, 11); ctx.fill(); ctx.stroke(); text(s2, x + w / 2 - 2, chainY + 1, "#e8e4f4", 10.5 * sc + .5, "center"); if (i < steps.length - 1) text("→", x + w - 3, chainY + 1, "rgba(207,201,228,.6)", 10, "center"); x += w; });
+    read(`cylinder: the frame returns unchanged — <span class="t">orientable</span>   Möbius band: it returns reflected — <span class="r">not orientable</span>\n<span class="d">the gold arrows are a basis of the tangent plane, the green arc its sense of rotation</span>`);
+  }
+});
+
+/* ================================================================ UI */
+let cur = 0, fadeT = 0;
+const rungsEl = $("#rungs");
+RUNGS.forEach((R, i) => { const b = document.createElement("button"); b.className = "rung" + ([8, 9, 11].includes(i) ? " milestone" : ""); b.textContent = R.chip; b.onclick = () => go(i); rungsEl.appendChild(b); });
+function go(i) {
+  i = clamp(i, 0, RUNGS.length - 1); if (RUNGS[cur] && RUNGS[cur].leave && i !== cur) RUNGS[cur].leave();
+  cur = i; const R = RUNGS[i]; fadeT = performance.now();
+  rungsEl.querySelectorAll(".rung").forEach((b, j) => { b.classList.toggle("on", j === i); b.classList.toggle("done", j < i); });
+  const ctl = $("#ctl"); ctl.innerHTML = R.controls || ""; if (R.wire) R.wire.call(R, ctl);
+  $("#card").innerHTML = `<div class="card"><div class="kick">${R.kick}</div><h2>${R.title}</h2><p class="lead">${R.lead}</p>
+    <div class="grid"><div class="box def"><h3>Definition — what is added</h3>${R.def}</div><div class="box"><h3>What you can now ask</h3>${R.ask}</div><div class="box"><h3>Examples & non-examples</h3>${R.ex}</div></div></div>`;
+  $("#prev").disabled = i === 0; $("#next").textContent = i === RUNGS.length - 1 ? "the ladder is complete ✓" : "add the next structure →"; $("#next").disabled = i === RUNGS.length - 1;
+  $("#gloss").innerHTML = `<h2>Everything defined so far</h2><p class="sub">Each rung's definitions, in the order they were built. Rung ${i} is highlighted.</p>` +
+    RUNGS.slice(0, i + 1).map((r, j) => `<section class="${j === i ? "cur" : ""}"><h4>${r.chip}</h4><dl>${r.gloss.map(([a, b]) => `<dt>${a}</dt><dd>${b}</dd>`).join("")}</dl></section>`).join("");
+  read(""); if (R.enter) R.enter.call(R);
+}
+$("#prev").onclick = () => go(cur - 1); $("#next").onclick = () => go(cur + 1);
+const pos = e => { const r = cv.getBoundingClientRect(); return [e.clientX - r.left, e.clientY - r.top]; };
+cv.addEventListener("pointerdown", e => { const R = RUNGS[cur]; if (R.down) { R.down.call(R, ...pos(e)); try { cv.setPointerCapture(e.pointerId); } catch (_) {} } });
+cv.addEventListener("pointermove", e => { const R = RUNGS[cur]; if (R.move) R.move.call(R, ...pos(e), e.buttons); });
+cv.addEventListener("pointerup", () => { const R = RUNGS[cur]; if (R.up) R.up.call(R); });
+cv.addEventListener("pointerleave", () => { if (cur === 4) r4probe = null; });
+function loop(t) { ctx.clearRect(0, 0, W, H); ctx.globalAlpha = clamp((t - fadeT) / 380, 0, 1); try { RUNGS[cur].draw.call(RUNGS[cur], t); } catch (err) { console.error(err); } ctx.globalAlpha = 1; requestAnimationFrame(loop); }
+resize(); go(0); requestAnimationFrame(loop);
 </script>
 </body>
 </html>
