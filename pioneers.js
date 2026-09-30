@@ -160,9 +160,7 @@ const LAYOUTS = {
 };
 LAYOUTS.home.people = Object.values(HOMES).flatMap(h => h.ids);
 LAYOUTS.home.hint = `${LAYOUTS.home.people.length} people, each next to the domain they shaped.`;
-let LAYOUT = "row";
-try { LAYOUT = localStorage.getItem("wom-pioneer-layout") || "row"; } catch (e) {}
-if (!LAYOUTS[LAYOUT]) LAYOUT = "row";
+let LAYOUT = "sky";   // the constellation is the one fixed layout
 let FEATURED = [];
 
 const htmlLayer = document.createElement("div");
@@ -276,8 +274,8 @@ probePhotos();
 let pioResize = null;
 addEventListener("resize", () => { clearTimeout(pioResize); pioResize = setTimeout(() => { if (["ribbon", "sky", "row"].includes(LAYOUT)) applyLayout(LAYOUT); }, 180); });
 
-// the picker, next to the crack-style picker
-{
+// (the layout picker was retired: the constellation is fixed)
+if (false) {
   const toggles = document.getElementById("toggles");
   if (toggles) {
     const lab = document.createElement("label");
