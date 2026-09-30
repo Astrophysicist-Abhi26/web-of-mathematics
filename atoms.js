@@ -90,6 +90,7 @@ document.addEventListener("keydown", e => { if (e.key === "Escape" && !atomsEl.h
 const AtomKit = {
   // a crisp canvas sized to its CSS width; returns { ctx, w, h }
   canvas(el, h) {
+    if (AtomKit.scale > 1) h = Math.round(Math.min(h * AtomKit.scale, window.innerHeight * .7));
     const dpr = Math.min(2, window.devicePixelRatio || 1);
     const w = el.clientWidth || 520;
     el.width = Math.round(w * dpr); el.height = Math.round(h * dpr); el.style.height = h + "px";
@@ -99,6 +100,7 @@ const AtomKit = {
   rng(seed) { let a = seed >>> 0 || 1; return () => { a = (a + 0x6D2B79F5) >>> 0; let t = a; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; },
   esc: s => String(s).replace(/[&<>"]/g, c => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;" }[c])),
   C: { gold:"#f5c451", teal:"#3fd0c9", red:"#ff7847", green:"#57e08a", violet:"#b48cff", ink:"#e8e4f4", dim:"#9a93b8", blue:"#7aa8ff", pink:"#ff7ac8", bg:"#120b22" },
+  scale: 1,
   reduced: matchMedia("(prefers-reduced-motion: reduce)").matches
 };
 window.AtomKit = AtomKit;
@@ -133,7 +135,7 @@ window.AtomKit = AtomKit;
   const st = document.createElement("style");
   st.textContent = `
 #atoms-box { transition: width .25s ease; }
-#atoms-box.wide { width: min(1060px, 96vw); }
+#atoms-box.wide { width: min(1180px, 96vw); }
 .atom-doms { display: flex; flex-wrap: wrap; gap: .35rem; margin: 0 3.2rem .55rem 0; }
 .atom-dom { font-family: "IBM Plex Mono", monospace; font-size: .64rem; color: var(--dim); background: rgba(255,255,255,.03);
   border: 1px solid rgba(255,255,255,.12); border-radius: 999px; padding: .28rem .65rem; cursor: pointer; display: inline-flex; gap: .35rem; align-items: center; }
@@ -166,4 +168,21 @@ window.AtomKit = AtomKit;
 @media (max-width: 760px) { .atom-pane .arow2 { grid-template-columns: 1fr; } }
 `;
   document.head.appendChild(st);
+})();
+
+/* ---------- full-screen mode: bigger box, taller drawings ---------- */
+(function () {
+  const box = document.getElementById("atoms-box"), b = document.createElement("button");
+  b.id = "atoms-full"; b.type = "button"; b.title = "Full screen (F)"; b.setAttribute("aria-label", "Toggle full screen");
+  box.insertBefore(b, box.firstChild.nextSibling);
+  let on = false; try { on = localStorage.getItem("wom-atoms-full") === "1"; } catch (e) {}
+  function set(v) {
+    on = v; box.classList.toggle("full", on); b.textContent = on ? "⤡" : "⤢"; AtomKit.scale = on ? 1.4 : 1;
+    try { localStorage.setItem("wom-atoms-full", on ? "1" : "0"); } catch (e) {}
+    // canvases that size themselves redraw on the next frame; static ones are rebuilt by re-showing the atom
+    requestAnimationFrame(() => { window.dispatchEvent(new Event("resize")); if (ATOM_CUR && !atomsEl.hidden) { ATOM_STOPS[ATOM_CUR](); INIT[ATOM_CUR](); } });
+  }
+  b.addEventListener("click", () => set(!on));
+  document.addEventListener("keydown", e => { if (atomsEl.hidden || /input|textarea|select/i.test((document.activeElement || {}).tagName || "")) return; if (e.key === "f" || e.key === "F") set(!on); });
+  set(on);
 })();
