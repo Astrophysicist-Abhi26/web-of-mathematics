@@ -68,14 +68,14 @@ Keyword matching is a first pass, not a verdict: synonyms are missed and passing
 
 ## Summary
 
-**316 covered · 152 mentioned · 436 missing** (of 904)
+**323 covered · 155 mentioned · 426 missing** (of 904)
 
 | # | Pillar | ✅ | 🟡 | ⬜ |
 |---|---|---|---|---|
 | 1 | Foundations — Logic, Sets, Infinity & Computability | 24 | 7 | 26 |
 | 2 | Numbers & Number Theory | 43 | 19 | 32 |
 | 3 | Algebra | 33 | 14 | 25 |
-| 4 | Real Analysis | 31 | 25 | 33 |
+| 4 | Real Analysis | 32 | 25 | 32 |
 | 5 | Complex Analysis | 13 | 3 | 7 |
 | 6 | Geometry | 19 | 16 | 64 |
 | 7 | Topology | 35 | 8 | 19 |
@@ -83,16 +83,16 @@ Keyword matching is a first pass, not a verdict: synonyms are missed and passing
 | 9 | Combinatorics | 11 | 9 | 19 |
 | 10 | Graph Theory & Networks | 11 | 2 | 16 |
 | 11 | Puzzles & Recreational Games | 2 | 3 | 20 |
-| 12 | Probability | 12 | 5 | 24 |
+| 12 | Probability | 13 | 5 | 23 |
 | 13 | Statistics — Frequentist & Bayesian | 9 | 5 | 24 |
-| 14 | Differential Equations | 8 | 4 | 20 |
+| 14 | Differential Equations | 9 | 5 | 18 |
 | 15 | Dynamical Systems, Chaos & Fractals | 15 | 4 | 16 |
 | 16 | Computation — Algorithms & Complexity | 4 | 1 | 15 |
 | 17 | Information, Coding & Cryptography | 7 | 5 | 13 |
 | 18 | Game Theory & Social Choice | 12 | 1 | 9 |
 | 19 | Optimization & Numerical Analysis | 8 | 0 | 12 |
 | 20 | Mathematical Physics | 5 | 6 | 5 |
-| 21 | Mathematics in the World | 1 | 4 | 18 |
+| 21 | Mathematics in the World | 5 | 6 | 12 |
 
 ## 1. Foundations — Logic, Sets, Infinity & Computability
 
@@ -391,7 +391,7 @@ Keyword matching is a first pass, not a verdict: synonyms are missed and passing
 
 ## 4. Real Analysis
 
-31 covered · 25 mentioned · 33 missing
+32 covered · 25 mentioned · 32 missing
 
 
 **4.1 Limits & sequences**
@@ -499,7 +499,7 @@ Keyword matching is a first pass, not a verdict: synonyms are missed and passing
 
 - ✅ 📜 Brachistochrone (1696) — *map topic/field* (`data.js`)
 - ✅ 🔷 Tautochrone — *playable atom* (`atoms-analysis.js`)
-- ⬜ 🔷 Catenary
+- ✅ 🔷 Catenary — *playable atom* (`atoms-world.js`)
 - 🟡 🏆 Dido's isoperimetric problem — *topic drawer* (`topics-data.js`)
 - ✅ 🔷 Euler–Lagrange equation — *map topic/field* (`data.js`)
 - ✅ 🔷 Fermat's least time — *field guide* (`guides/analysis.js`)
@@ -918,7 +918,7 @@ Keyword matching is a first pass, not a verdict: synonyms are missed and passing
 
 ## 12. Probability
 
-12 covered · 5 mentioned · 24 missing
+13 covered · 5 mentioned · 23 missing
 
 - ✅ 📜 Pascal–Fermat letters (1654) — *field guide* (`guides/probability.js`)
 - ✅ ⚡ Birthday paradox — *playable atom* (`atoms-chance.js`)
@@ -960,7 +960,7 @@ Keyword matching is a first pass, not a verdict: synonyms are missed and passing
 - ⬜ 🔷 Pólya's urn
 - ⬜ 📜 Gaussian correlation inequality (2014)
 - ⬜ 🔷 Von Neumann's fair coin
-- ⬜ 🔷 Kelly criterion
+- ✅ 🔷 Kelly criterion — *playable atom* (`atoms-world.js`)
 
 ## 13. Statistics — Frequentist & Bayesian
 
@@ -1016,7 +1016,7 @@ Keyword matching is a first pass, not a verdict: synonyms are missed and passing
 
 ## 14. Differential Equations
 
-8 covered · 4 mentioned · 20 missing
+9 covered · 5 mentioned · 18 missing
 
 
 **14.1 Ordinary differential equations**
@@ -1024,7 +1024,7 @@ Keyword matching is a first pass, not a verdict: synonyms are missed and passing
 - 🟡 🔷 Exponential growth & decay — *topic drawer* (`topics-data.js`)
 - ⬜ 🔷 Logistic growth
 - ✅ 🔷 Lotka–Volterra — *playable atom* (`atoms-analysis.js`)
-- ⬜ 🔷 SIR epidemic model
+- 🟡 🔷 SIR epidemic model — *playable atom* (`atoms-world.js`)
 - ⬜ 🔷 Harmonic oscillator & resonance
 - ⬜ 📜 Tacoma Narrows (1940)
 - 🟡 ⚡ Pendulum period — *topic drawer* (`topics-data.js`)
@@ -1048,7 +1048,7 @@ Keyword matching is a first pass, not a verdict: synonyms are missed and passing
 - ⬜ 🔷 Maxwell's equations
 - 🟡 ⚡ Black–Scholes is the heat equation — *topic drawer* (`topics-data.js`)
 - ⬜ 🔷📜 Solitons
-- ⬜ 🔷 Turing patterns (1952)
+- ✅ 🔷 Turing patterns (1952) — *playable atom* (`atoms-world.js`)
 - ⬜ 🔷 Traffic waves
 - ⬜ 🔷📜 Chladni figures
 - ✅ ⚡ Can you hear the shape of a drum? — *topic drawer* (`topics-data.js`)
@@ -1245,7 +1245,7 @@ Keyword matching is a first pass, not a verdict: synonyms are missed and passing
 
 ## 21. Mathematics in the World
 
-1 covered · 4 mentioned · 18 missing
+5 covered · 6 mentioned · 12 missing
 
 
 **21.1 Life**
@@ -1259,14 +1259,14 @@ Keyword matching is a first pass, not a verdict: synonyms are missed and passing
 
 - 🟡 🔷 Compound interest & e — *pioneer bio* (`pioneers-data.js`)
 - ⬜ 🔷 Random walks, Black–Scholes, Kelly betting
-- ⬜ 🔷 Fat tails
+- ✅ 🔷 Fat tails — *playable atom* (`atoms-world.js`)
 
 **21.3 Music**
 
-- ⬜ 🔷 Pythagorean tuning & the comma
+- 🟡 🔷 Pythagorean tuning & the comma — *playable atom* (`atoms-world.js`)
 - 🟡 ⚡ Why 12 notes? — *pioneer bio* (`pioneers-data.js`)
-- ⬜ 🔷 Equal temperament
-- ⬜ 🔷 Euclidean rhythms
+- ✅ 🔷 Equal temperament — *playable atom* (`atoms-world.js`)
+- ✅ 🔷 Euclidean rhythms — *playable atom* (`atoms-world.js`)
 - ⬜ 🔷 Tonnetz
 - ⬜ 🔷 Bach's crab canon
 
@@ -1274,14 +1274,14 @@ Keyword matching is a first pass, not a verdict: synonyms are missed and passing
 
 - ⬜ 🔷 Perspective, Escher, Dürer, Dalí
 - ⬜ 🔷 Islamic girih tiles
-- ⬜ 🔷 Gaudí's hanging-chain models
+- 🟡 🔷 Gaudí's hanging-chain models — *playable atom* (`atoms-world.js`)
 - ⬜ 🔷 Geodesic domes
 - ⬜ 🔷 Knitting & crochet
 
 **21.5 Everyday**
 
 - 🟡 🔷 Doomsday rule — *pioneer bio* (`pioneers-data.js`)
-- ⬜ 🔷 Gauss's Easter algorithm
+- ✅ 🔷 Gauss's Easter algorithm — *playable atom* (`atoms-world.js`)
 - 🟡 🔷 GPS — *field guide* (`guides/geometry.js`)
 - ⬜ 🔷 PageRank & the Netflix Prize
 - ⬜ 🔷 Sports
